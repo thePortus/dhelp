@@ -1,5 +1,6 @@
 # test in python
 language: python
+sudo: false
 # python versions tested
 python:
   - "3.5"
