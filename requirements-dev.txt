@@ -1,0 +1,5 @@
+-r requirements.txt
+cov-core==1.15.0
+coverage==4.5.1
+nose2==0.7.4
+nose2-cov==1.0a4

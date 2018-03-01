@@ -1,0 +1,19 @@
+# OS Files
+.DS_Store
+~*
+
+# Python Files
+__pycache__
+*.pyc
+
+# Build Files
+*.egg-info
+MANIFEST
+htmlcov
+build
+dist
+
+
+# Testing files
+.pypirc
+.testing*

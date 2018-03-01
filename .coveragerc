@@ -1,0 +1,9 @@
+[run]
+source = dhelp
+omit =
+    *tests*
+    setup.py
+
+[report]
+omit =
+    nose/*
