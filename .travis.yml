@@ -3,15 +3,17 @@ language: python
 # python versions tested
 python:
   - "3.5"
+  - "3.6"
+  - "3.6.2"
 # enable the use of sudo
 sudo: required
 # operating system to use
 os: linux
 # distribution to use
-dist: precise
+dist: trusty
 # setting environment variables
 env:
-  - PACKAGE_VERSION=0.0.0
+  - PACKAGE_VERSION=0.0.1
 # command to install dependencies
 install:
   - pip install -r requirements-dev.txt
