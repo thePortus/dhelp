@@ -1,15 +1,33 @@
 # dhelp
 
-Helper objects for various Digital Humanities related tasks. Contains modules
-to work with text files/folders, CSVs, webpages, and perform natural language
-processing.
+---
+
+[![Build Status](https://travis-ci.org/thePortus/dhelp.svg?branch=master)](https://travis-ci.org/thePortus/dhelp)
+
+[![Coverage Status](https://coveralls.io/repos/github/thePortus/dhelp/badge.svg?branch=master)](https://coveralls.io/github/thePortus/dhelp?branch=master)
+
+---
 
 [David J. Thomas](mailto:dave.a.base@gmail.com), [thePortus.com](http://thePortus.com)<br>
 Instructor of Ancient History and Digital Humanities, [University of South Florida](https://github.com/usf-portal)
 
+---
+
+Helper objects for various Digital Humanities related tasks. Contains modules
+to work with text files/folders, CSVs, webpages, and perform natural language
+processing.
+
+---
+
+# Installation
+
 ```
 pip install dhelp
 ```
+
+---
+
+# Examples
 
 ---
 
