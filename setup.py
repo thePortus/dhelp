@@ -6,21 +6,32 @@ except ImportError:
 config = {
     'name': "dhelp",
     'packages': [
-        "src",
-        "src.files",
-        "src.text",
-        "src.web"
+        "dhelp",
+        "dhelp.files",
+        "dhelp.text",
+        "dhelp.web"
     ],
-    'install_requires': ["nltk", "BeautifulSoup4", "requests"],
-    'version': "0.0.0",
-    'description': "Helper objects for DH Students",
+    'install_requires': [
+        "nltk",
+        "BeautifulSoup4",
+        "requests"
+    ],
+    'version': "0.0.1",
+    'description': """Utility tools for scraping, processing, and analyzing
+    data for DH students""",
     'author': "David J. Thomas",
     'author_email': "dave.a.base@gmail.com",
     'url': "https://github.com/thePortus/arakhne",
     'download_url': "https://github.com/thePortus/dhelp/archive/master.zip",
     'keywords': [
-        "digital humanities",
+        "digital-humanities",
+        "digital-history",
+        "digital-analysis",
+        "text-processing",
+        "text-analysis",
         "nltk",
+        "nlp",
+        "natural-language-processing"
     ],
     'classifiers': [
         "Programming Language :: Python",
