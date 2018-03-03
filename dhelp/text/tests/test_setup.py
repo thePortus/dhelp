@@ -2,7 +2,7 @@
 
 import unittest
 
-from ..Setup import CLTKSetup
+from ..setup import CLTKSetup
 
 
 class TestSetup(unittest.TestCase):
