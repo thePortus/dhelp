@@ -6,8 +6,10 @@
 
 ---
 
-[David J. Thomas](mailto:dave.a.base@gmail.com), [thePortus.com](http://thePortus.com)<br>
-Instructor of Ancient History and Digital Humanities, [University of South Florida](https://github.com/usf-portal)
+[David J. Thomas](mailto:dave.a.base@gmail.com), [thePortus.com](http://thePortus.com)<br />
+Instructor of Ancient History and Digital Humanities,<br />
+Department of History,<br />
+[University of South Florida](https://github.com/usf-portal)
 
 ---
 
@@ -309,9 +311,9 @@ upon success.
 >>> print(csv_file)
 /absolute/path/to/some/path.csv
 
----
-
 ```
+
+---
 
 #### CSVFile().modify()
 
@@ -409,9 +411,9 @@ Is overriden by child objects for languages using non latinate chars.
 >>> print(modified_text)
 Lorem ipsum dolor sit amet...
 
----
-
 ```
+
+---
 
 #### BasicText().rm_edits()
 
@@ -427,9 +429,9 @@ improvement.
 >>> print(modified_text)
 Lor psum r sit a...
 
----
-
 ```
+
+---
 
 #### BasicText().rm_spaces()
 
@@ -442,9 +444,9 @@ Gives a new version of the text with extra whitespace collapsed.
 >>> print(modified_text)
 Lorem ipsum dolor sit amet...
 
----
-
 ```
+
+---
 
 #### BasicText().rm_stopwords()
 
@@ -459,9 +461,9 @@ removed.
 >>> print(modified_text)
 Lorem dolor amet...
 
----
-
 ```
+
+---
 
 #### BasicText().lemmatize()
 
