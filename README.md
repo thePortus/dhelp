@@ -52,39 +52,13 @@ Full project documentation hosted on readthedocs.io coming soon.
 
 **Table of Contents**
 
-* [dhelp.web]#dhelp.web)
-    * [WebPage()](#WebPage())
-        * [.scrape()](#WebPage().scrape())
-* [dhelp.files](#dhelp.files)
-    * [TextFile()](#TextFile())
-        * [.load()](#TextFile().load())
-        * [.save()](#TextFile().save())
-    * [TextFolder()](#TextFolder())
-        * [.text_files()](#TextFolder().text_files())
-        * [.modify()](#TextFolder().text_files())
-    * [CSVFile()](#CSVFile())
-        * [.load()](#CSVFile().load())
-        * [.save()](#CSVFile().save())
-        * [.modify()](#CSVFile().modify())
-        * [.column_to_txts()](#CSVFile().column_to_txts)
-* [dhelp.text](#dhelp.text)
-    * [BasicText()](#BasicText())
-        * [.stringify()](#BasicText.stringify())
-        * [.rm_lines()](#BasicText.rm_lines())
-        * [.rm_nonchars()](#BasicText.rm_nonchars())
-        * [.rm_edits()](#BasicText.rm_edits())
-        * [.rm_spaces()](#BasicText.rm_spaces())
-        * [.rm_stopwords()](#BasicText.rm_stopwords())
-        * [.lemmatize()](#BasicText.lemmatize())
-        * [.re_search()](#BasicText.re_search())
-        * [.tokenize()](#BasicText.tokenize())
-        * [.tag()](#BasicText.tag())
-        * [.ngrams()](#BasicText.ngrams())
-        * [.skipgrams()](#BasicText.skipgrams())
+* [Web Module](#web-module)
+* [Files Module](#files-module)
+* [Text Module](#text-module)
 
 ---
 
-## **dhelp.web**
+## Web Module
 
 Module for scraping and processing web data. Primarily used for scraping web
 pages.
@@ -136,7 +110,7 @@ Stack Overflow
 
 ---
 
-## **dhelp.files**
+## Files Module
 
 Module for loading/saving/modifying individual or groups of files. Primarily
 used for loading of plain text files (individually or by folder) or CSVs.
@@ -202,7 +176,7 @@ Saves string data to file, won't overwrite unless option is flagged.
 
 ---
 
-### ***TextFolder()***
+### **TextFolder()**
 
 Can load or save a folder of plaintext files as a list of strings. Also enables
 batch editing of an entire directory by passing a callback.
@@ -366,7 +340,7 @@ to modified CSV.
 
 ---
 
-## **dhelp.text**
+## Text Module
 
 Module for text processing and natural language processing, primarily using
 the natural language toolkit (nltk).
