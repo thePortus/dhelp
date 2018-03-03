@@ -84,7 +84,7 @@ Full project documentation hosted on readthedocs.io coming soon.
 
 ---
 
-## dhelp.web
+## **dhelp.web**
 
 Module for scraping and processing web data. Primarily used for scraping web
 pages.
@@ -95,7 +95,7 @@ Contains:
 
 ---
 
-### WebPage()
+### **WebPage()**
 
 Provides methods to download/parse a specified webpage. Merges the request
 package with [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/)
@@ -112,6 +112,8 @@ web_page = WebPage('https://stackoverflow.com')
 https://stackoverflow.com
 
 ```
+
+---
 
 #### WebPage.soup()
 
@@ -134,14 +136,14 @@ Stack Overflow
 
 ---
 
-## Module: dhelp.files
+## **dhelp.files**
 
 Module for loading/saving/modifying individual or groups of files. Primarily
 used for loading of plain text files (individually or by folder) or CSVs.
 
 ---
 
-### TextFile()
+### **TextFile()**
 
 Load and save plain text data to/from files with TextFile. Loads data located
 at given path as a string. Likewise if .save() will save string data at the
@@ -157,6 +159,8 @@ system path send to TextFile
 some/path.txt
 ```
 
+---
+
 #### TextFile.load()
 
 Opens file and returns contents as a single string.
@@ -171,6 +175,8 @@ Opens file and returns contents as a single string.
 Lorem ipsum dolor sit amet...
 
 ```
+
+---
 
 #### TextFile.save()
 
@@ -196,7 +202,7 @@ Saves string data to file, won't overwrite unless option is flagged.
 
 ---
 
-### TextFolder()
+### ***TextFolder()***
 
 Can load or save a folder of plaintext files as a list of strings. Also enables
 batch editing of an entire directory by passing a callback.
@@ -210,6 +216,8 @@ batch editing of an entire directory by passing a callback.
 >>> print(text_folder)
 some/path
 ```
+
+---
 
 #### TextFolder.text_files()
 
@@ -225,6 +233,8 @@ Load all .txt (or other types) in a folder as list of TextFile objects.
 Lorem ipsum dolor sit amet...
 
 ```
+
+---
 
 #### TextFolder.modify()
 
@@ -251,7 +261,7 @@ linked with the modified copy.
 
 ---
 
-### CSVFile()
+### **CSVFile()**
 
 Makes loading and saving CSV data a simple matter. Simplifies the use of the
 csv.DictReader and csv.DictWriter for loading or saving csv's as lists of
@@ -269,6 +279,8 @@ dictionaries.
 
 ```
 
+---
+
 #### CSVFile().fieldnames
 
 Opens CSV file and reads the first row to get column names.
@@ -280,6 +292,8 @@ Opens CSV file and reads the first row to get column names.
 ['id', 'text', 'notes']
 
 ```
+
+---
 
 #### CSVFile().load()
 
@@ -293,6 +307,8 @@ Load csv data as list of dictionaries.
 [{'id': '1', 'text': 'Lorem ipsum', 'notes': ''}, {'id': '2', 'text': 'dolor sit', 'notes': ''}, {'id': '3', 'text': 'amet.', 'notes': ''}]
 
 ```
+
+---
 
 #### CSVFile().save()
 
@@ -319,6 +335,7 @@ upon success.
 >>> print(csv_file)
 /absolute/path/to/some/path.csv
 
+---
 
 ```
 
@@ -349,14 +366,14 @@ to modified CSV.
 
 ---
 
-## dhelp.text
+## **dhelp.text**
 
 Module for text processing and natural language processing, primarily using
 the natural language toolkit (nltk).
 
 ---
 
-### BasicText()
+### **BasicText()**
 
 Base class for all Text objects. Can be used on its own to perform a number
 of operations, although it is best used with on of its language-specific
@@ -372,6 +389,8 @@ Lorem ipsum dolor sit amet...
 
 ```
 
+---
+
 #### BasicText().stringify()
 
 Returns the text of this object as a pure string type.
@@ -385,6 +404,8 @@ Returns the text of this object as a pure string type.
 
 
 ```
+
+---
 
 #### BasicText().rm_lines()
 
@@ -400,6 +421,8 @@ Lorem ipsum dolor sit amet...
 
 ```
 
+---
+
 #### BasicText().rm_nonchars()
 
 Gives a new version of the text with only latin characters remaining.
@@ -411,6 +434,8 @@ Is overriden by child objects for languages using non latinate chars.
 >>> modified_text = basic_text.rm_nonchars()
 >>> print(modified_text)
 Lorem ipsum dolor sit amet...
+
+---
 
 ```
 
@@ -428,6 +453,8 @@ improvement.
 >>> print(modified_text)
 Lor psum r sit a...
 
+---
+
 ```
 
 #### BasicText().rm_spaces()
@@ -440,6 +467,8 @@ Gives a new version of the text with extra whitespace collapsed.
 >>> modified_text = basic_text.rm_spaces()
 >>> print(modified_text)
 Lorem ipsum dolor sit amet...
+
+---
 
 ```
 
@@ -456,6 +485,7 @@ removed.
 >>> print(modified_text)
 Lorem dolor amet...
 
+---
 
 ```
 
@@ -473,8 +503,9 @@ exactly as below as this will be tweaked.
 >>> print(modified_text)
 I hate think of sample sentence.
 
-
 ```
+
+---
 
 #### BasicText().re_search()
 
@@ -491,6 +522,8 @@ False
 
 ```
 
+---
+
 #### BasicText().tokenize()
 
 Returns a tokenized list. By default returns list of words, but can also return
@@ -506,6 +539,8 @@ as a list of sentences.
 
 ```
 
+---
+
 #### BasicText().tag()
 
 Returns list of words marked up with parts of speech. Each word is returned as
@@ -520,6 +555,8 @@ a 2-tuple, the first containing the word, the second with the parts of speech.
 
 ```
 
+---
+
 #### BasicText().ngrams()
 
 Returns a list of ngrams, each ngram represented as a tuple.
@@ -532,6 +569,8 @@ Returns a list of ngrams, each ngram represented as a tuple.
 [('They', 'hated', 'to'), ('hated', 'to', 'think'), ('to', 'think', 'of'), ('think', 'of', 'sample'), ('of', 'sample', 'sentences'), ('sample', 'sentences', '.')]
 
 ```
+
+---
 
 #### BasicText().skipgrams()
 
