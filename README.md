@@ -6,8 +6,10 @@
 
 ---
 
-[David J. Thomas](mailto:dave.a.base@gmail.com), [thePortus.com](http://thePortus.com)<br>
-Instructor of Ancient History and Digital Humanities, [University of South Florida](https://github.com/usf-portal)
+[David J. Thomas](mailto:dave.a.base@gmail.com), [thePortus.com](http://thePortus.com)<br />
+Instructor of Ancient History and Digital Humanities,<br />
+Department of History,<br />
+[University of South Florida](https://github.com/usf-portal)
 
 ---
 
@@ -52,39 +54,13 @@ Full project documentation hosted on readthedocs.io coming soon.
 
 **Table of Contents**
 
-* [dhelp.web]#dhelp.web)
-    * [WebPage()](#WebPage())
-        * [.scrape()](#WebPage().scrape())
-* [dhelp.files](#dhelp.files)
-    * [TextFile()](#TextFile())
-        * [.load()](#TextFile().load())
-        * [.save()](#TextFile().save())
-    * [TextFolder()](#TextFolder())
-        * [.text_files()](#TextFolder().text_files())
-        * [.modify()](#TextFolder().text_files())
-    * [CSVFile()](#CSVFile())
-        * [.load()](#CSVFile().load())
-        * [.save()](#CSVFile().save())
-        * [.modify()](#CSVFile().modify())
-        * [.column_to_txts()](#CSVFile().column_to_txts)
-* [dhelp.text](#dhelp.text)
-    * [BasicText()](#BasicText())
-        * [.stringify()](#BasicText.stringify())
-        * [.rm_lines()](#BasicText.rm_lines())
-        * [.rm_nonchars()](#BasicText.rm_nonchars())
-        * [.rm_edits()](#BasicText.rm_edits())
-        * [.rm_spaces()](#BasicText.rm_spaces())
-        * [.rm_stopwords()](#BasicText.rm_stopwords())
-        * [.lemmatize()](#BasicText.lemmatize())
-        * [.re_search()](#BasicText.re_search())
-        * [.tokenize()](#BasicText.tokenize())
-        * [.tag()](#BasicText.tag())
-        * [.ngrams()](#BasicText.ngrams())
-        * [.skipgrams()](#BasicText.skipgrams())
+* [Web Module](#web-module)
+* [Files Module](#files-module)
+* [Text Module](#text-module)
 
 ---
 
-## **dhelp.web**
+## Web Module
 
 Module for scraping and processing web data. Primarily used for scraping web
 pages.
@@ -136,7 +112,7 @@ Stack Overflow
 
 ---
 
-## **dhelp.files**
+## Files Module
 
 Module for loading/saving/modifying individual or groups of files. Primarily
 used for loading of plain text files (individually or by folder) or CSVs.
@@ -202,7 +178,7 @@ Saves string data to file, won't overwrite unless option is flagged.
 
 ---
 
-### ***TextFolder()***
+### **TextFolder()**
 
 Can load or save a folder of plaintext files as a list of strings. Also enables
 batch editing of an entire directory by passing a callback.
@@ -335,9 +311,9 @@ upon success.
 >>> print(csv_file)
 /absolute/path/to/some/path.csv
 
----
-
 ```
+
+---
 
 #### CSVFile().modify()
 
@@ -366,7 +342,7 @@ to modified CSV.
 
 ---
 
-## **dhelp.text**
+## Text Module
 
 Module for text processing and natural language processing, primarily using
 the natural language toolkit (nltk).
@@ -435,9 +411,9 @@ Is overriden by child objects for languages using non latinate chars.
 >>> print(modified_text)
 Lorem ipsum dolor sit amet...
 
----
-
 ```
+
+---
 
 #### BasicText().rm_edits()
 
@@ -453,9 +429,9 @@ improvement.
 >>> print(modified_text)
 Lor psum r sit a...
 
----
-
 ```
+
+---
 
 #### BasicText().rm_spaces()
 
@@ -468,9 +444,9 @@ Gives a new version of the text with extra whitespace collapsed.
 >>> print(modified_text)
 Lorem ipsum dolor sit amet...
 
----
-
 ```
+
+---
 
 #### BasicText().rm_stopwords()
 
@@ -485,9 +461,9 @@ removed.
 >>> print(modified_text)
 Lorem dolor amet...
 
----
-
 ```
+
+---
 
 #### BasicText().lemmatize()
 
