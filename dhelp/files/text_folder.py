@@ -6,7 +6,6 @@ David J. Thomas
 
 Object for interacting with a folder of plain text files. Allows quick
 discovery of filepaths and construction of relevant TextFile objects.
-Also enables batch editing of an entire directory by passing a callback.
 
 """
 
@@ -19,7 +18,8 @@ from .text_file import TextFile
 
 class TextFolder(Folder):
     """
-    Can load or save a folder of plaintext files as a list of strings.
+    Can load or save a folder of plaintext files as a list of strings. Also
+    enables batch editing of an entire directory by passing a callback.
     """
 
     def text_files(self, options={}):

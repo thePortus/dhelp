@@ -1,0 +1,10 @@
+-r requirements.txt
+cltk==0.1.83
+gitdb2==2.0.3
+GitPython==2.1.8
+python-crfsuite==0.9.5
+pyuca==1.2
+PyYAML==3.12
+regex==2018.2.21
+smmap2==2.0.3
+Whoosh==2.7.4

@@ -43,7 +43,7 @@ class CSVFile(Path):
     @property
     def fieldnames(self):
         """
-        Opens CSV file and reads the first row to get column names
+        Opens CSV file and reads the first row to get column names.
         """
         column_headers = []
         with open(self.data, 'r+') as csv_file:
@@ -82,7 +82,7 @@ class CSVFile(Path):
         """
         Save a list of dictionaries to a .csv file. You must specify
         the column headers (fieldnames) with a list of strings. Returns True
-        upon success
+        upon success.
 
         Example:
             fake_data = [
@@ -110,7 +110,7 @@ class CSVFile(Path):
         Copies CSV to destination then performs the modify_cb callback
         function passed on each data row before saving the file. Quick way
         to perform batch changes to a CSV. Returns new CSVFile object linked
-        to modified CSV
+        to modified CSV.
         """
         # create csv object tied to destination and empty deque for new data
         new_csv_file = self.__class__(destination)

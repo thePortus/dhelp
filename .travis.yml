@@ -1,6 +1,5 @@
 # test in python
 language: python
-sudo: false
 # python versions tested
 python:
   - "3.5"
@@ -8,21 +7,23 @@ python:
   - "3.6.2"
 # enable the use of sudo
 sudo: required
-# operating system to use
+# set os
 os: linux
-# distribution to use
+# set distribution
 dist: trusty
-# setting environment variables
+# set environment variables
 env:
   - PACKAGE_VERSION=0.0.1
-# command to install dependencies
+# install dependencies
 install:
   - pip install -r requirements-dev.txt
-# command to run tests
+# launch test discovery and run tests
 script:
   - nose2
+# send results to coveralls.io
 after_success:
   coveralls
+# never give email notifications
 notifications:
   on_success: never
   on_failure: never
