@@ -11,16 +11,37 @@ Instructor of Ancient History and Digital Humanities, [University of South Flori
 
 ---
 
-Helper objects for various Digital Humanities related tasks. Contains modules
-to work with text files/folders, CSVs, webpages, and perform natural language
-processing.
+Python module with help objects for various Digital Humanities related tasks.
+Contains submodules to work with text files/folders, CSVs, webpages, and
+perform natural language processing.
+
+---
+
+Requires [Python 3.x](https://python.org)
 
 ---
 
 # Installation
 
-```
+Install with pip (recommended)
+
+```sh
+
 pip install dhelp
+
+```
+
+or...
+
+Use easy_install
+
+```sh
+
+# clone the repo and move into the directory
+git clone https://github.com/thePortus/dhelp.git && cd dhelp
+# run easy_install
+easy_install setup.py
+
 ```
 
 ---
@@ -47,7 +68,7 @@ Full project documentation hosted on readthedocs.io coming soon.
         * [.modify()](#CSVFile().modify())
         * [.column_to_txts()](#CSVFile().column_to_txts)
 * [dhelp.text](#dhelp.text)
-    * [BasicText](#BasicText)
+    * [BasicText()](#BasicText())
         * [.stringify()](#BasicText.stringify())
         * [.rm_lines()](#BasicText.rm_lines())
         * [.rm_nonchars()](#BasicText.rm_nonchars())

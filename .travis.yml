@@ -19,7 +19,7 @@ install:
   - pip install -r requirements-dev.txt
 # launch test discovery and run tests
 script:
-  - nose2
+  - nose2 --coverage dhelp --coverage-report term-missing
 # send results to coveralls.io
 after_success:
   coveralls
