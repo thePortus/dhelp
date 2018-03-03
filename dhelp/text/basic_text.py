@@ -18,7 +18,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk import pos_tag
 
 
-class Text(UserString):
+class BasicText(UserString):
     """
     Base class for all Text objects. Can be used on its own to perform a number
     of operations, although it is best used with on of its language-specific
@@ -117,6 +117,30 @@ class Text(UserString):
             self.options
         )
 
+    def lemmatize(self):
+        """
+        Gives a new version of the text in which every word is lemmatized. All
+        verbs are transformed into the first person singular present active,
+        all nouns are transformed into the singular masculine nominative, et.c.
+        """
+        tagged_words = self.tag()
+        lemmata = []
+        lemmatizer = WordNetLemmatizer()
+        for word, parsing in tagged_words:
+            # Grab main part of speech from first character in POS
+            pos = parsing[0]
+            try:
+                lemmatized_word = lemmatizer.lemmatize(
+                    word.lower(), pos=pos.lower()[0]
+                )
+            except:
+                lemmatized_word = word
+            lemmata.append(lemmatized_word)
+        return self.__class__(
+            " ".join(lemmata),
+            self.options
+        )
+
     def re_search(self, pattern):
         """
         Receives a RegEx search pattern and returns True/False if it matches.
@@ -150,30 +174,6 @@ class Text(UserString):
         """
         word_list = list(self.tokenize())
         return pos_tag(word_list)
-
-    def lemmatize(self):
-        """
-        Gives a new version of the text in which every word is lemmatized. All
-        verbs are transformed into the first person singular present active,
-        all nouns are transformed into the singular masculine nominative, et.c.
-        """
-        tagged_words = self.tag()
-        lemmata = []
-        lemmatizer = WordNetLemmatizer()
-        for word, parsing in tagged_words:
-            # Grab main part of speech from first character in POS
-            pos = parsing[0]
-            try:
-                lemmatized_word = lemmatizer.lemmatize(
-                    word.lower(), pos=pos.lower()[0]
-                )
-            except:
-                lemmatized_word = word
-            lemmata.append(lemmatized_word)
-        return self.__class__(
-            " ".join(lemmata),
-            self.options
-        )
 
     def ngrams(self, gram_size=3):
         """

@@ -26,7 +26,7 @@ class TextFile(Path):
 
     def load(self,  options={}):
         """
-        Opens file and returns contents as a single string
+        Opens file and returns contents as a single string.
         """
         # set option defaults
         if 'encoding' not in options:
@@ -41,7 +41,7 @@ class TextFile(Path):
 
     def save(self, data, options={}):
         """
-        Saves string data to file, won't overwrite unless option is flagged
+        Saves string data to file, won't overwrite unless option is flagged.
         """
         # set option defaults
         if 'encoding' not in options:
