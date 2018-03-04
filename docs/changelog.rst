@@ -1,0 +1,5 @@
+=========
+CHANGELOG
+=========
+
+.. minclude:: ../CHANGELOG.md
