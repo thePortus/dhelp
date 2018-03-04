@@ -17,6 +17,8 @@ from nltk.util import ngrams, bigrams, trigrams, skipgrams
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk import pos_tag
 
+from .install import NLTKInstall
+
 
 class BasicText(UserString):
     """
@@ -48,6 +50,19 @@ class BasicText(UserString):
             options['language'] = 'english'
         self.data = text
         self.options = options
+
+    def setup(self):
+        """
+        Launches the NLTK package download interface. Overridden by the CLTK
+        child classes to launch the automated CLTK downloader. Convenience
+        method if user has not already downloaded NLTK packages and trainer
+        sets.
+
+        Example
+        -------
+        >>> BasicText('The quick brown fox jumped over the lazy dog').setup()
+        """
+        return NLTKInstall(self.options['language']).setup()
 
     def stringify(self):
         """

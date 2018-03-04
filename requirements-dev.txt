@@ -1,6 +1,18 @@
 -r requirements.txt
+alabaster==0.7.10
+Babel==2.5.3
 cov-core==1.15.0
 coverage==4.5.1
+docutils==0.14
+imagesize==1.0.0
+Jinja2==2.10
+MarkupSafe==1.0
 nose2==0.7.4
 nose2-cov==1.0a4
+packaging==17.1
+pyparsing==2.2.0
 python-coveralls==2.9.1
+pytz==2018.3
+snowballstemmer==1.2.1
+Sphinx==1.7.1
+sphinxcontrib-websupport==1.0.1
