@@ -30,7 +30,8 @@ class WebPage(UserString):
     options : :obj:`dict`, optional
         dictionary with keyword/value pairs to set options
 
-    Examples:
+    Examples
+    --------
     >>> from dhelp import WebPage
     >>> web_page = WebPage('https://stackoverflow.com')
     >>> print(web_page)

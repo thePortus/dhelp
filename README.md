@@ -380,6 +380,14 @@ Lorem ipsum dolor sit amet...
 
 ```
 
+**NOTE:** If you have not already downloaded nltk trainer packages, you must
+do so before you can properly use nlp methods. Use the convenience method
+below to launch the download interface. If you are on OSX/Windows, it will be a
+GUI, if on Linux, a CLI.
+
+```python
+>>> BasicText('').setup()
+```
 ---
 
 #### BasicText().stringify()
