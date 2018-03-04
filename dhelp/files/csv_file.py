@@ -44,6 +44,17 @@ class CSVFile(Path):
     def fieldnames(self):
         """
         Opens CSV file and reads the first row to get column names.
+
+        Returns
+        -------
+        :obj:`list`
+            List of strings of CSV column headers, in order
+
+        Examples
+        -----
+        >>> csv_file = CSVFile('some/path.csv')
+        >>> print(csv_file.fieldnames)
+        ['id', 'text', 'notes']
         """
         column_headers = []
         with open(self.data, 'r+') as csv_file:
@@ -58,10 +69,27 @@ class CSVFile(Path):
         """
         Load csv as list of dictionaries.
 
-        Example:
-            loaded_data = CSVFile('a_path.csv').load()
-            for data_row in loaded_data:
-                print(data_row)
+        Parameters
+        ----------
+        options : :obj:`dict`, optional
+            Options settings found at respective keywords
+
+        Returns
+        -------
+        :obj:`list`
+            List of dicts, each representing a CSV row
+
+        Raises
+        ------
+        Exception
+            If path does not point to file
+
+        Examples
+        -----
+        >>> csv_file = CSVFile('some/path.csv')
+        >>> csv_data = CSVFile.load()
+        >>> print(csv_data)
+        [{'id': '1', 'text': 'Lorem ipsum', 'notes': ''}, {'id': '2', 'text': 'dolor sit', 'notes': ''}, {'id': '3', 'text': 'amet.', 'notes': ''}] # noqa
         """
         # set option defaults
         if 'encoding' not in options:
@@ -84,13 +112,41 @@ class CSVFile(Path):
         the column headers (fieldnames) with a list of strings. Returns True
         upon success.
 
-        Example:
-            fake_data = [
-                {'id': 1, 'name': 'Sample1'},
-                {'id': 2, 'name': 'Sample2'},
-            ]
-            fieldnames = ['id', 'name']
-            CSVFile('a_path.csv').save(fake_data, fieldnames)
+        Parameters
+        ----------
+        data : :obj:`list`
+            List of dicts with data to save
+        fieldnames : :obj:`list`
+            List of strings of the column headers, in order
+        options : :obj:`dict`, optional
+            Options settings found at respective keywords
+
+        Returns
+        -------
+        :obj:`self`
+            Returns self back to user
+
+        Examples
+        -----
+        >>> # create column names and data set
+        >>> fake_fieldnames = ['id', 'text', 'notes']
+        >>> fake_data = [{
+        ...         'id': '1',
+        ...         'text': 'Lorem ipsum',
+        ...         'notes': ''
+        ...     }, {
+        ...         'id': '2',
+        ...         'text': 'dolor sit',
+        ...         'notes': ''
+        ...     }, {
+        ...         'id': '3',
+        ...         'text': 'amet.',
+        ...         'notes': ''
+        ...     }]
+        >>> # save to csv file
+        >>> csv_file = CSVFile('some/path.csv').save(fake_data, fieldnames=fake_fieldnames) # noqa
+        >>> print(csv_file)
+        '/absolute/path/to/some/path.csv'
         """
         # calling super to set options defaults and print messages
         super(self.__class__, self).save(options)
@@ -111,6 +167,37 @@ class CSVFile(Path):
         function passed on each data row before saving the file. Quick way
         to perform batch changes to a CSV. Returns new CSVFile object linked
         to modified CSV.
+
+        Parameters
+        ----------
+        destination : :obj:`str`
+            System path where you want the altered folder to be saved
+        modifycb : :obj:`function`
+            User-defined function used to modify each record's data
+        options : :obj:`dict`, optional
+            Options settings found at respective keywords
+
+        Returns
+        -------
+        CSVFile
+            New CSVFile object linked to modified CSV file
+
+        Examples
+        -----
+        >>> # define a function which describes how to modify any given data row # noqa
+        >>> def modify_function(csv_record):
+        >>>     csv_record['text'] = 'Lorem ipsum dolor sit amet...'
+        >>>     csv_record['notes'] = 'Edited with dhelp'
+        >>>     return csv_record
+
+        >>> # pass a destination and your function as arguments to .modify()
+        >>> csv_file = CSVFile('some/path.csv')
+        >>> altered_csv_file = csv_file.modify('some/other-path.csv', modify_cb=modify_function) # noqa
+
+        >>> # .modify will return a new CSVFile object tied to the new location
+        >>> print(altered_csv_file)
+        '/absolute/path/to/some/other-path.csv'
+
         """
         # create csv object tied to destination and empty deque for new data
         new_csv_file = self.__class__(destination)
@@ -133,6 +220,26 @@ class CSVFile(Path):
         is derived from a specified row (assumes 'text' if none specified).
         To use another column to generate the filename for each record, use
         filename_col, otherwise they will be numbered sequentially.
+
+        Parameters
+        ----------
+        destination : :obj:`str`
+            System path pointing to directory for output. Will create if doesn't exist.
+        text_col : :obj:`str`, optional
+            CSV column name where text data is found
+        filename_col : :obj:`str`, optional
+            CSV column name to use when generating filenames
+        options : :obj:`dict`, optional
+            Options settings found at respective keywords
+
+        Returns
+        -------
+        self
+
+        Examples
+        -----
+        >>> csv_file = CSVFile('some/path.csv')
+        >>> csv_file.column_to_txts('some/other-path', text_col='text', filename_col='id') # noqa
         """
         # ensure output folder is absolute path
         if not os.path.isabs(destination):

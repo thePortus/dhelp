@@ -1,5 +1,14 @@
 #!/usr/bin/python
 
+""" dhelp/web/web_page.py
+
+David J. Thomas
+
+Contains the basic WebPage object for fetching web data and coverting to
+BeautifulSoup objects.
+
+"""
+
 import time
 
 from collections import UserString
@@ -13,6 +22,26 @@ class WebPage(UserString):
     Provides methods to download/parse a specified webpage. Merges the request
     package with BeautifulSoup functions to enable users to request/soup
     a page in a single line.
+
+    Parameters
+    ----------
+    url : :obj:`str`
+        URL of page you wish to scrape
+    options : :obj:`dict`, optional
+        dictionary with keyword/value pairs to set options
+
+    Examples:
+    >>> from dhelp import WebPage
+    >>> web_page = WebPage('https://stackoverflow.com')
+    >>> print(web_page)
+    'https://stackoverflow.com'
+    >>> # pass an dict to set options for delay, max_retries, or silent
+    >>> options = {
+    ...     'delay': 4,
+            'max_retries': 3,
+            'silent': True
+    ... }
+    >>> web_page = WebPage('https://stackoverflow.com', options=options)
     """
 
     def __init__(self, url, options={}):
@@ -33,7 +62,24 @@ class WebPage(UserString):
 
     def fetch(self, retry_counter=0):
         """
-        Makes web request and returns HTML as string.
+        Returns http request from URL as a string.
+
+        Parameters
+        ----------
+        url : :obj:`str`
+            URL of page you wish to scrape
+        options : :obj:`dict`, optional
+            dictionary with keyword/value pairs to set options
+
+        Returns
+        -------
+        :obj:`str`
+            HTML from requested URL, in plain text format
+
+        Examples
+        -----
+        >>> html_text = WebPage('https://stackoverflow.com/').fetch()
+        '<html><head><title>Stack Overflow...'
         """
         # print message unless silent option
         if not self.silent:
@@ -67,5 +113,22 @@ class WebPage(UserString):
     def soup(self):
         """
         Invokes web request then returns a soup object loaded with page HTML
+
+        Returns
+        -------
+        :obj:`bs4.BeautifulSoup`
+            BeautifulSoup object loaded with parsed data from web
+
+        Examples
+        -----
+        >>> # fetch webpage and parse into BeautifulSoup object
+        >>> parsed_webpage = WebPage('https://stackoverflow.com/').soup()
+        >>> # grab the logo from the header with BeautifulSoup
+        >>> header_logo_text = parsed_webpage.find('header')
+        ...    .find('div', class_='-main')
+        ...    .find('span', class_='-img')
+        >>> # print the text contained in the span tag
+        >>> print(header_logo_text.get_text())
+        'Stack Overflow'
         """
         return BeautifulSoup(self.fetch(), 'html.parser')

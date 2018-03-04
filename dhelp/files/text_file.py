@@ -15,18 +15,42 @@ from .path import Path
 
 class TextFile(Path):
     """
-    Used to load or save a single string to a single plaintext file. Will only
-    overwrite existing files if passed as a property in the options dict.
+    Load and save plain text data to/from files with TextFile. Loads data
+    located at given path as a string. Likewise if .save() will save string
+    data at the system path send to TextFile.
 
-    Example:
-        text = 'Lorem ipsum dolor sit amet.'
-        PlainTextFile('a_path.txt').load(text, options={ 'encoding': 'utf-8' })
-        PlainTextFile('a_path.txt').save(text, options={ 'overwrite': True })
+    Parameters
+    ----------
+    path : :obj:`str`
+        System path pointing to desired text file location
+
+    Examples
+    -----
+    >>> from dhelp import TextFile
+    >>> text_file = TextFile('some/path.txt')
+    >>> print(text_file)
+    'some/path.txt'
     """
 
     def load(self,  options={}):
         """
         Opens file and returns contents as a single string.
+
+        Parameters
+        ----------
+        options : :obj:`dict`, optional
+            Options settings found at respective keywords
+
+        Raises
+        ------
+        Exception
+            If path does not point to a file
+
+        Examples
+        -----
+        >>> file_data = TextFile('some/path.txt').load()
+        >>> print(file_data)
+        'Lorem ipsum dolor sit amet...'
         """
         # set option defaults
         if 'encoding' not in options:
@@ -42,6 +66,26 @@ class TextFile(Path):
     def save(self, data, options={}):
         """
         Saves string data to file, won't overwrite unless option is flagged.
+
+        Parameters
+        ----------
+        data : :obj:`str`
+            Data to be saved to file, must be a single string
+        options : :obj:`dict`, optional
+            Options settings found at respective keywords
+
+        Examples
+        -----
+        # saving to a new location
+        >>> saved_text_file = TextFile('some/path.txt').save('Lorem ipsum dolor sit amet...') # noqa
+        >>> print(saved_text_file) # noqa
+        '/absolute/path/to/some/path.txt'
+
+        # setting overwrite option
+        >>> options = {'overwrite': True}
+        >>> saved_text_file = saved_text_file.save('consectetur adipiscing elit', options=options)
+        >>> print(saved_text_file)
+        '/absolute/path/to/some/path.txt'
         """
         # set option defaults
         if 'encoding' not in options:

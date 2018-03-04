@@ -79,13 +79,30 @@ functions to enable users to request/soup
 a page in a single line.
 
 ```python
-from dhelp import WebPage
-
-web_page = WebPage('https://stackoverflow.com')
-
-# if printed to screen, WebPage will display the url to which it is connected
+>>> from dhelp import WebPage
+>>> web_page = WebPage('https://stackoverflow.com')
 >>> print(web_page)
 https://stackoverflow.com
+>>> # pass an dict to set options for delay, max_retries, or silent
+>>> options = {
+...     'delay': 4,
+        'max_retries': 3,
+        'silent': True
+... }
+>>> web_page = WebPage('https://stackoverflow.com', options=options)
+
+```
+
+---
+
+#### WebPage.fetch()
+
+Returns http request from URL as a string.
+
+```python
+
+>>> html_text = WebPage('https://stackoverflow.com/').fetch()
+Stack Overflow
 
 ```
 
@@ -97,17 +114,16 @@ Invokes web request then returns a soup object loaded with page HTML
 
 ```python
 
-# fetch webpage and parse into BeautifulSoup object
+>>> # fetch webpage and parse into BeautifulSoup object
 >>> parsed_webpage = WebPage('https://stackoverflow.com/').soup()
-
-# grab the logo from the header with BeautifulSoup
+>>> # grab the logo from the header with BeautifulSoup
 >>> header_logo_text = parsed_webpage.find('header')
-    .find('div', class_='-main')
-    .find('span', class_='-img')
-
-# print the text contained in the span tag
+...    .find('div', class_='-main')
+...    .find('span', class_='-img')
+>>> # print the text contained in the span tag
 >>> print(header_logo_text.get_text())
 Stack Overflow
+
 ```
 
 ---
@@ -126,13 +142,11 @@ at given path as a string. Likewise if .save() will save string data at the
 system path send to TextFile
 
 ```python
->>> from dhelp import TextFile
 
 >>> text_file = TextFile('some/path.txt')
-
-# if printed to screen, TextFile will display the system path to which it is connected
 >>> print(text_file)
 some/path.txt
+
 ```
 
 ---
@@ -143,9 +157,6 @@ Opens file and returns contents as a single string.
 
 ```python
 
->>> from dhelp import TextFile
-
-# load data from path and print
 >>> file_data = TextFile('some/path.txt').load()
 >>> print(file_data)
 Lorem ipsum dolor sit amet...
@@ -159,10 +170,6 @@ Lorem ipsum dolor sit amet...
 Saves string data to file, won't overwrite unless option is flagged.
 
 ```python
-
->>> from dhelp import TextFile
-
-# save string data to path then print path
 >>> saved_text_file = TextFile('some/path.txt').save('Lorem ipsum dolor sit amet...')
 >>> print(saved_text_file)
 /absolute/path/to/some/path.txt
@@ -184,11 +191,7 @@ Can load or save a folder of plaintext files as a list of strings. Also enables
 batch editing of an entire directory by passing a callback.
 
 ```python
->>> from dhelp import TextFolder
-
 >>> text_folder = TextFolder('some/path')
-
-# like TextFile, if printed to screen, TextFolder will display the system path to which it is connected
 >>> print(text_folder)
 some/path
 ```
@@ -201,11 +204,9 @@ Load all .txt (or other types) in a folder as list of TextFile objects.
 
 ```python
 
-# load .txts in folder as list of TextFile objs, each linked to file loc
 >>> folder_files = TextFolder('some/path').text_files()
-# loop through each TextFile object, load data and print
 >>> for folder_file in folder_files:
->>>     print(folder_file.load())
+...     print(folder_file.load())
 Lorem ipsum dolor sit amet...
 
 ```
@@ -220,16 +221,16 @@ linked with the modified copy.
 
 ```python
 
-# make a function with a single arg which defines how to modify a single record
+>>> # define a function which alters data as you wish
 >>> def modify_record(record_data):
 >>>     record_data = record_data.replace('\n', '')
 >>>     return record_data
 
-# if you don't specify destination, a backup will automatically be created
+>>> # if you don't specify destination, a backup will be made
 >>> options = {'destination': 'some/other-path'}
 
-# use TextFolder().modify, pass your function as 1st arg
->>> text_folder = TextFolder('some/path').modify(modify_record, options=options)
+>>> # use TextFolder().modify, pass your function as 1st arg
+>>> text_folder = TextFolder('some/path').modify(modify_record, options=options) # noqa
 >>> print(text_folder)
 /absolute/path/to/some/path
 
@@ -246,10 +247,7 @@ dictionaries.
 ```python
 
 >>> from dhelp import CSVFile
-
 >>> csv_file = CSVFile('some/path.csv')
-
-# if printed to screen, CSVFile will display the system path to which it is connected
 >>> print(csv_file)
 /absolute/path/to/some/path.csv
 
@@ -293,21 +291,23 @@ the column headers (fieldnames) with a list of strings. Returns True
 upon success.
 
 ```python
+>>> # create column names and data set
 >>> fake_fieldnames = ['id', 'text', 'notes']
 >>> fake_data = [{
-        'id': '1',
-        'text': 'Lorem ipsum',
-        'notes': ''
-    }, {
-        'id': '2',
-        'text': 'dolor sit',
-        'notes': ''
-    }, {
-        'id': '3',
-        'text': 'amet.',
-        'notes': ''
-    }]
->>> csv_file = CSVFile('some/path.csv').save(fake_data, fieldnames=fake_fieldnames)
+...         'id': '1',
+...         'text': 'Lorem ipsum',
+...         'notes': ''
+...     }, {
+...         'id': '2',
+...         'text': 'dolor sit',
+...         'notes': ''
+...     }, {
+...         'id': '3',
+...         'text': 'amet.',
+...         'notes': ''
+...     }]
+>>> # save to csv file
+>>> csv_file = CSVFile('some/path.csv').save(fake_data, fieldnames=fake_fieldnames) # noqa
 >>> print(csv_file)
 /absolute/path/to/some/path.csv
 
@@ -324,22 +324,37 @@ to modified CSV.
 
 ```python
 
-# define a function which describes how to modify any given data row
+>>> # define a function which describes how to modify any given data row
 >>> def modify_function(csv_record):
 >>>     csv_record['text'] = 'Lorem ipsum dolor sit amet...'
 >>>     csv_record['notes'] = 'Edited with dhelp'
 >>>     return csv_record
 
-# pass a destination and your function as arguments to .modify()
+>>> # pass a destination and your function as arguments to .modify()
 >>> csv_file = CSVFile('some/path.csv')
 >>> altered_csv_file = csv_file.modify('some/other-path.csv', modify_cb=modify_function)
 
-# .modify will return a new CSVFile object tied to the new location
+>>> # .modify will return a new CSVFile object tied to the new location
 >>> print(altered_csv_file)
 /absolute/path/to/some/other-path.csv
 
 ```
 
+---
+
+#### CSVFile().column_to_txts()
+
+Turns text data in a csv column into a series of .txt files. Text
+is derived from a specified row (assumes 'text' if none specified).
+To use another column to generate the filename for each record, use
+filename_col, otherwise they will be numbered sequentially.
+
+```python
+
+>>> csv_file = CSVFile('some/path.csv')
+>>> csv_file.column_to_txts('some/other-path', text_col='text', filename_col='id')
+
+```
 ---
 
 ## Text Module
@@ -474,10 +489,9 @@ exactly as below as this will be tweaked.
 
 ```python
 
->>> basic_text = BasicText('They hated to think of sample sentences.')
->>> modified_text = basic_text.lemmatize()
->>> print(modified_text)
-I hate think of sample sentence.
+>>> basic_text = BasicText('The quick brown fox jumped over the lazy dog.') # noqa
+>>> print(basic_text.lemmatize())
+'The quick brown fox jump over the lazy dog .'
 
 ```
 
