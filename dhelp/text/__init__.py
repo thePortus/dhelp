@@ -10,3 +10,4 @@ the natural language toolkit (nltk).
 """
 
 from .basic_text import BasicText
+from .install import NLTKInstall, CLTKInstall

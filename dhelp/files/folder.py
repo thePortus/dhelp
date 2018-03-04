@@ -53,8 +53,8 @@ class Folder(Path):
         """
         dir_files = []
         for folder_item in self.contents:
-            if os.path.isfile(folder_item):
-                dir_files.append(folder_item)
+            if os.path.isfile(os.path.join(self.data, folder_item)):
+                dir_files.append(os.path.join(self.data, folder_item))
         return dir_files
 
     @property
@@ -73,8 +73,8 @@ class Folder(Path):
         """
         dir_subdirs = []
         for folder_item in self.contents:
-            if os.path.isdir(folder_item):
-                dir_subdirs.append(folder_item)
+            if os.path.isdir(os.path.join(self.data, folder_item)):
+                dir_subdirs.append(os.path.join(self.data, folder_item))
         return dir_subdirs
 
     @property
