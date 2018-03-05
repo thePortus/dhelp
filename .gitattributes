@@ -1,0 +1,224 @@
+# AUTO CRLF BEHAVIOR
+*       text=auto
+
+# ======================= CRLF FILE TYPES =======================
+*.sh        text    eol=crlf
+*.bat       text    eol=crlf
+
+# ======================= PLAINTEXT FILE TYPES =======================
+*.txt   text
+*.csv   text
+*.tab   text
+*.tsv   text
+*.rtf	diff=astextplain
+*.RTF	diff=astextplain
+
+#   Plaintext - Documentation Files
+*.markdown   text
+*.md         text
+*.mdwn       text
+*.mdown      text
+*.mkd        text
+*.mkdn       text
+*.mdtxt      text
+*.mdtext     text
+*.txt        text
+AUTHORS      text
+CHANGELOG    text
+CHANGES      text
+CONTRIBUTING text
+COPYING      text
+copyright    text
+*COPYRIGHT*  text
+INSTALL      text
+license      text
+LICENSE      text
+NEWS         text
+readme       text
+*README*     text
+TODO         text
+
+#   Plaintext - Configuration Files
+*.bowerrc           text
+*.cnf               text
+*.conf              text
+*.config            text
+.browserslistrc     text
+*.dockerignore      text
+.editorconfig       text
+.gitattributes      text
+.gitconfig          text
+.gitignore          text
+.htaccess           text
+*.npmignore         text
+*.yaml              text
+*.yml               text
+browserslist        text
+Dockerfile          text
+Makefile            text
+makefile            text
+
+#   Plaintext - Script Files
+*.c text    text
+*.cc text   text
+*.cxx text  text
+*.cpp text  text
+*.c++ text  text
+*.hpp text  text
+*.h text    text
+*.h++ text  text
+*.hh text   text
+*.coffee    text
+*.css       text
+*.htm       text
+*.html      text
+*.inc       text
+*.ini       text
+*.js        text
+*.json      text
+*.jsx       text
+*.less      text
+*.php       text
+*.pl        text
+*.pm        text
+*.pkl       text
+*.py        text
+*.rb        text
+*.R         text
+*.Rd        text
+*.Rmd       text
+*.sass      text
+*.scm       text
+*.scss      text
+*.sql       text
+*.styl      text
+*.tag       text
+*.ts        text
+*.tsx       text
+*.xml       text
+*.xhtml     text
+
+#   Plaintext - Linter Files
+.csslintrc    text
+.eslintrc     text
+.htmlhintrc   text
+.jscsrc       text
+.jshintrc     text
+.jshintignore text
+.stylelintrc  text
+
+#   Plaintext - Template Files
+*.dot        text
+*.ejs        text
+*.haml       text
+*.handlebars text
+*.hbs        text
+*.hbt        text
+*.jade       text
+*.latte      text
+*.mustache   text
+*.njk        text
+*.phtml      text
+*.tmpl       text
+*.tpl        text
+*.twig       text
+
+#   Plaintext - Other Files
+*.svg       text
+
+# ======================= BINARY FILES (No modification) =======================
+
+# Binary - General Files
+*.exe   binary
+*.app   binary
+
+#   Binary - Image Files
+*.ai    binary
+*.bmp   binary
+*.eps   binary
+*.gif   binary
+*.ico   binary
+*.jng   binary
+*.jp2   binary
+*.jpg   binary
+*.jpeg  binary
+*.jpx   binary
+*.jxr   binary
+*.pdf   binary
+*.png   binary
+*.psb   binary
+*.psd   binary
+
+*.svgz binary
+*.tif  binary
+*.tiff binary
+*.wbmp binary
+*.webp binary
+
+#   Binary - Video Files
+*.3gpp binary
+*.3gp  binary
+*.as   binary
+*.asf  binary
+*.asx  binary
+*.fla  binary
+*.flv  binary
+*.m4v  binary
+*.mng  binary
+*.mov  binary
+*.mp4  binary
+*.mpeg binary
+*.mpg  binary
+*.ogv  binary
+*.swc  binary
+*.swf  binary
+*.webm binary
+
+#   Binary - Audio Files
+*.kar  binary
+*.m4a  binary
+*.mid  binary
+*.midi binary
+*.mp3  binary
+*.ogg  binary
+*.ra   binary
+
+#   Binary - Data Files
+*.xlsx  binary
+*.docx  binary
+
+#   Binary - Font Files
+*.ttf   binary
+*.eot   binary
+*.otf   binary
+*.woff  binary
+*.woff2 binary
+
+#   Binary - Archive Files
+*.7z    binary
+*.gz    binary
+*.jar   binary
+*.rar   binary
+*.tar   binary
+*.zip   binary
+
+#   Binary - Other Application Files
+*.mwb   binary
+*.twb   binary
+*.gephi binary
+
+#   Binary - Programming Languages
+
+*.slo   binary
+*.lo    binary
+*.o     binary
+*.obj   binary
+*.gch   binary
+*.pch   binary
+*.so    binary
+*.dylib binary
+*.dll   binary
+*.lai   binary
+*.la    binary
+*.a     binary
+*.lib   binary

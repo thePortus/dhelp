@@ -1,47 +1,99 @@
 #!/usr/bin/python
 
-""" dhelp/files/folder.py
-
-David J. Thomas
-
-Object for interacting with a single plain text file at the path specified
-upon construction. Allows loading/saving. This object can be used by itself,
-or can be constructed automatically by using TextFolder.
-
-"""
-
 from .path import Path
 
 
 class TextFile(Path):
-    """
-    Used to load or save a single string to a single plaintext file. Will only
-    overwrite existing files if passed as a property in the options dict.
+    """Load and save data quickly to path specified.
 
-    Example:
-        text = 'Lorem ipsum dolor sit amet.'
-        PlainTextFile('a_path.txt').load(text, options={ 'encoding': 'utf-8' })
-        PlainTextFile('a_path.txt').save(text, options={ 'overwrite': True })
+    Represents the plain text file at the path specified. Loads data
+    located at given path as a string. Likewise if .save() will save string
+    data at the system path send to TextFile.
+
+    This object can be used by itself, or can be constructed automatically by
+    using TextFolder.
+
+    Parameters
+    ----------
+    path : :obj:`str`
+        System path pointing to desired text file location
+
+    Examples
+    -----
+    >>> from dhelp import TextFile
+    >>> text_file = TextFile('some/path.txt')
+    >>> print(text_file)
+    'some/path.txt'
     """
 
     def load(self,  options={}):
-        """
-        Opens file and returns contents as a single string.
+        """Opens the file data as a single string.
+
+        Opens the file using 'utf-8' unless otherwise specified in options.
+        Returns data as a string unless 'readlines' option is specified, in
+        which case data is returned as a list of strings.
+
+        Parameters
+        ----------
+        options : :obj:`dict`, optional
+            Options settings found at respective keywords
+
+        Raises
+        ------
+        Exception
+            If path does not point to a file
+
+        Examples
+        -----
+        >>> file_data = TextFile('some/path.txt').load()
+        >>> print(file_data)
+        'Lorem ipsum dolor sit amet...'
         """
         # set option defaults
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
+        if 'readlines' not in options:
+            options['readlines'] = False
         super(self.__class__, self).load(options)
         if not self.is_file:
             raise Exception('Item is not a file')
         file_data = ''
         with open(self.data, 'r+', encoding=options['encoding']) as read_file:
-            file_data = read_file.read()
+            # if option specified, return as list of text lines
+            if options['readlines']:
+                file_data = read_file.readlines()
+            # normally return entire data as single string
+            else:
+                file_data = read_file.read()
         return file_data
 
     def save(self, data, options={}):
-        """
-        Saves string data to file, won't overwrite unless option is flagged.
+        """Saves string data to file.
+
+        Receives string data and writes it to a file. If a list is received,
+        it rejoins the list with endlines before saving. If anything exists
+        at the current path, an exception will be raised unless the 'overwrite'
+        option it set.
+
+        Parameters
+        ----------
+        data : :obj:`str`
+            Data to be saved to file, must be a single string
+        options : :obj:`dict`, optional
+            Options settings found at respective keywords
+
+        Examples
+        -----
+        # saving to a new location
+        >>> saved_text_file = TextFile('some/path.txt').save('Lorem ipsum dolor sit amet...') # noqa
+        >>> print(saved_text_file) # noqa
+        '/absolute/path/to/some/path.txt'
+
+        # setting overwrite option
+        >>> options = {'overwrite': True}
+        >>> saved_text_file = saved_text_file.save('consectetur adipiscing elit', options=options)
+        >>> print(saved_text_file)
+        '/absolute/path/to/some/path.txt'
         """
         # set option defaults
         if 'encoding' not in options:

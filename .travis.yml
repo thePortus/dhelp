@@ -4,7 +4,6 @@ language: python
 python:
   - "3.5"
   - "3.6"
-  - "3.6.2"
 # enable the use of sudo
 sudo: required
 # set os
@@ -19,7 +18,7 @@ install:
   - pip install -r requirements-dev.txt
 # launch test discovery and run tests
 script:
-  - nose2 --coverage dhelp --coverage-report term-missing
+  - nose2
 # send results to coveralls.io
 after_success:
   coveralls

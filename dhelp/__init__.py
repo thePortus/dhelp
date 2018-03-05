@@ -4,9 +4,9 @@
 
 David J. Thomas, thePortus.com, Copyright, 2018
 
-Helper objects for various Digital Humanities related tasks. Contains modules
-to work with text files/folders, CSVs, webpages, and perform natural language
-processing.
+Python module with help objects for various Digital Humanities related tasks.
+Contains submodules to work with text files/folders, CSVs, webpages, and
+perform natural language processing.
 
 """
 

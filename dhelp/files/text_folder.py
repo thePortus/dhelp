@@ -1,14 +1,5 @@
 #!/usr/bin/python
 
-""" dhelp/files/folder.py
-
-David J. Thomas
-
-Object for interacting with a folder of plain text files. Allows quick
-discovery of filepaths and construction of relevant TextFile objects.
-
-"""
-
 import os
 from collections import deque
 
@@ -17,14 +8,56 @@ from .text_file import TextFile
 
 
 class TextFolder(Folder):
-    """
-    Can load or save a folder of plaintext files as a list of strings. Also
+    """ Load or save a folder of plaintext files as a list of strings.
+
+    Object for interacting with a folder of plain text files. Allows quick
+    discovery of filepaths and construction of relevant TextFile objects. Also
     enables batch editing of an entire directory by passing a callback.
+
+    Parameters
+    ----------
+    path : :obj:`str`
+        System path pointing to desired text folder location
+
+    Examples
+    -----
+    >>> from dhelp import TextFolder
+    >>> text_folder = TextFolder('some/path')
+    >>> print(text_folder)
+    'some/path'
     """
 
     def text_files(self, options={}):
-        """
-        Load all .txt (or other types) in a folder as list of TextFile objects.
+        """ Load all .txt files as TextFile objects.
+
+        All current .txt files inside the folder at the current path will
+        be returned as a deque(list) of TextFile objects. You can set which
+        file extensions will be loaded with the 'extensions' option by passing
+        a list of string extensions (without the '.').
+
+        Parameters
+        ----------
+        options : :obj:`dict`, optional
+            Options settings found at respective keywords
+
+        Returns
+        -------
+        :obj:`collections.deque`
+            Deque where each element is a TextFile list
+
+        Raises
+        ------
+        Exception
+            If path does not point to folder
+        TypeError
+            If non-list is sent as extensions option
+
+        Examples
+        -----
+        >>> folder_files = TextFolder('some/path').text_files()
+        >>> for folder_file in folder_files:
+        ...     print(folder_file.load())
+        'Lorem ipsum dolor sit amet...'
         """
         contents = deque([])
         # set option defaults
@@ -47,10 +80,46 @@ class TextFolder(Folder):
         return deque(contents)
 
     def modify(self, destination, modify_cb, options={}):
-        """
+        """ Edit and save every file in the folder by passing a function.
+
         Opens every file and performs a callback function sent to it. Provides
         a fast means of batch editing an entire folder of txt files. Returns
         a new TextFolder linked with the modified copy.
+
+        The callback function should have only one argument (e.g. record_data)
+        which represents the data of any given file, in string format (see
+        example below). Whatever the function returns is what will be
+        saved to the modified file, as long as it is a string.
+
+        Parameters
+        ----------
+        destination : :obj:`string`
+            System path where you want the altered folder to be saved
+        modifycb : :obj:`function`
+            User-defined function used to modify each record's data
+        options : :obj:`dict`, optional
+            Options settings found at respective keywords
+
+        Returns
+        -------
+        :obj:`files.TextFolder`
+            Gives a new TextFolder object tied to the modified folder
+
+        Examples
+        --------
+        >>> # define a function which alters data as you wish
+        >>> def modify_record(record_data):
+        >>>     record_data = record_data.replace('\\n', '')
+        >>>     return record_data
+
+        >>> # if you don't specify destination, a backup will be made
+        >>> options = {'destination': 'some/other-path'}
+
+        >>> # use TextFolder().modify, pass your function as 1st arg
+        >>> text_folder = TextFolder('some/path').modify(modify_record, options=options) # noqa
+        >>> print(text_folder)
+        '/absolute/path/to/some/path'
+
         """
         # set option defaults
         if 'encoding' not in options:
