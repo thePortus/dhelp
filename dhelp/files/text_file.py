@@ -38,13 +38,6 @@ class TextFile(Path):
         options : :obj:`dict`, optional
             Options settings found at respective keywords
 
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'readlines' = False
-        ... }
-
         Raises
         ------
         Exception
@@ -88,13 +81,6 @@ class TextFile(Path):
             Data to be saved to file, must be a single string
         options : :obj:`dict`, optional
             Options settings found at respective keywords
-
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'overwrite' = False
-        ... }
 
         Examples
         -----

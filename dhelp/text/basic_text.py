@@ -26,13 +26,6 @@ class BasicText(UserString):
     options : :obj:`dict`, optional
         Options settings found at respective keywords
 
-    Possible option fields (with default settings)...
-
-    >>> options = {
-    ...     'encoding': 'utf-8',
-    ...     'language': 'english'
-    ... }
-
     Example
     -------
     >>> from dhelp import BasicText
@@ -93,12 +86,12 @@ class BasicText(UserString):
 
         Returns
         -------
-        self.`__class__`
+        :obj:`self.__class__`
             New version of text, with endlines removed
 
         Example
         -------
-        >>> basic_text = BasicText('Lorem\nipsum do-\nlor sit amet....\n')
+        >>> basic_text = BasicText('Lorem\\nipsum do-\\nlor sit amet....\\n')
         >>> modified_text = basic_text.rm_lines()
         >>> print(modified_text)
         'Lorem ipsum dolor sit amet...'
@@ -174,7 +167,7 @@ class BasicText(UserString):
 
         Example
         -------
-        >>> basic_text = BasicText('Lorem   ipsum dolor  sit               amet...') # noqa
+        >>> basic_text = BasicText('Lorem   ipsum dolor  sit          amet...')
         >>> modified_text = basic_text.rm_spaces()
         >>> print(modified_text)
         'Lorem ipsum dolor sit amet...'

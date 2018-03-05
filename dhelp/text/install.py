@@ -58,7 +58,6 @@ class NLTKInstall(BaseInstall):
     def data_root(self):
         """Root of nlp data.
 
-
         Returns the absolute path pointing to the language data root on the
         local machine.
 

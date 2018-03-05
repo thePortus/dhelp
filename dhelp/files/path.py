@@ -192,13 +192,6 @@ class Path(UserString):
         options : :obj:`dict`, optional
             Options settings found at respective keywords
 
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'overwrite' = False
-        ... }
-
         Returns
         -------
         :obj:`self.__class__`
@@ -287,13 +280,6 @@ class Path(UserString):
         options : :obj:`dict`, optional
             Options settings found at respective keywords
 
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'overwrite' = False
-        ... }
-
         Returns
         -------
         :obj:`self.__class__`
@@ -324,11 +310,6 @@ class Path(UserString):
 
         Possible option fields (with default settings)...
 
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'silent' = False
-        ... }
-
         Raises
         ------
         Exception
@@ -354,13 +335,6 @@ class Path(UserString):
         ----------
         options : :obj:`dict`, optional
             Options settings found at respective keywords
-
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'overwrite' = False
-        ... }
 
         Raises
         ------

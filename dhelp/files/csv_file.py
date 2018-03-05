@@ -83,15 +83,6 @@ class CSVFile(Path):
         options : :obj:`dict`, optional
             Options settings found at respective keywords
 
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'newline' = '',
-        ...     'dialect' = 'excel'
-        ...     'delimiter' = ','
-        ... }
-
         Returns
         -------
         :obj:`list`
@@ -154,15 +145,6 @@ class CSVFile(Path):
             List of strings of the column headers, in order
         options : :obj:`dict`, optional
             Options settings found at respective keywords
-
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'newline' = '',
-        ...     'dialect' = 'excel'
-        ...     'delimiter' = ','
-        ... }
 
         Returns
         -------
@@ -235,15 +217,6 @@ class CSVFile(Path):
         options : :obj:`dict`, optional
             Options settings found at respective keywords
 
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'newline' = '',
-        ...     'dialect' = 'excel'
-        ...     'delimiter' = ','
-        ... }
-
         Returns
         -------
         CSVFile
@@ -298,15 +271,6 @@ class CSVFile(Path):
             CSV column name to use when generating filenames
         options : :obj:`dict`, optional
             Options settings found at respective keywords
-
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'newline' = '',
-        ...     'dialect' = 'excel'
-        ...     'delimiter' = ','
-        ... }
 
         Returns
         -------

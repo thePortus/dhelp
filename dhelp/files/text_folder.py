@@ -40,13 +40,6 @@ class TextFolder(Folder):
         options : :obj:`dict`, optional
             Options settings found at respective keywords
 
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'extensions' = ['txt']
-        ... }
-
         Returns
         -------
         :obj:`collections.deque`
@@ -107,25 +100,16 @@ class TextFolder(Folder):
         options : :obj:`dict`, optional
             Options settings found at respective keywords
 
-        Possible option fields (with default settings)...
-
-        >>> options = {
-        ...     'encoding' = 'utf-8',
-        ...     'extensions' = ['txt'],
-        ...     'overwrite' = True,
-        ...     'silent' = False
-        ... }
-
         Returns
         -------
         :obj:`files.TextFolder`
             Gives a new TextFolder object tied to the modified folder
 
         Examples
-        -----
+        --------
         >>> # define a function which alters data as you wish
         >>> def modify_record(record_data):
-        >>>     record_data = record_data.replace('\n', '')
+        >>>     record_data = record_data.replace('\\n', '')
         >>>     return record_data
 
         >>> # if you don't specify destination, a backup will be made
