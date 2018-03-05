@@ -6,10 +6,7 @@ except ImportError:
 config = {
     'name': "dhelp",
     'packages': [
-        "dhelp",
-        "dhelp.files",
-        "dhelp.text",
-        "dhelp.web"
+        "dhelp"
     ],
     'install_requires': [
         "nltk",
@@ -18,7 +15,7 @@ config = {
     ],
     'version': "0.0.1",
     'description': """Utility tools for scraping, processing, and analyzing
-    data for DH students""",
+    data for DH students.""",
     'author': "David J. Thomas",
     'author_email': "dave.a.base@gmail.com",
     'url': "https://github.com/thePortus/arakhne",

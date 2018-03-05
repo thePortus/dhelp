@@ -5,6 +5,7 @@ Welcome to dhelp docs!
    :maxdepth: 2
 
    readme
+   source/modules
    source/dhelp.web
    source/dhelp.files
    source/dhelp.text

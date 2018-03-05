@@ -12,6 +12,30 @@ dhelp.text.basic\_text module
     :undoc-members:
     :show-inheritance:
 
+dhelp.text.cltk\_greek\_text module
+-----------------------------------
+
+.. automodule:: dhelp.text.cltk_greek_text
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+dhelp.text.cltk\_latin\_text module
+-----------------------------------
+
+.. automodule:: dhelp.text.cltk_latin_text
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+dhelp.text.cltk\_text module
+----------------------------
+
+.. automodule:: dhelp.text.cltk_text
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 dhelp.text.install module
 -------------------------
 
