@@ -14,7 +14,7 @@ Department of History,<br />
 ---
 
 Python module with help objects for various Digital Humanities related tasks.
-Contains submodules to work with text files/folders, CSVs, webpages, and
+Contains submodules to work with text files/folders, CSVs, web pages, and
 perform natural language processing.
 
 ---

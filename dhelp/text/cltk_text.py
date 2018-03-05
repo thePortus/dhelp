@@ -11,7 +11,7 @@ Contains parent class for language-specific CLTK objects (esp. Greek/Latin).
 from .basic_text import BasicText
 
 
-class CLTKLatinText(BasicText):
+class CLTKText(BasicText):
     """
     Parent class for Latin, Classical Greek, and other CLTK language-specific
     objects. Provides access to universal CLTK commands with child classes
