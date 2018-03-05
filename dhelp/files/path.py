@@ -1,14 +1,5 @@
 #!/usr/bin/python
 
-""" dhelp/files/path.py
-
-David J. Thomas
-
-Base parent class for all file related classes, that is, all other objects in
-this module.
-
-"""
-
 import os
 import errno
 import shutil
@@ -37,9 +28,9 @@ class Path(UserString):
         # if no filepath specified, default to current working directory
         if not path:
             path = os.getcwd()
-        # raise error if filepath sent but is non-string
+        # raise error if path sent but is non-string
         if type(path) is not str:
-            raise Exception('filepath is not a string')
+            raise Exception('path is not a string')
         # if relative path sent, convert to absolute path
         if not os.path.isabs(path):
             path = os.path.abspath(os.path.join(os.getcwd(), path))
@@ -47,8 +38,7 @@ class Path(UserString):
 
     @property
     def exists(self):
-        """
-        Check if anything exists at the filepath.
+        """Check if anything exists at the current path.
 
         Returns
         -------
@@ -67,7 +57,8 @@ class Path(UserString):
 
     @property
     def size(self):
-        """
+        """Get file/folder size of anything at the current path.
+
         Returns the size of any item at the specified path in bytes, returns
         0 if non-extant.
 
@@ -88,7 +79,8 @@ class Path(UserString):
 
     @property
     def basename(self):
-        """
+        """Get file/folder name of current path.
+
         Returns the basename (last element of path) of the current path
         e.g. the name of the current file or folder.
 
@@ -106,8 +98,9 @@ class Path(UserString):
 
     @property
     def dirname(self):
-        """
-        Returns the path of the parent directory of the current path.
+        """Get parent directory path.
+
+        Returns the absolute path of the parent directory of the current path.
 
         Returns
         -------
@@ -124,7 +117,8 @@ class Path(UserString):
 
     @property
     def is_dir(self):
-        """
+        """Check if path is a directory.
+
         Returns true if path points to existing directory.
 
         Returns
@@ -143,7 +137,8 @@ class Path(UserString):
 
     @property
     def is_file(self):
-        """
+        """Check if path is a file.
+
         Returns true if path points to existing file.
 
         Returns
@@ -162,7 +157,8 @@ class Path(UserString):
 
     @property
     def is_link(self):
-        """
+        """Check if path is a link.
+
         Returns true if path points to symbolic link.
 
         Returns
@@ -182,10 +178,12 @@ class Path(UserString):
         return os.path.islink(self.data)
 
     def copy(self, destination, options={}):
-        """
+        """Copy data at path to another location.
+
         Copies the contents at system path (if a folder, copies it's contents
         recursively) to a specified destination. Returns a new version of the
-        object linked to the new location.
+        object linked to the new location. Will raise an error if anything
+        exists at the destination unless overwrite option is flagged.
 
         Parameters
         ----------
@@ -211,6 +209,8 @@ class Path(UserString):
 
         """
         # set default options
+        if 'encoding' not in options:
+            options['encoding'] = 'utf-8'
         if 'overwrite' not in options:
             options['overwrite'] = False
         # ensure is an absolute path
@@ -237,7 +237,8 @@ class Path(UserString):
         return self.__class__(destination)
 
     def remove(self):
-        """
+        """Delete item(s) at current path.
+
         Deletes any item at the current path. If a folder deletes contents
         recursively. Returns True if successful.
 
@@ -266,7 +267,8 @@ class Path(UserString):
         return True
 
     def move(self, destination, options={}):
-        """
+        """Moves item(s) from current path to another location.
+
         Effectively moves anything at the given path to the specified location.
         Calls .copy() with destination, then .remove() the current path, before
         finally the results of .copy().
@@ -288,6 +290,8 @@ class Path(UserString):
         >>> print(Path('some/path').move('some/other-path'))
         'some/other-path'
         """
+        if 'encoding' not in options:
+            options['encoding'] = 'utf-8'
         if 'overwrite' not in options:
             options['overwrite'] = False
         new_path_obj = self.copy(destination, options=options)
@@ -295,13 +299,16 @@ class Path(UserString):
         return new_path_obj
 
     def load(self, options={}):
-        """
+        """Loading method called by child classes.
+
         Called by child class load methods, stops from loading non-extant file.
 
         Parameters
         ----------
         options : :obj:`dict`, optional
             Options settings found at respective keywords
+
+        Possible option fields (with default settings)...
 
         Raises
         ------
@@ -320,7 +327,8 @@ class Path(UserString):
             raise Exception('Cannot open item, nothing exists at' + self.data)
 
     def save(self, options={}):
-        """
+        """Saving method called by child classes.
+
         Called by child class save methods, prevents overwrite without option.
 
         Parameters
@@ -351,9 +359,11 @@ class Path(UserString):
         self.makedirs()
 
     def makedirs(self):
-        """
+        """Create any missing parent directories of current path.
+
         Automatically creates any parent directories of the current path
-        that do not already exist.
+        that do not already exist. This function is used by the .save()
+        method before saving to a location to avoid errors.
 
         Example
         -------
