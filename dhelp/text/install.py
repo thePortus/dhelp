@@ -1,21 +1,13 @@
 #!/usr/bin/python
 
-""" dhelp/text/install.py
-
-David J. Thomas
-
-Contains functions to automatically download necessary nltk packages and
-trainer data sets.
-
-"""
-
 import os
 from collections import UserString
 import nltk
 
 
 class BaseInstall(UserString):
-    """
+    """Parent installer class.
+
     Parent class for both NLTK and CLTK installer classes. Not meant to be used
     directly.
 
@@ -39,7 +31,8 @@ class BaseInstall(UserString):
 
 
 class NLTKInstall(BaseInstall):
-    """
+    """Convenience installer for NLTK packages/corpora.
+
     Provides functions to automatically dicover all possible packages, check
     it against local data, and download any missing data. If you have not
     already downloaded the NLTK trainer data, you should must use this.
@@ -63,8 +56,10 @@ class NLTKInstall(BaseInstall):
 
     @property
     def data_root(self):
-        """
-        Returns the absolute path pointing to the cltk data root on the
+        """Root of nlp data.
+
+
+        Returns the absolute path pointing to the language data root on the
         local machine.
 
         Returns
@@ -78,7 +73,8 @@ class NLTKInstall(BaseInstall):
         return os.path.expanduser('~/nltk_data')
 
     def setup(self):
-        """
+        """Starts download process.
+
         Launches NLTK download interface, either GUI or CLI, depending on OS
 
         Returns
@@ -91,7 +87,8 @@ class NLTKInstall(BaseInstall):
 
 
 class CLTKInstall(BaseInstall):
-    """
+    """Convenience installer for CLTK packages/corpora.
+
     Provides functions to automatically dicover all possible packages, check
     it against local data, and download any missing data. If you have not
     already downloaded the CLTK trainer data, you should must use this.
@@ -120,7 +117,8 @@ class CLTKInstall(BaseInstall):
 
     @property
     def data_root(self):
-        """
+        """Root of nlp data.
+
         Returns the absolute path pointing to the cltk data root on the
         local machine.
 
@@ -136,7 +134,8 @@ class CLTKInstall(BaseInstall):
 
     @property
     def corpora_list(self):
-        """
+        """Lists all CLTK corpora.
+
         Gets a list of all possible corpora, downloaded from CLTK.
 
         Returns
@@ -154,7 +153,8 @@ class CLTKInstall(BaseInstall):
         return CorpusImporter(self.data).list_corpora
 
     def setup(self):
-        """
+        """Starts download process.
+
         Gets list of all corpora and downloads them.
 
         Returns
