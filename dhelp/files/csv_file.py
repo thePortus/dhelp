@@ -1,14 +1,5 @@
 #!/usr/bin/python
 
-""" dhelp/files/csvfile.py
-
-David J. Thomas
-
-Contains the CSVFile object which provides helper functions to quickly save
-load, and edit CSV files.
-
-"""
-
 import sys
 import os
 import csv
@@ -34,15 +25,29 @@ while decrement:
 
 
 class CSVFile(Path):
-    """
+    """Load and save CSV data with lists of dictionaries.
+
     Makes loading and saving CSV data a simple matter. Simplifies the use
     of the csv.DictReader and csv.DictWriter for loading or saving csv's as
     lists of dictionaries.
+
+    Parameters
+    ----------
+    path : :obj:`str`
+        System path pointing to desired text file location
+
+    Examples
+    -----
+    >>> from dhelp import CSVFile
+    >>> csv_file = CSVFile('some/path.csv')
+    >>> print(csv_file)
+    'some/path.csv'
     """
 
     @property
     def fieldnames(self):
-        """
+        """Get CSV column header names from the first row.
+
         Opens CSV file and reads the first row to get column names.
 
         Returns
@@ -66,8 +71,12 @@ class CSVFile(Path):
         return column_headers
 
     def load(self, options={}):
-        """
-        Load csv as list of dictionaries.
+        """Load csv as list (deque) of dictionaries.
+
+        Fast way to load CSV data for editing. Returns a deque, a list-like
+        object. Specify alternate encoding or dialect (which affects
+        how it reads quotes, et.c.) If desire, specify an alternate delimiter
+        such as a semicolon, or even a tab (\t) if you want to load TSV data.
 
         Parameters
         ----------
@@ -94,23 +103,39 @@ class CSVFile(Path):
         # set option defaults
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
+        if 'newline' not in options:
+            options['newline'] = ''
+        if 'dialect' not in options:
+            options['dialect'] = 'excel'
+        if 'delimiter' not in options:
+            options['delimiter'] = ','
         super(self.__class__, self).load(options)
         if not self.is_file:
             raise Exception('Item is not a file')
         data_rows = deque([])
         with open(
-            self.data, 'r+', encoding=options['encoding'], newline=''
+            self.data,
+            'r+',
+            encoding=options['encoding'],
+            newline=options['newline']
         ) as csv_file:
-            csv_reader = csv.DictReader(csv_file)
+            csv_reader = csv.DictReader(
+                csv_file,
+                delimiter=options['delimiter'],
+                dialect=options['dialect']
+            )
             for csv_row in csv_reader:
                 data_rows.append(csv_row)
         return data_rows
 
     def save(self, data, fieldnames, options={}):
-        """
-        Save a list of dictionaries to a .csv file. You must specify
-        the column headers (fieldnames) with a list of strings. Returns True
-        upon success.
+        """Save a list of dictionaries to a .csv file.
+
+        Send a list of dictionaries and a list of their fieldnames to save to
+        the current location. You must specify the column headers (fieldnames)
+        with a list of strings. You can use .fieldnames to generate these. Will
+        throw exception if anything exists at current path unless 'overwrite'
+        option is flagged. Returns True upon success.
 
         Parameters
         ----------
@@ -148,13 +173,27 @@ class CSVFile(Path):
         >>> print(csv_file)
         '/absolute/path/to/some/path.csv'
         """
-        # calling super to set options defaults and print messages
+        if 'encoding' not in options:
+            options['encoding'] = 'utf-8'
+        if 'newline' not in options:
+            options['newline'] = ''
+        if 'dialect' not in options:
+            options['dialect'] = 'excel'
+        if 'delimiter' not in options:
+            options['delimiter'] = ','
+        # calling super to print messages
         super(self.__class__, self).save(options)
         with open(
-            self.data, 'w+', encoding=options['encoding'], newline=''
+            self.data,
+            'w+',
+            encoding=options['encoding'],
+            newline=options['newline']
         ) as csv_file:
             csv_writer = csv.DictWriter(
-                csv_file, fieldnames=fieldnames
+                csv_file,
+                fieldnames=fieldnames,
+                delimiter=options['delimiter'],
+                dialect=options['dialect']
             )
             csv_writer.writeheader()
             for data_row in data:
@@ -162,7 +201,8 @@ class CSVFile(Path):
         return self
 
     def modify(self, destination, modify_cb, options={}):
-        """
+        """Edit every row in the CSV by passing a function.
+
         Copies CSV to destination then performs the modify_cb callback
         function passed on each data row before saving the file. Quick way
         to perform batch changes to a CSV. Returns new CSVFile object linked

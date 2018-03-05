@@ -1,28 +1,32 @@
 #!/usr/bin/python
 
-""" dhelp/files/folder.py
-
-David J. Thomas
-
-Contains a base class for all Folder objects. It it mostly intended as a base
-class.
-
-"""
-
 import os
 
 from .path import Path
 
 
 class Folder(Path):
-    """
-    Parent class to all folder utility objects
+    """Parent class for TextFolder and other folder related classes.
+
+    Base parent class to all folder utility objects, not meant to be used on
+    its own. Child classes inherit these functions to work with specific
+    file types.
+
+    Parameters
+    ----------
+    path : :obj:`str`
+        System path pointing to desired folder location
+
+    Examples
+    -----
+    >>> folder = Folder('some/path')
+    >>> print(folder)
+    '/absolute/path/to/some/path'
     """
 
     @property
     def contents(self):
-        """
-        Lists contents of folder.
+        """Lists contents of folder.
 
         Returns
         -------
@@ -38,9 +42,26 @@ class Folder(Path):
         return os.listdir(self.data)
 
     @property
-    def files(self):
+    def length(self):
+        """Convenience method to get the len() of the folder contents.
+
+        Returns
+        -------
+        :obj:`int`
+
+        Example
+        -------
+        >>> print(Folder('some/path').length)
+        3
         """
-        Returns .contents with non-files filtered.
+        return len(self.contents)
+
+    @property
+    def files(self):
+        """Returns .contents with non-files filtered.
+
+        Grabs names of directory contents before joining them with the current
+        path to return list of absolute paths to all files in the directory.
 
         Returns
         -------
@@ -49,7 +70,7 @@ class Folder(Path):
         Example
         -------
         >>> print(Folder(some/path).files)
-        ['file_1.txt', 'file_2.txt', 'file_3.txt']
+        ['/absolute/path/to/some/path/file_1.txt', '/absolute/path/to/some/path/file_2.txt', '/absolute/path/to/some/path/file_3.txt'] # noqa
         """
         dir_files = []
         for folder_item in self.contents:
@@ -59,8 +80,10 @@ class Folder(Path):
 
     @property
     def folders(self):
-        """
-        Returns .contents with non-folders filtered.
+        """Returns .contents with non-folders filtered.
+
+        Grabs names of directory contents before joining them with the current
+        path to return list of absolute paths to all folders in the directory.
 
         Returns
         -------
@@ -76,19 +99,3 @@ class Folder(Path):
             if os.path.isdir(os.path.join(self.data, folder_item)):
                 dir_subdirs.append(os.path.join(self.data, folder_item))
         return dir_subdirs
-
-    @property
-    def length(self):
-        """
-        Convenience method to get the len() of the folder contents.
-
-        Returns
-        -------
-        :obj:`int`
-
-        Example
-        -------
-        >>> print(Folder('some/path').length)
-        3
-        """
-        return len(self.contents)

@@ -1,13 +1,5 @@
 #!/usr/bin/python
 
-""" dhelp/text/basic_text.py
-
-David J. Thomas
-
-Contains the base object for the language-specific text objects in this module.
-
-"""
-
 import re
 from collections import UserString
 
@@ -21,7 +13,8 @@ from .install import NLTKInstall
 
 
 class BasicText(UserString):
-    """
+    """Performs text manipulation and natural language processing.
+
     Base class for all Text objects. Can be used on its own to perform a number
     of operations, although it is best used with on of its language-specific
     children.
@@ -52,7 +45,8 @@ class BasicText(UserString):
         self.options = options
 
     def setup(self):
-        """
+        """Download NLTK packages and trainer corpora.
+
         Launches the NLTK package download interface. Overridden by the CLTK
         child classes to launch the automated CLTK downloader. Convenience
         method if user has not already downloaded NLTK packages and trainer
@@ -65,8 +59,10 @@ class BasicText(UserString):
         return NLTKInstall(self.options['language']).setup()
 
     def stringify(self):
-        """
-        Returns the text of this object as a pure string type.
+        """Returns the text of this object as a pure string type.
+
+        Can be useful when you need the text back in a string object format
+        for comparison with regular strings.
 
         Returns
         -------
@@ -83,18 +79,19 @@ class BasicText(UserString):
         return str(self.data)
 
     def rm_lines(self):
-        """
+        """Removes endlines.
+
         Gives a new version of the text with all endlines removed. Removes
         any dashed line endings and rejoins split words.
 
         Returns
         -------
-        self.`__class__`
+        :obj:`self.__class__`
             New version of text, with endlines removed
 
         Example
         -------
-        >>> basic_text = BasicText('Lorem\nipsum do-\nlor sit amet....\n')
+        >>> basic_text = BasicText('Lorem\\nipsum do-\\nlor sit amet....\\n')
         >>> modified_text = basic_text.rm_lines()
         >>> print(modified_text)
         'Lorem ipsum dolor sit amet...'
@@ -111,7 +108,8 @@ class BasicText(UserString):
         )
 
     def rm_nonchars(self):
-        """
+        """Removes non-language characters.
+
         Gives a new version of the text with only latin characters remaining.
         Is overriden by child objects for languages using non latinate chars.
 
@@ -133,7 +131,8 @@ class BasicText(UserString):
         )
 
     def rm_edits(self):
-        """
+        """Removes text inside editor's marks.
+
         Gives a new version with any text between editorial marks such as
         brackets or parentheses removed.
 
@@ -157,7 +156,8 @@ class BasicText(UserString):
         )
 
     def rm_spaces(self):
-        """
+        """Removes extra whitespace.
+
         Gives a new version of the text with extra whitespace collapsed.
 
         Returns
@@ -167,7 +167,7 @@ class BasicText(UserString):
 
         Example
         -------
-        >>> basic_text = BasicText('Lorem   ipsum dolor  sit               amet...') # noqa
+        >>> basic_text = BasicText('Lorem   ipsum dolor  sit          amet...')
         >>> modified_text = basic_text.rm_spaces()
         >>> print(modified_text)
         'Lorem ipsum dolor sit amet...'
@@ -182,7 +182,8 @@ class BasicText(UserString):
         )
 
     def rm_stopwords(self, stoplist=[]):
-        """
+        """Removes words or phrases from the text.
+
         Given a list of words or phrases, gives new text with those phrases
         removed.
 
@@ -223,7 +224,8 @@ class BasicText(UserString):
         )
 
     def lemmatize(self):
-        """
+        """Transforms words into their lemmata.
+
         Gives a new version of the text in which every word is lemmatized. All
         verbs are transformed into the first person singular present active,
         all nouns are transformed into the singular masculine nominative, et.c.
@@ -258,8 +260,11 @@ class BasicText(UserString):
         )
 
     def re_search(self, pattern):
-        """
-        Receives a RegEx search pattern and returns True/False if it matches.
+        """Search text for matching pattern.
+
+        Receives search pattern and returns True/False if it matches. Pattern
+        can be a simple string match (e.g. .re_search('does this match?')), or
+        a full Regular Expression.
 
         Parameters
         ----------
@@ -287,7 +292,8 @@ class BasicText(UserString):
             return False
 
     def tokenize(self, mode='word'):
-        """
+        """ Splits words (or sentences) into lists of strings
+
         Returns a tokenized list. By default returns list of words, but can
         also return as a list of sentences.
 
@@ -319,7 +325,8 @@ class BasicText(UserString):
             return word_tokenize(self.data)
 
     def tag(self):
-        """
+        """Performs part-of-speech analysis on the text.
+
         Returns list of words marked up with parts of speech. Each word is
         returned as a 2-tuple, the first containing the word, the second with
         the parts of speech.
@@ -340,7 +347,8 @@ class BasicText(UserString):
         return pos_tag(word_list)
 
     def ngrams(self, gram_size=3):
-        """
+        """Gives ngrams.
+
         Returns a list of ngrams, each ngram represented as a tuple.
 
         Parameters
@@ -370,7 +378,8 @@ class BasicText(UserString):
             return list(ngrams(tokens, gram_size))
 
     def skipgrams(self, gram_size=3, skip_size=1):
-        """
+        """Gives skipgrams.
+
         Returns list of skipgrams, similar to ngram, but allows spacing between
         tokens.
 
