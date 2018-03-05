@@ -364,7 +364,7 @@ the natural language toolkit (nltk).
 
 ---
 
-### **BasicText()**
+### **BaseText()**
 
 Base class for all Text objects. Can be used on its own to perform a number
 of operations, although it is best used with on of its language-specific
@@ -372,10 +372,10 @@ children.
 
 ```python
 
->>> from dhelp import BasicText
+>>> from dhelp import BaseText
 
->>> basic_text = BasicText('Lorem ipsum dolor sit amet...')
->>> print(basic_text)
+>>> base_text = BaseText('Lorem ipsum dolor sit amet...')
+>>> print(base_text)
 Lorem ipsum dolor sit amet...
 
 ```
@@ -386,18 +386,18 @@ below to launch the download interface. If you are on OSX/Windows, it will be a
 GUI, if on Linux, a CLI.
 
 ```python
->>> BasicText('').setup()
+>>> BaseText('').setup()
 ```
 ---
 
-#### BasicText().stringify()
+#### BaseText().stringify()
 
 Returns the text of this object as a pure string type.
 
 ```python
 
->>> basic_text = BasicText('Lorem ipsum dolor sit amet...')
->>> stringified_text = basic_text.stringify()
+>>> base_text = BaseText('Lorem ipsum dolor sit amet...')
+>>> stringified_text = base_text.stringify()
 >>> print(type(stringified_text))
 <class 'str'>
 
@@ -406,15 +406,15 @@ Returns the text of this object as a pure string type.
 
 ---
 
-#### BasicText().rm_lines()
+#### BaseText().rm_lines()
 
 Gives a new version of the text with all endlines removed. Removes
 any dashed line endings and rejoins split words.
 
 ```python
 
->>> basic_text = BasicText('Lorem\nipsum do-\nlor sit amet....\n')
->>> modified_text = basic_text.rm_lines()
+>>> base_text = BaseText('Lorem\nipsum do-\nlor sit amet....\n')
+>>> modified_text = base_text.rm_lines()
 >>> print(modified_text)
 Lorem ipsum dolor sit amet...
 
@@ -422,15 +422,15 @@ Lorem ipsum dolor sit amet...
 
 ---
 
-#### BasicText().rm_nonchars()
+#### BaseText().rm_nonchars()
 
 Gives a new version of the text with only latin characters remaining.
 Is overriden by child objects for languages using non latinate chars.
 
 ```python
 
->>> basic_text = BasicText('1αLorem ipsum 2βdolor sit 3γamet...')
->>> modified_text = basic_text.rm_nonchars()
+>>> base_text = BaseText('1αLorem ipsum 2βdolor sit 3γamet...')
+>>> modified_text = base_text.rm_nonchars()
 >>> print(modified_text)
 Lorem ipsum dolor sit amet...
 
@@ -438,7 +438,7 @@ Lorem ipsum dolor sit amet...
 
 ---
 
-#### BasicText().rm_edits()
+#### BaseText().rm_edits()
 
 Gives a new version with any text between editorial marks such as
 brackets or parentheses removed. NOTE: May not work exactly as shown below,
@@ -447,8 +447,8 @@ improvement.
 
 ```python
 
->>> basic_text = BasicText('Lore[m i]psum {dolo}r sit a(met)...')
->>> modified_text = basic_text.rm_edits()
+>>> base_text = BaseText('Lore[m i]psum {dolo}r sit a(met)...')
+>>> modified_text = base_text.rm_edits()
 >>> print(modified_text)
 Lor psum r sit a...
 
@@ -456,14 +456,14 @@ Lor psum r sit a...
 
 ---
 
-#### BasicText().rm_spaces()
+#### BaseText().rm_spaces()
 
 Gives a new version of the text with extra whitespace collapsed.
 
 ```python
 
->>> basic_text = BasicText('Lorem   ipsum dolor  sit               amet...')
->>> modified_text = basic_text.rm_spaces()
+>>> base_text = BaseText('Lorem   ipsum dolor  sit               amet...')
+>>> modified_text = base_text.rm_spaces()
 >>> print(modified_text)
 Lorem ipsum dolor sit amet...
 
@@ -471,7 +471,7 @@ Lorem ipsum dolor sit amet...
 
 ---
 
-#### BasicText().rm_stopwords()
+#### BaseText().rm_stopwords()
 
 Given a list of words or phrases, gives new text with those phrases
 removed.
@@ -479,8 +479,8 @@ removed.
 ```python
 
 >>> stopwords = ['ipsum', 'sit']
->>> basic_text = BasicText('Lorem ipsum dolor sit amet...')
->>> modified_text = basic_text.rm_stopwords(stoplist=stopwords)
+>>> base_text = BaseText('Lorem ipsum dolor sit amet...')
+>>> modified_text = base_text.rm_stopwords(stoplist=stopwords)
 >>> print(modified_text)
 Lorem dolor amet...
 
@@ -488,7 +488,7 @@ Lorem dolor amet...
 
 ---
 
-#### BasicText().lemmatize()
+#### BaseText().lemmatize()
 
 Gives a new version of the text in which every word is lemmatized. All verbs
 are transformed into the first person singular present active, all nouns are
@@ -497,57 +497,57 @@ exactly as below as this will be tweaked.
 
 ```python
 
->>> basic_text = BasicText('The quick brown fox jumped over the lazy dog.') # noqa
->>> print(basic_text.lemmatize())
+>>> base_text = BaseText('The quick brown fox jumped over the lazy dog.') # noqa
+>>> print(base_text.lemmatize())
 'The quick brown fox jump over the lazy dog .'
 
 ```
 
 ---
 
-#### BasicText().re_search()
+#### BaseText().re_search()
 
 Receives a [Regular Expression](https://regexr.com/) search pattern and returns
 True/False if it matches.
 
 ```python
 
->>> basic_text = BasicText('Lorem ipsum dolor sit amet...')
->>> print(basic_text.re_search('Lorem ipsum'))
+>>> base_text = BaseText('Lorem ipsum dolor sit amet...')
+>>> print(base_text.re_search('Lorem ipsum'))
 True
->>> print(basic_text.re_search('Arma virumque cano'))
+>>> print(base_text.re_search('Arma virumque cano'))
 False
 
 ```
 
 ---
 
-#### BasicText().tokenize()
+#### BaseText().tokenize()
 
 Returns a tokenized list. By default returns list of words, but can also return
 as a list of sentences.
 
 ```python
 
->>> basic_text = BasicText('Lorem ipsum dolor sit amet. Consectetur adipiscing elit.')
->>> print(BasicText.tokenize())
+>>> base_text = BaseText('Lorem ipsum dolor sit amet. Consectetur adipiscing elit.')
+>>> print(BaseText.tokenize())
 ['Lorem', 'ipsum', 'dolor', 'sit', 'amet', '.', 'Consectetur', 'adipiscing', 'elit', '.']
->>> print(BasicText.tokenize(mode='sentence'))
+>>> print(BaseText.tokenize(mode='sentence'))
 ['Lorem ipsum dolor sit amet.', 'Consectetur adipiscing elit.']
 
 ```
 
 ---
 
-#### BasicText().tag()
+#### BaseText().tag()
 
 Returns list of words marked up with parts of speech. Each word is returned as
 a 2-tuple, the first containing the word, the second with the parts of speech.
 
 ```python
 
->>> basic_text = BasicText('They hated to think of sample sentences.')
->>> basic_tags = basic_text.tag()
+>>> base_text = BaseText('They hated to think of sample sentences.')
+>>> basic_tags = base_text.tag()
 >>> print(basic_tags)
 [('They', 'PRP'), ('hated', 'VBD'), ('to', 'TO'), ('think', 'VB'), ('of', 'IN'), ('sample', 'JJ'), ('sentences', 'NNS'), ('.', '.')]
 
@@ -555,14 +555,14 @@ a 2-tuple, the first containing the word, the second with the parts of speech.
 
 ---
 
-#### BasicText().ngrams()
+#### BaseText().ngrams()
 
 Returns a list of ngrams, each ngram represented as a tuple.
 
 ```python
 
->>> basic_text = BasicText('They hated to think of sample sentences.')
->>> basic_ngrams = basic_text.ngrams()
+>>> base_text = BaseText('They hated to think of sample sentences.')
+>>> basic_ngrams = base_text.ngrams()
 >>> print(basic_ngrams)
 [('They', 'hated', 'to'), ('hated', 'to', 'think'), ('to', 'think', 'of'), ('think', 'of', 'sample'), ('of', 'sample', 'sentences'), ('sample', 'sentences', '.')]
 
@@ -570,14 +570,14 @@ Returns a list of ngrams, each ngram represented as a tuple.
 
 ---
 
-#### BasicText().skipgrams()
+#### BaseText().skipgrams()
 
 Returns list of skipgrams, similar to ngram, but allows spacing between tokens.
 
 ```python
 
->>> basic_text = BasicText('They hated to think of sample sentences.')
->>> basic_skipgrams = basic_text.skipgrams()
+>>> base_text = BaseText('They hated to think of sample sentences.')
+>>> basic_skipgrams = base_text.skipgrams()
 >>> print(basic_skipgrams)
 [('They', 'hated', 'to'), ('They', 'hated', 'think'), ('They', 'to', 'think'), ('hated', 'to', 'think'), ('hated', 'to', 'of'), ('hated', 'think', 'of'), ('to', 'think', 'of'), ('to', 'think', 'sample'), ('to', 'of', 'sample'), ('think', 'of', 'sample'), ('think', 'of', 'sentences'), ('think', 'sample', 'sentences'), ('of', 'sample', 'sentences'), ('of', 'sample', '.'), ('of', 'sentences', '.'), ('sample', 'sentences', '.')]
 

@@ -15,35 +15,25 @@ class WebPage(UserString):
     package with BeautifulSoup functions to enable users to request/soup
     a page in a single line.
 
-    Parameters
-    ----------
-    url : :obj:`str`
-        URL of page you wish to scrape
-    options : :obj:`dict`, optional
-        dictionary with keyword/value pairs to set options
+    Args:
+        url : :obj:`str`
+            URL of page you wish to scrape
+        options : :obj:`dict`, optional
+            dictionary with keyword/value pairs to set options
 
-    Possible option fields (with default settings)...
-
-    >>> options = {
-    ...     'delay': 4,
-    ...     'max_retries': 3,
-    ...     'silent': True
-    ... }
-
-    Examples
-    --------
-    >>> from dhelp import WebPage
-    >>> web_page = WebPage('https://stackoverflow.com')
-    >>> print(web_page)
-    'https://stackoverflow.com'
-    >>> # pass an dict to set options for delay, max_retries, or silent
-    >>> options = {
-    ...     'delay': 4,
-            'max_retries': 3,
-            'silent': True
-    ... }
-    >>> web_page = WebPage('https://stackoverflow.com', options=options)
-    'https://stackoverflow.com'
+    Examples:
+        >>> from dhelp import WebPage
+        >>> web_page = WebPage('https://stackoverflow.com')
+        >>> print(web_page)
+        'https://stackoverflow.com'
+        >>> # pass an dict to set options for delay, max_retries, or silent
+        >>> options = {
+        ...     'delay': 4,
+                'max_retries': 3,
+                'silent': True
+        ... }
+        >>> web_page = WebPage('https://stackoverflow.com', options=options)
+        'https://stackoverflow.com'
     """
 
     def __init__(self, url, options={}):
@@ -75,20 +65,17 @@ class WebPage(UserString):
         been reached. If the .max_retries property is set to 0, .fetch() will
         make inifinite requests.
 
-        Parameters
-        ----------
-        retry_counter : :obj:`int`
-            The number of attempts already made to fetch the object.
+        Args:
+            retry_counter : :obj:`int`
+                The number of attempts already made to fetch the object.
 
-        Returns
-        -------
-        :obj:`str`
-            HTML from requested URL, in plain text format
+        Returns:
+            :obj:`str`
+                HTML from requested URL, in plain text format
 
-        Examples
-        -----
-        >>> html_text = WebPage('https://stackoverflow.com/').fetch()
-        '<html><head><title>Stack Overflow...'
+        Examples:
+            >>> html_text = WebPage('https://stackoverflow.com/').fetch()
+            '<html><head><title>Stack Overflow...'
         """
         # print message unless silent option
         if not self.silent:
@@ -126,21 +113,19 @@ class WebPage(UserString):
         Uses html.parser with BeautifulSoup. Child classes may override this
         to use other parsers (e.g. lxml).
 
-        Returns
-        -------
-        :obj:`bs4.BeautifulSoup`
-            BeautifulSoup object loaded with parsed data from web
+        Returns:
+            :obj:`bs4.BeautifulSoup`
+                BeautifulSoup object loaded with parsed data from web
 
-        Examples
-        -----
-        >>> # fetch webpage and parse into BeautifulSoup object
-        >>> parsed_webpage = WebPage('https://stackoverflow.com/').soup()
-        >>> # grab the logo from the header with BeautifulSoup
-        >>> header_logo_text = parsed_webpage.find('header')
-        ...    .find('div', class_='-main')
-        ...    .find('span', class_='-img')
-        >>> # print the text contained in the span tag
-        >>> print(header_logo_text.get_text())
-        'Stack Overflow'
+        Examples:
+            >>> # fetch webpage and parse into BeautifulSoup object
+            >>> parsed_webpage = WebPage('https://stackoverflow.com/').soup()
+            >>> # grab the logo from the header with BeautifulSoup
+            >>> header_logo_text = parsed_webpage.find('header')
+            ...    .find('div', class_='-main')
+            ...    .find('span', class_='-img')
+            >>> # print the text contained in the span tag
+            >>> print(header_logo_text.get_text())
+            'Stack Overflow'
         """
         return BeautifulSoup(self.fetch(), 'html.parser')

@@ -14,17 +14,15 @@ class TextFolder(Folder):
     discovery of filepaths and construction of relevant TextFile objects. Also
     enables batch editing of an entire directory by passing a callback.
 
-    Parameters
-    ----------
-    path : :obj:`str`
-        System path pointing to desired text folder location
+    Args:
+        path : :obj:`str`
+            System path pointing to desired text folder location
 
-    Examples
-    -----
-    >>> from dhelp import TextFolder
-    >>> text_folder = TextFolder('some/path')
-    >>> print(text_folder)
-    'some/path'
+    Examples:
+        >>> from dhelp import TextFolder
+        >>> text_folder = TextFolder('some/path')
+        >>> print(text_folder)
+        'some/path'
     """
 
     def text_files(self, options={}):
@@ -35,29 +33,25 @@ class TextFolder(Folder):
         file extensions will be loaded with the 'extensions' option by passing
         a list of string extensions (without the '.').
 
-        Parameters
-        ----------
-        options : :obj:`dict`, optional
-            Options settings found at respective keywords
+        Args:
+            options : :obj:`dict`, optional
+                Options settings found at respective keywords
 
-        Returns
-        -------
-        :obj:`collections.deque`
-            Deque where each element is a TextFile list
+        Returns:
+            :obj:`collections.deque`
+                Deque where each element is a TextFile list
 
-        Raises
-        ------
-        Exception
-            If path does not point to folder
-        TypeError
-            If non-list is sent as extensions option
+        Raises:
+            Exception
+                If path does not point to folder
+            TypeError
+                If non-list is sent as extensions option
 
-        Examples
-        -----
-        >>> folder_files = TextFolder('some/path').text_files()
-        >>> for folder_file in folder_files:
-        ...     print(folder_file.load())
-        'Lorem ipsum dolor sit amet...'
+        Examples:
+            >>> folder_files = TextFolder('some/path').text_files()
+            >>> for folder_file in folder_files:
+            ...     print(folder_file.load())
+            'Lorem ipsum dolor sit amet...'
         """
         contents = deque([])
         # set option defaults
@@ -91,34 +85,31 @@ class TextFolder(Folder):
         example below). Whatever the function returns is what will be
         saved to the modified file, as long as it is a string.
 
-        Parameters
-        ----------
-        destination : :obj:`string`
-            System path where you want the altered folder to be saved
-        modifycb : :obj:`function`
-            User-defined function used to modify each record's data
-        options : :obj:`dict`, optional
-            Options settings found at respective keywords
+        Args:
+            destination : :obj:`string`
+                System path where you want the altered folder to be saved
+            modifycb : :obj:`function`
+                User-defined function used to modify each record's data
+            options : :obj:`dict`, optional
+                Options settings found at respective keywords
 
-        Returns
-        -------
-        :obj:`files.TextFolder`
-            Gives a new TextFolder object tied to the modified folder
+        Returns:
+            :obj:`files.TextFolder`
+                Gives a new TextFolder object tied to the modified folder
 
-        Examples
-        --------
-        >>> # define a function which alters data as you wish
-        >>> def modify_record(record_data):
-        >>>     record_data = record_data.replace('\\n', '')
-        >>>     return record_data
+        Examples:
+            >>> # define a function which alters data as you wish
+            >>> def modify_record(record_data):
+            >>>     record_data = record_data.replace('\\n', '')
+            >>>     return record_data
 
-        >>> # if you don't specify destination, a backup will be made
-        >>> options = {'destination': 'some/other-path'}
+            >>> # if you don't specify destination, a backup will be made
+            >>> options = {'destination': 'some/other-path'}
 
-        >>> # use TextFolder().modify, pass your function as 1st arg
-        >>> text_folder = TextFolder('some/path').modify(modify_record, options=options) # noqa
-        >>> print(text_folder)
-        '/absolute/path/to/some/path'
+            >>> # use TextFolder().modify, pass your function as 1st arg
+            >>> text_folder = TextFolder('some/path').modify(modify_record, options=options) # noqa
+            >>> print(text_folder)
+            '/absolute/path/to/some/path'
 
         """
         # set option defaults

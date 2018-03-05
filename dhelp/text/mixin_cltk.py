@@ -1,18 +1,12 @@
 #!/usr/bin/python
 
-""" dhelp/text/cltk_text.py
 
-David J. Thomas
-
-Contains parent class for language-specific CLTK objects (esp. Greek/Latin).
-
-"""
-
-from .basic_text import BasicText
+from .base_text import BaseText
 
 
-class CLTKText(BasicText):
-    """
+class CLTKMixin(BaseText):
+    """Mixin for CLTK-related functions.
+
     Parent class for Latin, Classical Greek, and other CLTK language-specific
     objects. Provides access to universal CLTK commands with child classes
     adding some methods and overriding others.

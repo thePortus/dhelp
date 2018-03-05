@@ -11,15 +11,13 @@ class BaseInstall(UserString):
     Parent class for both NLTK and CLTK installer classes. Not meant to be used
     directly.
 
-    Parameters
-    ----------
-    language : :obj:`str`, optional
-        Desired language for install, defaults to english
+    Args:
+        language : :obj:`str`, optional
+            Desired language for install, defaults to english
 
-    Raises
-    ------
-    Exception
-        If argument 'language' is non-string
+    Raises:
+        Exception
+            If argument 'language' is non-string
     """
 
     def __init__(self, language=None):
@@ -37,21 +35,18 @@ class NLTKInstall(BaseInstall):
     it against local data, and download any missing data. If you have not
     already downloaded the NLTK trainer data, you should must use this.
 
-    Parameters
-    ----------
-    language : :obj:`str`, optional
-        Desired language for install, defaults to english
+    Args:
+        language : :obj:`str`, optional
+            Desired language for install, defaults to english
 
-    Raises
-    ------
-    Exception
-        If argument 'language' is non-string
+    Raises:
+        Exception
+            If argument 'language' is non-string
 
-    Example
-    -------
-    >>> from dhelp.text import NLTKInstall
-    >>> NLTKInstall('english')
-    'english'
+    Example:
+        >>> from dhelp.text import NLTKInstall
+        >>> NLTKInstall('english')
+        'english'
     """
 
     @property
@@ -61,13 +56,11 @@ class NLTKInstall(BaseInstall):
         Returns the absolute path pointing to the language data root on the
         local machine.
 
-        Returns
-        -------
-        Absolute path to the nltk data directory
+        Returns:
+            Absolute path to the nltk data directory
 
-        Example
-        -------
-        >>> NLTKInstall().data_root
+        Example:
+            >>> NLTKInstall().data_root
         """
         return os.path.expanduser('~/nltk_data')
 
@@ -76,10 +69,9 @@ class NLTKInstall(BaseInstall):
 
         Launches NLTK download interface, either GUI or CLI, depending on OS
 
-        Returns
-        -------
-        :obj:`bool`
-            True if successful
+        Returns:
+            :obj:`bool`
+                True if successful
         """
         nltk.download()
         return True
@@ -92,21 +84,18 @@ class CLTKInstall(BaseInstall):
     it against local data, and download any missing data. If you have not
     already downloaded the CLTK trainer data, you should must use this.
 
-    Parameters
-    ----------
-    language : :obj:`str`, optional
-        Desired language for install, defaults to latin
+    Args:
+        language : :obj:`str`, optional
+            Desired language for install, defaults to latin
 
-    Raises
-    ------
-    Exception
-        If argument 'language' is non-string
+    Raises:
+        Exception
+            If argument 'language' is non-string
 
-    Example
-    -------
-    >>> from dhelp.text import CLTKInstall
-    >>> CLTKInstall('latin')
-    'latin'
+    Example:
+        >>> from dhelp.text import CLTKInstall
+        >>> CLTKInstall('latin')
+        'latin'
     """
 
     def __init__(self, language=None):
@@ -121,13 +110,11 @@ class CLTKInstall(BaseInstall):
         Returns the absolute path pointing to the cltk data root on the
         local machine.
 
-        Returns
-        -------
-        Absolute path to the cltk data directory
+        Returns:
+            Absolute path to the cltk data directory
 
-        Example
-        -------
-        >>> CLTKInstall('latin').data_root
+        Example:
+            >>> CLTKInstall('latin').data_root
         """
         return os.path.expanduser('~/cltk_data')
 
@@ -137,15 +124,13 @@ class CLTKInstall(BaseInstall):
 
         Gets a list of all possible corpora, downloaded from CLTK.
 
-        Returns
-        -------
-        :obj:`list`
-            List of cltk corpora for specified language
+        Returns:
+            :obj:`list`
+                List of cltk corpora for specified language
 
-        Example
-        -------
-        >>> CLTKInstall('latin').corpora_list
-        ['latin_text_perseus', 'latin_treebank_perseus', 'latin_text_latin_library', 'phi5', 'phi7', 'latin_proper_names_cltk', 'latin_models_cltk', 'latin_pos_lemmata_cltk', 'latin_treebank_index_thomisticus', 'latin_lexica_perseus', 'latin_training_set_sentence_cltk', 'latin_word2vec_cltk', 'latin_text_antique_digiliblt', 'latin_text_corpus_grammaticorum_latinorum', 'latin_text_poeti_ditalia'] # noqa
+        Example:
+            >>> CLTKInstall('latin').corpora_list
+            ['latin_text_perseus', 'latin_treebank_perseus', 'latin_text_latin_library', 'phi5', 'phi7', 'latin_proper_names_cltk', 'latin_models_cltk', 'latin_pos_lemmata_cltk', 'latin_treebank_index_thomisticus', 'latin_lexica_perseus', 'latin_training_set_sentence_cltk', 'latin_word2vec_cltk', 'latin_text_antique_digiliblt', 'latin_text_corpus_grammaticorum_latinorum', 'latin_text_poeti_ditalia'] # noqa
         """
         # import cltk inline
         from cltk.corpus.utils.importer import CorpusImporter
@@ -156,15 +141,13 @@ class CLTKInstall(BaseInstall):
 
         Gets list of all corpora and downloads them.
 
-        Returns
-        -------
-        :obj:`bool`
-            True if downloading was successful, or at least no fatal errors
+        Returns:
+            :obj:`bool`
+                True if downloading was successful, or at least no fatal errors
 
-        Example
-        -------
-        >>> CLTKInstall('latin').missing_corpora
-        ['latin_text_corpus_grammaticorum_latinorum', 'latin_text_poeti_ditalia'] # noqa
+        Example:
+            >>> CLTKInstall('latin').missing_corpora
+            ['latin_text_corpus_grammaticorum_latinorum', 'latin_text_poeti_ditalia'] # noqa
         """
         from cltk.corpus.utils.importer import CorpusImporter
         corpus_importer = CorpusImporter(self.data)

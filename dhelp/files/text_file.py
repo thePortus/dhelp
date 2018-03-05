@@ -13,17 +13,20 @@ class TextFile(Path):
     This object can be used by itself, or can be constructed automatically by
     using TextFolder.
 
-    Parameters
-    ----------
-    path : :obj:`str`
-        System path pointing to desired text file location
+    Args:
+        path (:obj:`str`) System path pointing to desired text file location
 
-    Examples
-    -----
-    >>> from dhelp import TextFile
-    >>> text_file = TextFile('some/path.txt')
-    >>> print(text_file)
-    'some/path.txt'
+    Attributes:
+        exists (:obj:bool`) Whether or not a file exists at the location
+        size (:obj:`int`) Size of item(s) stored at current location
+        basename (:obj:`str`) Name of current file
+        dirname (:obj:`str`) Full path to file's parent directory
+
+    Examples:
+        >>> from dhelp import TextFile
+        >>> text_file = TextFile('some/path.txt')
+        >>> print(text_file)
+        'some/path.txt'
     """
 
     def load(self,  options={}):
@@ -33,21 +36,18 @@ class TextFile(Path):
         Returns data as a string unless 'readlines' option is specified, in
         which case data is returned as a list of strings.
 
-        Parameters
-        ----------
-        options : :obj:`dict`, optional
-            Options settings found at respective keywords
+        Args:
+            options : :obj:`dict`, optional
+                Options settings found at respective keywords
 
-        Raises
-        ------
-        Exception
-            If path does not point to a file
+        Raises:
+            Exception
+                If path does not point to a file
 
-        Examples
-        -----
-        >>> file_data = TextFile('some/path.txt').load()
-        >>> print(file_data)
-        'Lorem ipsum dolor sit amet...'
+        Examples:
+            >>> file_data = TextFile('some/path.txt').load()
+            >>> print(file_data)
+            'Lorem ipsum dolor sit amet...'
         """
         # set option defaults
         if 'encoding' not in options:
@@ -75,25 +75,23 @@ class TextFile(Path):
         at the current path, an exception will be raised unless the 'overwrite'
         option it set.
 
-        Parameters
-        ----------
-        data : :obj:`str`
-            Data to be saved to file, must be a single string
-        options : :obj:`dict`, optional
-            Options settings found at respective keywords
+        Args:
+            data : :obj:`str`
+                Data to be saved to file, must be a single string
+            options : :obj:`dict`, optional
+                Options settings found at respective keywords
 
-        Examples
-        -----
-        # saving to a new location
-        >>> saved_text_file = TextFile('some/path.txt').save('Lorem ipsum dolor sit amet...') # noqa
-        >>> print(saved_text_file) # noqa
-        '/absolute/path/to/some/path.txt'
+        Examples:
+            # saving to a new location
+            >>> saved_text_file = TextFile('some/path.txt').save('Lorem ipsum dolor sit amet...') # noqa
+            >>> print(saved_text_file) # noqa
+            '/absolute/path/to/some/path.txt'
 
-        # setting overwrite option
-        >>> options = {'overwrite': True}
-        >>> saved_text_file = saved_text_file.save('consectetur adipiscing elit', options=options)
-        >>> print(saved_text_file)
-        '/absolute/path/to/some/path.txt'
+            # setting overwrite option
+            >>> options = {'overwrite': True}
+            >>> saved_text_file = saved_text_file.save('consectetur adipiscing elit', options=options)
+            >>> print(saved_text_file)
+            '/absolute/path/to/some/path.txt'
         """
         # set option defaults
         if 'encoding' not in options:

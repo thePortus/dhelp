@@ -12,4 +12,4 @@ perform natural language processing.
 
 from .files import CSVFile, TextFile, TextFolder
 from .web import WebPage
-from .text import BasicText
+from .text import BaseText
