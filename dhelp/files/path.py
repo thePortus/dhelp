@@ -11,15 +11,11 @@ class Path(UserString):
     Used to interact with a system path in various ways. Not generally meant to
     be used directly, Path is parent to various Folder and File classes.
 
-    Parameters
-    ----------
-    path : :obj:`str`
-        System path pointing to desired text file location
+    Args:
+        path (:obj:`str`) System path pointing to desired text file location
 
-    Raises
-    ------
-    Exception
-        If a non-string arg is sent as path
+    Raises:
+        Exception: If a non-string arg is sent as path
     """
 
     def __init__(self, path=None):
@@ -40,17 +36,14 @@ class Path(UserString):
     def exists(self):
         """Check if anything exists at the current path.
 
-        Returns
-        -------
-        :obj:`bool`
-            True if anything exists at path, False if not
+        Returns:
+            :obj:`bool` True if anything exists at path, False if not
 
-        Example
-        -------
-        >>> print(Path('some/extant/path').exists())
-        True
-        >>> print(Path('some/non-extant/path').exists())
-        False
+        Example:
+            >>> print(Path('some/extant/path').exists())
+            True
+            >>> print(Path('some/non-extant/path').exists())
+            False
 
         """
         return os.path.exists(self.data)
@@ -62,15 +55,12 @@ class Path(UserString):
         Returns the size of any item at the specified path in bytes, returns
         0 if non-extant.
 
-        Returns
-        -------
-        :obj:`int`
-            Size of item at path, in bytes
+        Returns:
+            :obj:`int` Size of item at path, in bytes
 
-        Example
-        -------
-        >>> print(Path(some/path.txt))
-        121
+        Example:
+            >>> print(Path(some/path.txt))
+            121
         """
         # return zero if nothing present
         if not self.exists:
@@ -84,15 +74,12 @@ class Path(UserString):
         Returns the basename (last element of path) of the current path
         e.g. the name of the current file or folder.
 
-        Returns
-        -------
-        :obj:`str`
-            Name of current file or folder
+        Returns:
+            :obj:`str` Name of current file or folder
 
-        Example
-        -------
-        >>> print(Path(some/path.txt))
-        'path.txt'
+        Example:
+            >>> print(Path(some/path.txt))
+            'path.txt'
         """
         return os.path.basename(self.data)
 
@@ -102,15 +89,11 @@ class Path(UserString):
 
         Returns the absolute path of the parent directory of the current path.
 
-        Returns
-        -------
-        :obj:`str`
-            Name of parent directory of current path
+        Returns: :obj:`str` Name of parent directory of current path
 
-        Example
-        -------
-        >>> print(Path(some/path.txt).dirname())
-        '/absolute/path/to/some'
+        Example:
+            >>> print(Path(some/path.txt).dirname())
+            '/absolute/path/to/some'
 
         """
         return os.path.dirname(self.data)
@@ -121,17 +104,13 @@ class Path(UserString):
 
         Returns true if path points to existing directory.
 
-        Returns
-        -------
-        :obj:`bool`
-            True if path points to directory, False if not
+        Returns: :obj:`bool` True if path points to directory, False if not
 
-        Examples
-        -------
-        >>> print(Path(some/path).is_dir())
-        True
-        >>> print(Path(some/path.txt).is_dir())
-        False
+        Examples:
+            >>> print(Path(some/path).is_dir())
+            True
+            >>> print(Path(some/path.txt).is_dir())
+            False
         """
         return os.path.isdir(self.data)
 
@@ -141,17 +120,14 @@ class Path(UserString):
 
         Returns true if path points to existing file.
 
-        Returns
-        -------
-        :obj:`bool`
-            True if path points to file, False if not
+        Returns:
+            :obj:`bool` True if path points to file, False if not
 
-        Examples
-        -------
-        >>> print(Path(some/path.txt).is_file())
-        True
-        >>> print(Path(some/path).is_file())
-        False
+        Examples:
+            >>> print(Path(some/path.txt).is_file())
+            True
+            >>> print(Path(some/path).is_file())
+            False
         """
         return os.path.isfile(self.data)
 
@@ -161,17 +137,14 @@ class Path(UserString):
 
         Returns true if path points to symbolic link.
 
-        Returns
-        -------
-        :obj:`bool`
-            True if path points to symbolic link, False if not
+        Returns:
+            :obj:`bool` True if path points to symbolic link, False if not
 
-        Examples
-        -------
-        >>> print(Path(some/link.txt).is_link())
-        True
-        >>> print(Path(nota/link).is_link())
-        False
+        Examples:
+            >>> print(Path(some/link.txt).is_link())
+            True
+            >>> print(Path(nota/link).is_link())
+            False
         """
         if not self.exists:
             return False
@@ -185,29 +158,20 @@ class Path(UserString):
         object linked to the new location. Will raise an error if anything
         exists at the destination unless overwrite option is flagged.
 
-        Parameters
-        ----------
-        destination : :obj:`str`
-            System path to which you want to copy item(s) at current path
-        options : :obj:`dict`, optional
-            Options settings found at respective keywords
+        Args:
+            destination (:obj:`str`) System path to which you want to copy item(s) at current path
+            options (:obj:`dict`, optional) Options settings found at respective keywords
 
-        Returns
-        -------
-        :obj:`self.__class__`
-            New instance of object tied to the copied path
+        Returns:
+            :obj:`self.__class__` New instance of object tied to the copied path
 
-        Raises
-        ------
-        Exception
-            If a problem is encountered when copying
+        Raises:
+            Exception: If a problem is encountered when copying
 
-        Example
-        -------
-        >>> print(Path('some/path').copy('some/other-path'))
-        'some/other-path'
-
-        """
+        Example:
+            >>> print(Path('some/path').copy('some/other-path'))
+            'some/other-path'
+        """ # noqa
         # set default options
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
@@ -242,20 +206,15 @@ class Path(UserString):
         Deletes any item at the current path. If a folder deletes contents
         recursively. Returns True if successful.
 
-        Returns
-        -------
-        :obj:`bool`
-            True if successful
+        Returns:
+            :obj:`bool` True if successful
 
-        Raises
-        ------
-        Exception
-            If any issue was encountered deleting item(s) at path
+        Raises:
+            Exception: If any issue was encountered deleting item(s) at path
 
-        Example
-        -------
-        >>> print(Path(some/path).remove())
-        True
+        Example:
+            >>> print(Path(some/path).remove())
+            True
         """
         try:
             if self.is_file:
@@ -273,23 +232,17 @@ class Path(UserString):
         Calls .copy() with destination, then .remove() the current path, before
         finally the results of .copy().
 
-        Parameters
-        ----------
-        destination : :obj:`str`
-            System path to which you want to move item(s) at current path
-        options : :obj:`dict`, optional
-            Options settings found at respective keywords
+        Args:
+            destination (:obj:`str`) System path to which you want to move item(s) at current path
+            options (:obj:`dict`, optional) Options settings found at respective keywords
 
-        Returns
-        -------
-        :obj:`self.__class__`
-            New instance of object tied to destinationpath
+        Returns:
+            :obj:`self.__class__` New instance of object tied to destination path
 
-        Example
-        -------
-        >>> print(Path('some/path').move('some/other-path'))
-        'some/other-path'
-        """
+        Example:
+            >>> print(Path('some/path').move('some/other-path'))
+            'some/other-path'
+        """ # noqa
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
         if 'overwrite' not in options:
@@ -303,18 +256,12 @@ class Path(UserString):
 
         Called by child class load methods, stops from loading non-extant file.
 
-        Parameters
-        ----------
-        options : :obj:`dict`, optional
-            Options settings found at respective keywords
+        Args:
+            options :obj:`dict`, optional Options settings found at respective keywords
 
-        Possible option fields (with default settings)...
-
-        Raises
-        ------
-        Exception
-            If nothing exists at path
-        """
+        Raises:
+            Exception: If nothing exists at path
+        """ # noqa
         # set options defaults
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
@@ -331,16 +278,12 @@ class Path(UserString):
 
         Called by child class save methods, prevents overwrite without option.
 
-        Parameters
-        ----------
-        options : :obj:`dict`, optional
-            Options settings found at respective keywords
+        Args:
+            options :obj:`dict`, optional Options settings found at respective keywords
 
-        Raises
-        ------
-        Exception
-            If something exists at path and overwrite option is not set
-        """
+        Raises:
+            Exception: If something exists at path and overwrite option is not set
+        """ # noqa
         # set option defaults
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
@@ -365,10 +308,9 @@ class Path(UserString):
         that do not already exist. This function is used by the .save()
         method before saving to a location to avoid errors.
 
-        Example
-        -------
-        >>> Path(some/path).makedirs()
-        'some/path'
+        Example:
+            >>> Path(some/path).makedirs()
+            'some/path'
         """
         # if parent directory is non-extant
         if not os.path.exists(os.path.dirname(self.data)):

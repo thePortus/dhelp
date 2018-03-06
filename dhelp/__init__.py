@@ -1,15 +1,20 @@
 #!/usr/bin/python
 
-""" dhelp
+"""dhelp
 
 David J. Thomas, thePortus.com, Copyright, 2018
 
-Python module with help objects for various Digital Humanities related tasks.
-Contains submodules to work with text files/folders, CSVs, webpages, and
-perform natural language processing.
-
+Students often see great potential in Python for
+historical analysis. But, before they see real payoff they often face too
+many hurdles to overcome in the space of a single semester. dhelp is a tool
+to allow students to quickly get to performing quick file operations, data
+manipulations, and even text analysis.
 """
 
-from .files import CSVFile, TextFile, TextFolder
-from .web import WebPage
-from .text import BasicText
+from .files.csv_file import CSVFile
+from .files.text_file import TextFile
+from .files.text_folder import TextFolder
+from .web.web_page import WebPage
+from .text.english import EnglishText
+from .text.latin import LatinText
+from .text.ancient_greek import AncientGreekText

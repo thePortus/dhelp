@@ -4,9 +4,6 @@ dhelp.web package
 Submodules
 ----------
 
-dhelp.web.web\_page module
---------------------------
-
 .. automodule:: dhelp.web.web_page
     :members:
     :undoc-members:

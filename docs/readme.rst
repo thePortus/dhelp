@@ -2,4 +2,4 @@
 README
 ======
 
-.. minclude:: ../README.md
+.. mdinclude:: ../README.md
