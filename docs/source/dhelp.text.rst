@@ -4,18 +4,17 @@ dhelp.text package
 Submodules
 ----------
 
-dhelp.text.basic\_text module
------------------------------
-
-.. automodule:: dhelp.text.basic_text
+.. automodule:: dhelp.text.ancient_greek
     :members:
     :undoc-members:
     :show-inheritance:
 
-dhelp.text.install module
--------------------------
+.. automodule:: dhelp.text.english
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
-.. automodule:: dhelp.text.install
+.. automodule:: dhelp.text.latin
     :members:
     :undoc-members:
     :show-inheritance:

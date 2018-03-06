@@ -15,7 +15,7 @@ env:
   - PACKAGE_VERSION=0.0.1
 # install dependencies
 install:
-  - pip install -r requirements-dev.txt
+  - pip install -r requirements/dev.txt
 # launch test discovery and run tests
 script:
   - nose2
