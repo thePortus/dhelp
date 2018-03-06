@@ -14,7 +14,7 @@ class EnglishText(NLTKMixin, BaseText):
     Example:
         >>> english_text = EnglishText('Th3e Qui\\nck b     rown fox jumped over the lazy dog')
         >>> english_text.rm_lines().rm_nonchars().rm_spaces()
-        'The quick brown fox jumped over the lazy dog'
+        The quick brown fox jumped over the lazy dog
     """ # noqa
 
     def __init__(self, text, options={}):

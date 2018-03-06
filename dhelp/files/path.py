@@ -79,7 +79,7 @@ class Path(UserString):
 
         Example:
             >>> print(Path(some/path.txt))
-            'path.txt'
+            path.txt
         """
         return os.path.basename(self.data)
 
@@ -93,7 +93,7 @@ class Path(UserString):
 
         Example:
             >>> print(Path(some/path.txt).dirname())
-            '/absolute/path/to/some'
+            /absolute/path/to/some
 
         """
         return os.path.dirname(self.data)
@@ -170,7 +170,7 @@ class Path(UserString):
 
         Example:
             >>> print(Path('some/path').copy('some/other-path'))
-            'some/other-path'
+            some/other-path
         """ # noqa
         # set default options
         if 'encoding' not in options:
@@ -241,7 +241,7 @@ class Path(UserString):
 
         Example:
             >>> print(Path('some/path').move('some/other-path'))
-            'some/other-path'
+            some/other-path
         """ # noqa
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
@@ -310,7 +310,7 @@ class Path(UserString):
 
         Example:
             >>> Path(some/path).makedirs()
-            'some/path'
+            some/path
         """
         # if parent directory is non-extant
         if not os.path.exists(os.path.dirname(self.data)):

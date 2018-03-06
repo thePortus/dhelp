@@ -38,7 +38,7 @@ class CSVFile(Path):
         >>> from dhelp import CSVFile
         >>> csv_file = CSVFile('some/path.csv')
         >>> print(csv_file)
-        'some/path.csv'
+        some/path.csv
     """
 
     @property
@@ -151,8 +151,8 @@ class CSVFile(Path):
             >>> # save to csv file
             >>> csv_file = CSVFile('some/path.csv').save(fake_data, fieldnames=fake_fieldnames)
             >>> print(csv_file)
-            '/absolute/path/to/some/path.csv'
-        """
+            /absolute/path/to/some/path.csv
+        """ # noqa
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
         if 'newline' not in options:
@@ -209,7 +209,7 @@ class CSVFile(Path):
 
         >>> # .modify will return a new CSVFile object tied to the new location
         >>> print(altered_csv_file)
-        '/absolute/path/to/some/other-path.csv'
+        /absolute/path/to/some/other-path.csv
         """ # noqa
         # create csv object tied to destination and empty deque for new data
         new_csv_file = self.__class__(destination)
@@ -246,6 +246,7 @@ class CSVFile(Path):
         Examples:
             >>> csv_file = CSVFile('some/path.csv')
             >>> csv_file.column_to_txts('some/other-path', text_col='text', filename_col='id')
+            some/path.csv
         """ # noqa
         # ensure output folder is absolute path
         if not os.path.isabs(destination):

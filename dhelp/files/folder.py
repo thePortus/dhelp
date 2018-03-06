@@ -61,8 +61,8 @@ class Folder(Path):
 
         Example:
             >>> print(Folder(some/path).files)
-            ['/absolute/path/to/some/path/file_1.txt', '/absolute/path/to/some/path/file_2.txt', '/absolute/path/to/some/path/file_3.txt'] # noqa
-        """
+            ['/absolute/path/to/some/path/file_1.txt', '/absolute/path/to/some/path/file_2.txt', /absolute/path/to/some/path/file_3.txt]
+        """ # noqa
         dir_files = []
         for folder_item in self.contents:
             if os.path.isfile(os.path.join(self.data, folder_item)):

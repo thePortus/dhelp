@@ -31,7 +31,7 @@ class WebPage(UserString):
                 'silent': True
         ... }
         >>> web_page = WebPage('https://stackoverflow.com', options=options)
-        'https://stackoverflow.com'
+        https://stackoverflow.com
     """ # noqa
 
     def __init__(self, url, options={}):
@@ -71,7 +71,7 @@ class WebPage(UserString):
 
         Examples:
             >>> html_text = WebPage('https://stackoverflow.com/').fetch()
-            '<html><head><title>Stack Overflow...'
+            <!DOCTYPE html>\\r\\n<html>\\r\\n\r\\n    <head>\\r\\n\r\\n        <title>Stack Overflow...
         """ # noqa
         # print message unless silent option
         if not self.silent:
@@ -121,6 +121,6 @@ class WebPage(UserString):
             ...    .find('span', class_='-img')
             >>> # print the text contained in the span tag
             >>> print(header_logo_text.get_text())
-            'Stack Overflow'
+            Stack Overflow
         """ # noqa
         return BeautifulSoup(self.fetch(), 'html.parser')

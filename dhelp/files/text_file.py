@@ -26,7 +26,7 @@ class TextFile(Path):
         >>> from dhelp import TextFile
         >>> text_file = TextFile('some/path.txt')
         >>> print(text_file)
-        'some/path.txt'
+        some/path.txt
     """
 
     def load(self,  options={}):
@@ -45,7 +45,7 @@ class TextFile(Path):
         Examples:
             >>> file_data = TextFile('some/path.txt').load()
             >>> print(file_data)
-            'Lorem ipsum dolor sit amet...'
+            Lorem ipsum dolor sit amet...
         """ # noqa
         # set option defaults
         if 'encoding' not in options:
@@ -87,7 +87,7 @@ class TextFile(Path):
             >>> options = {'overwrite': True}
             >>> saved_text_file = saved_text_file.save('consectetur adipiscing elit', options=options)
             >>> print(saved_text_file)
-            '/absolute/path/to/some/path.txt'
+            /absolute/path/to/some/path.txt
         """
         # set option defaults
         if 'encoding' not in options:

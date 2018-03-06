@@ -25,8 +25,8 @@ class BaseText(UserString):
 
     Example:
         >>> from dhelp import BaseText
-        >>> base_text = BaseText('Lorem ipsum dolor sit amet...')
-        >>> print(base_text)
+        >>> text = BaseText('Lorem ipsum dolor sit amet...')
+        >>> print(text)
         'Lorem ipsum dolor sit amet...'
     """ # noqa
 
@@ -49,8 +49,8 @@ class BaseText(UserString):
             :obj:`str` String form of the text
 
         Example:
-            >>> base_text = BaseText('Lorem ipsum dolor sit amet...')
-            >>> stringified_text = base_text.stringify()
+            >>> text = BaseText('Lorem ipsum dolor sit amet...')
+            >>> stringified_text = text.stringify()
             >>> print(type(stringified_text))
             <class 'str'>
         """
@@ -66,8 +66,8 @@ class BaseText(UserString):
             :obj:`self.__class__` New version of text, with endlines removed
 
         Example:
-            >>> base_text = BaseText('Lorem\\nipsum do-\\nlor sit amet....\\n')
-            >>> modified_text = base_text.rm_lines()
+            >>> text = BaseText('Lorem\\nipsum do-\\nlor sit amet....\\n')
+            >>> modified_text = text.rm_lines()
             >>> print(modified_text)
             'Lorem ipsum dolor sit amet...'
         """
@@ -92,8 +92,8 @@ class BaseText(UserString):
             :obj:`self.__class__` Returns new version of text, with non-letters removed
 
         Example:
-            >>> base_text = BaseText('1αLorem ipsum 2βdolor sit 3γamet...')
-            >>> modified_text = base_text.rm_nonchars()
+            >>> text = BaseText('1αLorem ipsum 2βdolor sit 3γamet...')
+            >>> modified_text = text.rm_nonchars()
             >>> print(modified_text)
             'Lorem ipsum dolor sit amet...'
         """ # noqa
@@ -112,8 +112,8 @@ class BaseText(UserString):
             :obj:`self.__class__` Returns new version of text, with editoria removed
 
         Example:
-            >>> base_text = BaseText('Lore[m i]psum {dolo}r sit a(met)...')
-            >>> modified_text = base_text.rm_edits()
+            >>> text = BaseText('Lore[m i]psum {dolo}r sit a(met)...')
+            >>> modified_text = text.rm_edits()
             >>> print(modified_text)
             'Lor psum r sit a...'
         """ # noqa
@@ -133,8 +133,8 @@ class BaseText(UserString):
             :obj:`self.__class__` Returns new version of text, with extra spaced collapsed
 
         Example:
-            >>> base_text = BaseText('Lorem   ipsum dolor  sit        amet...')
-            >>> modified_text = base_text.rm_spaces()
+            >>> text = BaseText('Lorem   ipsum dolor  sit        amet...')
+            >>> modified_text = text.rm_spaces()
             >>> print(modified_text)
             'Lorem ipsum dolor sit amet...'
         """ # noqa
@@ -161,10 +161,10 @@ class BaseText(UserString):
             :obj:`bool` True if matching, False if not
 
         Example:
-            >>> base_text = BaseText('Lorem ipsum dolor sit amet...')
-            >>> print(base_text.re_search('Lorem ipsum'))
+            >>> text = BaseText('Lorem ipsum dolor sit amet...')
+            >>> print(text.re_search('Lorem ipsum'))
             True
-            >>> print(base_text.re_search('Arma virumque cano'))
+            >>> print(text.re_search('Arma virumque cano'))
             False
         """ # noqa
         # Converting pattern to regex
@@ -214,8 +214,8 @@ class NLTKMixin:
 
         Example:
             >>> stopwords = ['ipsum', 'sit']
-            >>> base_text = EnglishText('Lorem ipsum dolor sit amet...')
-            >>> base_text.rm_stopwords(stoplist=stopwords)
+            >>> text = EnglishText('Lorem ipsum dolor sit amet...')
+            >>> text.rm_stopwords(stoplist=stopwords)
             >>> print(modified_text)
             'Lorem dolor amet...'
         """ # noqa
@@ -248,10 +248,10 @@ class NLTKMixin:
             :obj:`self.__class__` New version of the text with tokens transformed to their lemmata
 
         Example:
-            >>> base_text = EnglishText('The quick brown fox jumped over the lazy dog.') # noqa
-            >>> print(base_text.lemmatize())
+            >>> text = EnglishText('The quick brown fox jumped over the lazy dog.')
+            >>> print(text.lemmatize())
             'The quick brown fox jump over the lazy dog .'
-        """
+        """ # noqa
         tagged_words = self.tag()
         lemmata = []
         lemmatizer = WordNetLemmatizer()
@@ -283,12 +283,12 @@ class NLTKMixin:
             :obj:`list` List of (string) tokens
 
         Example:
-            >>> base_text = EnglishText('Lorem ipsum dolor sit amet. Consectetur adipiscing elit.') # noqa
+            >>> text = EnglishText('Lorem ipsum dolor sit amet. Consectetur adipiscing elit.') # noqa
             >>> print(EnglishText.tokenize())
-            ['Lorem', 'ipsum', 'dolor', 'sit', 'amet', '.', 'Consectetur', 'adipiscing', 'elit', '.'] # noqa
+            ['Lorem', 'ipsum', 'dolor', 'sit', 'amet', '.', 'Consectetur', 'adipiscing', 'elit', '.']
             >>> print(EnglishText.tokenize(mode='sentence'))
             ['Lorem ipsum dolor sit amet.', 'Consectetur adipiscing elit.']
-        """
+        """ # noqa
         if mode == 'sentence':
             return (
                 sent_tokenize(self.data)
@@ -309,11 +309,11 @@ class NLTKMixin:
             (:obj:`list`) Words tagged as 2-tuples (word|part of speech)
 
         Example:
-            >>> base_text = EnglishText('They hated to think of sample sentences.')
-            >>> basic_tags = base_text.tag()
+            >>> text = EnglishText('They hated to think of sample sentences.')
+            >>> basic_tags = text.tag()
             >>> print(basic_tags)
-            [('They', 'PRP'), ('hated', 'VBD'), ('to', 'TO'), ('think', 'VB'), ('of', 'IN'), ('sample', 'JJ'), ('sentences', 'NNS'), ('.', '.')] # noqa
-        """
+            [('They', 'PRP'), ('hated', 'VBD'), ('to', 'TO'), ('think', 'VB'), ('of', 'IN'), ('sample', 'JJ'), ('sentences', 'NNS'), ('.', '.')]
+        """ # noqa
         word_list = list(self.tokenize())
         return pos_tag(word_list)
 
@@ -329,11 +329,11 @@ class NLTKMixin:
             :obj:`list` of :obj:`tuple` Words of each ngram
 
         Example:
-            >>> base_text = EnglishText('They hated to think of sample sentences.')
-            >>> basic_ngrams = base_text.ngrams()
+            >>> text = EnglishText('They hated to think of sample sentences.')
+            >>> basic_ngrams = text.ngrams()
             >>> print(basic_ngrams)
-            [('They', 'hated', 'to'), ('hated', 'to', 'think'), ('to', 'think', 'of'), ('think', 'of', 'sample'), ('of', 'sample', 'sentences'), ('sample', 'sentences', '.')] # noqa
-        """
+            [('They', 'hated', 'to'), ('hated', 'to', 'think'), ('to', 'think', 'of'), ('think', 'of', 'sample'), ('of', 'sample', 'sentences'), ('sample', 'sentences', '.')]
+        """ # noqa
         tokens = self.tokenize()
         if gram_size < 2:   # pragma: no cover
             gram_size = 2
@@ -358,8 +358,8 @@ class NLTKMixin:
             :obj:`list` of :obj:`tuple` Words of each skipgram
 
         Example:
-            >>> base_text = EnglishText('They hated to think of sample sentences.')
-            >>> basic_skipgrams = base_text.skipgrams()
+            >>> text = EnglishText('They hated to think of sample sentences.')
+            >>> basic_skipgrams = text.skipgrams()
             >>> print(basic_skipgrams)
             [('They', 'hated', 'to'), ('They', 'hated', 'think'), ('They', 'to', 'think'), ('hated', 'to', 'think'), ('hated', 'to', 'of'), ('hated', 'think', 'of'), ('to', 'think', 'of'), ('to', 'think', 'sample'), ('to', 'of', 'sample'), ('think', 'of', 'sample'), ('think', 'of', 'sentences'), ('think', 'sample', 'sentences'), ('of', 'sample', 'sentences'), ('of', 'sample', '.'), ('of', 'sentences', '.'), ('sample', 'sentences', '.')] # noqa
         """

@@ -21,7 +21,7 @@ class TextFolder(Folder):
         >>> from dhelp import TextFolder
         >>> text_folder = TextFolder('some/path')
         >>> print(text_folder)
-        'some/path'
+        some/path
     """
 
     def text_files(self, options={}):
@@ -46,7 +46,7 @@ class TextFolder(Folder):
             >>> folder_files = TextFolder('some/path').text_files()
             >>> for folder_file in folder_files:
             ...     print(folder_file.load())
-            'Lorem ipsum dolor sit amet...'
+            Lorem ipsum dolor sit amet...
         """ # noqa
         contents = deque([])
         # set option defaults
@@ -100,7 +100,7 @@ class TextFolder(Folder):
             >>> # use TextFolder().modify, pass your function as 1st arg
             >>> text_folder = TextFolder('some/path').modify(modify_record, options=options)
             >>> print(text_folder)
-            '/absolute/path/to/some/path'
+            /absolute/path/to/some/path
         """ # noqa
         # set option defaults
         if 'encoding' not in options:
