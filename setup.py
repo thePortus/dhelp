@@ -21,7 +21,7 @@ config = {
     data for DH students""",
     'author': "David J. Thomas",
     'author_email': "dave.a.base@gmail.com",
-    'url': "https://github.com/thePortus/arakhne",
+    'url': "https://github.com/thePortus/dhelp",
     'download_url': "https://github.com/thePortus/dhelp/archive/master.zip",
     'keywords': [
         "digital-humanities",
