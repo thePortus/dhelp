@@ -23,3 +23,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
     * Continuous Integration support for Travis-CI and Coveralls
     * .editorconfig added to enforce project standards
     * To document changes, both past and future, added CHANGELOG.md and TODO.md
+    * CLTK functionality added for Greek/Latin texts
+    * Project documentation with sphinx added
