@@ -13,8 +13,7 @@ class Folder(Path):
     file types.
 
     Args:
-        path : :obj:`str`
-            System path pointing to desired folder location
+        path (:obj:`str`) System path pointing to desired folder location
 
     Examples:
         >>> folder = Folder('some/path')
@@ -27,12 +26,12 @@ class Folder(Path):
         """Lists contents of folder.
 
         Returns:
-            :obj:`list`
+            :obj:`list` of :obj:`str` File/folder names.
 
         Example:
             >>> print(Folder(some/path).files)
-            ['file_1.txt', 'file_2.txt', 'file_3.txt', 'subfolder_1', 'subfolder_2', 'subfolder_3'] # noqa
-        """
+            ['file_1.txt', 'file_2.txt', 'file_3.txt', 'subfolder_1', 'subfolder_2', 'subfolder_3']
+        """ # noqa
         if not self.exists or not self.is_dir:
             return None
         return os.listdir(self.data)
@@ -42,7 +41,7 @@ class Folder(Path):
         """Convenience method to get the len() of the folder contents.
 
         Returns:
-            :obj:`int`
+            :obj:`int` Number of items in the folder
 
         Example:
             >>> print(Folder('some/path').length)
@@ -58,7 +57,7 @@ class Folder(Path):
         path to return list of absolute paths to all files in the directory.
 
         Returns:
-            :obj:`list`
+            :obj:`list` of :obj:`str` File names
 
         Example:
             >>> print(Folder(some/path).files)
@@ -78,7 +77,7 @@ class Folder(Path):
         path to return list of absolute paths to all folders in the directory.
 
         Returns:
-            :obj:`list`
+            :obj:`list` of :obj:`str` Folder names
 
         Example:
             >>> print(Folder(some/path).folders)

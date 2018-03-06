@@ -17,7 +17,7 @@ class TextFile(Path):
         path (:obj:`str`) System path pointing to desired text file location
 
     Attributes:
-        exists (:obj:bool`) Whether or not a file exists at the location
+        exists (:obj:`bool`) Whether or not a file exists at the location
         size (:obj:`int`) Size of item(s) stored at current location
         basename (:obj:`str`) Name of current file
         dirname (:obj:`str`) Full path to file's parent directory
@@ -37,18 +37,16 @@ class TextFile(Path):
         which case data is returned as a list of strings.
 
         Args:
-            options : :obj:`dict`, optional
-                Options settings found at respective keywords
+            options (:obj:`dict`, optional) Options settings found at respective keywords
 
         Raises:
-            Exception
-                If path does not point to a file
+            Exception: If path does not point to a file
 
         Examples:
             >>> file_data = TextFile('some/path.txt').load()
             >>> print(file_data)
             'Lorem ipsum dolor sit amet...'
-        """
+        """ # noqa
         # set option defaults
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
@@ -76,18 +74,16 @@ class TextFile(Path):
         option it set.
 
         Args:
-            data : :obj:`str`
-                Data to be saved to file, must be a single string
-            options : :obj:`dict`, optional
-                Options settings found at respective keywords
+            data (:obj:`str`) Data to be saved to file, must be a single string
+            options (:obj:`dict`, optional) Options settings found at respective keywords
 
         Examples:
-            # saving to a new location
+            >>> # saving to a new location
             >>> saved_text_file = TextFile('some/path.txt').save('Lorem ipsum dolor sit amet...') # noqa
             >>> print(saved_text_file) # noqa
             '/absolute/path/to/some/path.txt'
 
-            # setting overwrite option
+            >>> # setting overwrite option
             >>> options = {'overwrite': True}
             >>> saved_text_file = saved_text_file.save('consectetur adipiscing elit', options=options)
             >>> print(saved_text_file)

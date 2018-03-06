@@ -12,12 +12,10 @@ class Path(UserString):
     be used directly, Path is parent to various Folder and File classes.
 
     Args:
-        path : :obj:`str`
-            System path pointing to desired text file location
+        path (:obj:`str`) System path pointing to desired text file location
 
     Raises:
-        Exception
-            If a non-string arg is sent as path
+        Exception: If a non-string arg is sent as path
     """
 
     def __init__(self, path=None):
@@ -39,8 +37,7 @@ class Path(UserString):
         """Check if anything exists at the current path.
 
         Returns:
-            :obj:`bool`
-                True if anything exists at path, False if not
+            :obj:`bool` True if anything exists at path, False if not
 
         Example:
             >>> print(Path('some/extant/path').exists())
@@ -59,8 +56,7 @@ class Path(UserString):
         0 if non-extant.
 
         Returns:
-            :obj:`int`
-                Size of item at path, in bytes
+            :obj:`int` Size of item at path, in bytes
 
         Example:
             >>> print(Path(some/path.txt))
@@ -79,8 +75,7 @@ class Path(UserString):
         e.g. the name of the current file or folder.
 
         Returns:
-            :obj:`str`
-                Name of current file or folder
+            :obj:`str` Name of current file or folder
 
         Example:
             >>> print(Path(some/path.txt))
@@ -94,9 +89,7 @@ class Path(UserString):
 
         Returns the absolute path of the parent directory of the current path.
 
-        Returns:
-            :obj:`str`
-                Name of parent directory of current path
+        Returns: :obj:`str` Name of parent directory of current path
 
         Example:
             >>> print(Path(some/path.txt).dirname())
@@ -111,9 +104,7 @@ class Path(UserString):
 
         Returns true if path points to existing directory.
 
-        Returns:
-            :obj:`bool`
-                True if path points to directory, False if not
+        Returns: :obj:`bool` True if path points to directory, False if not
 
         Examples:
             >>> print(Path(some/path).is_dir())
@@ -130,8 +121,7 @@ class Path(UserString):
         Returns true if path points to existing file.
 
         Returns:
-            :obj:`bool`
-                True if path points to file, False if not
+            :obj:`bool` True if path points to file, False if not
 
         Examples:
             >>> print(Path(some/path.txt).is_file())
@@ -148,8 +138,7 @@ class Path(UserString):
         Returns true if path points to symbolic link.
 
         Returns:
-            :obj:`bool`
-                True if path points to symbolic link, False if not
+            :obj:`bool` True if path points to symbolic link, False if not
 
         Examples:
             >>> print(Path(some/link.txt).is_link())
@@ -170,24 +159,19 @@ class Path(UserString):
         exists at the destination unless overwrite option is flagged.
 
         Args:
-            destination : :obj:`str`
-                System path to which you want to copy item(s) at current path
-            options : :obj:`dict`, optional
-                Options settings found at respective keywords
+            destination (:obj:`str`) System path to which you want to copy item(s) at current path
+            options (:obj:`dict`, optional) Options settings found at respective keywords
 
         Returns:
-            :obj:`self.__class__`
-                New instance of object tied to the copied path
+            :obj:`self.__class__` New instance of object tied to the copied path
 
         Raises:
-            Exception
-                If a problem is encountered when copying
+            Exception: If a problem is encountered when copying
 
         Example:
             >>> print(Path('some/path').copy('some/other-path'))
             'some/other-path'
-
-        """
+        """ # noqa
         # set default options
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
@@ -223,12 +207,10 @@ class Path(UserString):
         recursively. Returns True if successful.
 
         Returns:
-            :obj:`bool`
-                True if successful
+            :obj:`bool` True if successful
 
         Raises:
-            Exception
-                If any issue was encountered deleting item(s) at path
+            Exception: If any issue was encountered deleting item(s) at path
 
         Example:
             >>> print(Path(some/path).remove())
@@ -251,19 +233,16 @@ class Path(UserString):
         finally the results of .copy().
 
         Args:
-            destination : :obj:`str`
-                System path to which you want to move item(s) at current path
-            options : :obj:`dict`, optional
-                Options settings found at respective keywords
+            destination (:obj:`str`) System path to which you want to move item(s) at current path
+            options (:obj:`dict`, optional) Options settings found at respective keywords
 
         Returns:
-            :obj:`self.__class__`
-                New instance of object tied to destinationpath
+            :obj:`self.__class__` New instance of object tied to destination path
 
         Example:
             >>> print(Path('some/path').move('some/other-path'))
             'some/other-path'
-        """
+        """ # noqa
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
         if 'overwrite' not in options:
@@ -278,15 +257,11 @@ class Path(UserString):
         Called by child class load methods, stops from loading non-extant file.
 
         Args:
-            options : :obj:`dict`, optional
-                Options settings found at respective keywords
-
-        Possible option fields (with default settings)...
+            options :obj:`dict`, optional Options settings found at respective keywords
 
         Raises:
-            Exception
-                If nothing exists at path
-        """
+            Exception: If nothing exists at path
+        """ # noqa
         # set options defaults
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'
@@ -304,13 +279,11 @@ class Path(UserString):
         Called by child class save methods, prevents overwrite without option.
 
         Args:
-            options : :obj:`dict`, optional
-                Options settings found at respective keywords
+            options :obj:`dict`, optional Options settings found at respective keywords
 
         Raises:
-            Exception
-                If something exists at path and overwrite option is not set
-        """
+            Exception: If something exists at path and overwrite option is not set
+        """ # noqa
         # set option defaults
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'

@@ -15,8 +15,7 @@ class TextFolder(Folder):
     enables batch editing of an entire directory by passing a callback.
 
     Args:
-        path : :obj:`str`
-            System path pointing to desired text folder location
+        path (:obj:`str`) System path pointing to desired text folder location
 
     Examples:
         >>> from dhelp import TextFolder
@@ -34,25 +33,21 @@ class TextFolder(Folder):
         a list of string extensions (without the '.').
 
         Args:
-            options : :obj:`dict`, optional
-                Options settings found at respective keywords
+            options (:obj:`dict`, optional) Options settings found at respective keywords
 
         Returns:
-            :obj:`collections.deque`
-                Deque where each element is a TextFile list
+            :obj:`collections.deque` of `:obj:`dhelp.TextFile` TextFiles of each .txt file (or other filetype)
 
         Raises:
-            Exception
-                If path does not point to folder
-            TypeError
-                If non-list is sent as extensions option
+            Exception: If path does not point to folder
+            TypeError: If non-list is sent as extensions option
 
         Examples:
             >>> folder_files = TextFolder('some/path').text_files()
             >>> for folder_file in folder_files:
             ...     print(folder_file.load())
             'Lorem ipsum dolor sit amet...'
-        """
+        """ # noqa
         contents = deque([])
         # set option defaults
         if 'encoding' not in options:
@@ -86,16 +81,12 @@ class TextFolder(Folder):
         saved to the modified file, as long as it is a string.
 
         Args:
-            destination : :obj:`string`
-                System path where you want the altered folder to be saved
-            modifycb : :obj:`function`
-                User-defined function used to modify each record's data
-            options : :obj:`dict`, optional
-                Options settings found at respective keywords
+            destination (:obj:`string`) System path where you want the altered folder to be saved
+            modifycb (:obj:`function`) User-defined function used to modify each record's data
+            options (:obj:`dict`, optional) Options settings found at respective keywords
 
         Returns:
-            :obj:`files.TextFolder`
-                Gives a new TextFolder object tied to the modified folder
+            :obj:`self.__class__` New TextFolder object tied to the modified folder
 
         Examples:
             >>> # define a function which alters data as you wish
@@ -107,11 +98,10 @@ class TextFolder(Folder):
             >>> options = {'destination': 'some/other-path'}
 
             >>> # use TextFolder().modify, pass your function as 1st arg
-            >>> text_folder = TextFolder('some/path').modify(modify_record, options=options) # noqa
+            >>> text_folder = TextFolder('some/path').modify(modify_record, options=options)
             >>> print(text_folder)
             '/absolute/path/to/some/path'
-
-        """
+        """ # noqa
         # set option defaults
         if 'encoding' not in options:
             options['encoding'] = 'utf-8'

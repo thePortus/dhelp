@@ -14,8 +14,6 @@
     * Add support for PDFs
     * Add support for other non-plaintext data, tbd
 * dhelp.text
-    * Add english language-specific nltk text class
-    * Add cltk generalized text (or mix-in) class
-    * Add greek and latin language-specific text classes
-    * Add helper method to automate the downloading of nltk trainer sets
-    * Add helper method to automate the downloading of cltk trainer sets
+    * Add more method/function support for greek/latin texts
+    * Add more cltk language functionality
+    * Add multiple text functions (corpus analysis)

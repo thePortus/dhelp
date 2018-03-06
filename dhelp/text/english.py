@@ -1,7 +1,6 @@
 #!/user/bin/python
 
-from .base_text import BaseText
-from .mixin_nltk import NLTKMixin
+from ._bases_mixins import BaseText, NLTKMixin
 
 
 class EnglishText(NLTKMixin, BaseText):
@@ -13,10 +12,10 @@ class EnglishText(NLTKMixin, BaseText):
     with the altered text.
 
     Example:
-        >>> english_text = EnglishText('Th3e Qui\\nck b     rown fox jumped over the lazy dog') # noqa
+        >>> english_text = EnglishText('Th3e Qui\\nck b     rown fox jumped over the lazy dog')
         >>> english_text.rm_lines().rm_nonchars().rm_spaces()
         'The quick brown fox jumped over the lazy dog'
-    """
+    """ # noqa
 
     def __init__(self, text, options={}):
         options['language'] = 'english'

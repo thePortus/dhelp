@@ -6,9 +6,6 @@ Welcome to dhelp docs!
 
    readme
    source/modules
-   source/dhelp.web
-   source/dhelp.files
-   source/dhelp.text
    changelog
 
 

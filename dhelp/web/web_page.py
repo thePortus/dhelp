@@ -16,10 +16,8 @@ class WebPage(UserString):
     a page in a single line.
 
     Args:
-        url : :obj:`str`
-            URL of page you wish to scrape
-        options : :obj:`dict`, optional
-            dictionary with keyword/value pairs to set options
+        url (:obj:`str`) URL of page you wish to scrape
+        options (:obj:`dict`, optional) Dictionary with keyword/value pairs to set options
 
     Examples:
         >>> from dhelp import WebPage
@@ -34,7 +32,7 @@ class WebPage(UserString):
         ... }
         >>> web_page = WebPage('https://stackoverflow.com', options=options)
         'https://stackoverflow.com'
-    """
+    """ # noqa
 
     def __init__(self, url, options={}):
         # call parent constructor
@@ -66,17 +64,15 @@ class WebPage(UserString):
         make inifinite requests.
 
         Args:
-            retry_counter : :obj:`int`
-                The number of attempts already made to fetch the object.
+            retry_counter (:obj:`int`) The number of attempts already made to fetch the object.
 
         Returns:
-            :obj:`str`
-                HTML from requested URL, in plain text format
+            :obj:`str` HTML from requested URL, in plain text format
 
         Examples:
             >>> html_text = WebPage('https://stackoverflow.com/').fetch()
             '<html><head><title>Stack Overflow...'
-        """
+        """ # noqa
         # print message unless silent option
         if not self.silent:
             print('Fetching', self.data)
@@ -114,8 +110,7 @@ class WebPage(UserString):
         to use other parsers (e.g. lxml).
 
         Returns:
-            :obj:`bs4.BeautifulSoup`
-                BeautifulSoup object loaded with parsed data from web
+            :obj:`bs4.BeautifulSoup` BeautifulSoup object loaded with parsed data from web
 
         Examples:
             >>> # fetch webpage and parse into BeautifulSoup object
@@ -127,5 +122,5 @@ class WebPage(UserString):
             >>> # print the text contained in the span tag
             >>> print(header_logo_text.get_text())
             'Stack Overflow'
-        """
+        """ # noqa
         return BeautifulSoup(self.fetch(), 'html.parser')
