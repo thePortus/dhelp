@@ -2,7 +2,16 @@
 
 import unittest
 
+import nltk
+
 from ..english import EnglishText
+
+
+class AncientGreekSetupLayer:
+
+    @classmethod
+    def setUp(cls):
+        nltk.download('punkt')
 
 
 class TestEnglishText(unittest.TestCase):
