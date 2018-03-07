@@ -11,7 +11,7 @@ config = {
     'author_email': 'dave.a.base@gmail.com',
     'description': """DH Python tools for scraping web pages, pre-processing
     data, and performing nlp analysis quickly.""",
-    'version': '0.0.1',
+    'version': '0.0.2',
     'LICENSE': 'MIT',
     'long_description': """Students often see great potential in Python for
     historical analysis. But, before they see real payoff they often face too
