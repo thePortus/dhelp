@@ -164,5 +164,5 @@ class TestEnglishText(unittest.TestCase):
             'lazy': 1,
             'dog': 1
         }
-        exempla = exempla.word_counts()
+        exempla = exempla.word_count()
         return self.assertEqual(exempla, comparanda)
