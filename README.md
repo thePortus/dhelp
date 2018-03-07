@@ -4,7 +4,8 @@
 
 ---
 
-[![Build Status](https://travis-ci.org/thePortus/dhelp.svg?branch=master)](https://travis-ci.org/thePortus/dhelp) [![Coverage Status](https://coveralls.io/repos/github/thePortus/dhelp/badge.svg?branch=master)](https://coveralls.io/github/thePortus/dhelp?branch=master) [![Documentation Status](https://readthedocs.org/projects/dhelp/badge/?version=latest)](http://dhelp.readthedocs.io/en/latest/?badge=latest)
+[![PyPI version](https://badge.fury.io/py/dhelp.svg)](https://badge.fury.io/py/dhelp) [![Build Status](https://travis-ci.org/thePortus/dhelp.svg?branch=master)](https://travis-ci.org/thePortus/dhelp) [![Coverage Status](https://coveralls.io/repos/github/thePortus/dhelp/badge.svg?branch=master)](https://coveralls.io/github/thePortus/dhelp?branch=master) [![Documentation Status](https://readthedocs.org/projects/dhelp/badge/?version=latest)](http://dhelp.readthedocs.io/en/latest/?badge=latest) [![Code Health](https://landscape.io/github/thePortus/dhelp/master/landscape.svg?style=flat)](https://landscape.io/github/thePortus/dhelp/master) [![Waffle.io - Columns and their card count](https://badge.waffle.io/thePortus/dhelp.svg?columns=all)](https://waffle.io/thePortus/dhelp)
+
 
 ---
 
@@ -135,22 +136,22 @@ Examples...
 # .rm_lines() - remove endline characters
 text = EnglishText('The qui\\nck brown fox jumped over the lazy dog')
 text.rm_lines()
-The quick brown fox jumped over the lazy dog
+'The quick brown fox jumped over the lazy dog'
 
 # .rm_nonchars() - remove non-letters
 text = EnglishText('Th3e quick brown fox jumped over the lazy dog')
 text.rm_nonchars()
-The quick brown fox jumped over the lazy dog
+'The quick brown fox jumped over the lazy dog'
 
 # .rm_edits() - remove text between editorial marks
 text = EnglishText('Th3e qui\\nck b     rown fox jumped over the lazy dog')
 text.rm_edits()
-The quick brown fox jumped over the lazy dog
+'The quick brown fox jumped over the lazy dog'
 
 # .rm_spaces() - collapses redundant whitespaces
 text = EnglishText('Th3e qui\\nck b     rown fox jumped over the lazy dog')
 text.rm_spaces()
-The quick brown fox jumped over the lazy dog
+'The quick brown fox jumped over the lazy dog'
 
 # .re_search() - checks for a given pattern
 text = EnglishText('The quick brown fox jumped over the lazy dog')
@@ -162,12 +163,12 @@ False
 # .rm_stopwords() - removes a list of words from text
 text = EnglishText('The quick brown fox jumped over the lazy dog')
 text.rm_stopwords(['quick', 'brown','lazy'])
-The fox jumped over the dog
+'The fox jumped over the dog'
 
 # chain methods to perform them in one command
 text = EnglishText('Th3e qui\\nck b     rown fox jumped over the lazy dog')
 text.rm_lines().rm_nonchars().rm_spaces()
-The quick brown fox jumped over the lazy dog
+'The quick brown fox jumped over the lazy dog'
 
 ```
 
@@ -178,7 +179,7 @@ The quick brown fox jumped over the lazy dog
 Before you use this object for any of the methods below you need to download trainer corpora.
 
 ```python
-from dhelp import LatinText
+from dhelp import EnglishText
 EnglishText('').setup()
 ```
 
@@ -195,6 +196,11 @@ text.lemmatize()
 text = EnglishText('The quick brown fox jumped over the lazy dog.')
 EnglishText.tokenize()
 ['The', 'quick', 'brown', 'fox', 'jumped', 'over', 'the', 'lazy', 'dog']
+
+# get word tallys
+text = EnglishText('The quick brown fox jumped over the lazy dog.')
+EnglishText.word_count()
+{'The': 1, 'quick': 1, 'brown': 1, 'fox': 1, 'jumped': 1, 'over': 1, 'the': 1, 'lazy': 1, 'dog': 1}
 
 # tag words with parts of speech
 text = EnglishText('They hated to think of sample sentences.')
@@ -213,9 +219,9 @@ text.skipgrams()
 
 ```
 
-#### Greek & Latin
+#### Latin
 
-**Note: Greek & Latin Classes inherit all methods from EnglishText**
+**Note: Latin Classes inherit all methods from EnglishText**
 
 **Setup: Download the Latin Corpora**
 
@@ -226,19 +232,34 @@ Before you use this object for any of the methods below you need to download tra
 from dhelp import LatinText
 LatinText('').setup()
 
-# OR
-
-from dhelp import GreekText
-GreekText('').setup()
-
 ```
 
 ```python
 
+# tokenize words into list of strings
+text = LatinText('Gallia est omnis divisa in partes tres')
+text.tokenize()
+['Gallia', 'est', 'omnis', 'divisa', 'in', 'partes', 'tres']
+
+# lemmatize the text
+text = LatinText('Gallia est omnis divisa in partes tres')
+text.lemmatize()
+'gallia edo1 omne divido in pars tres'
+
+# scan text for meter
+text = LatinText('Arma virumque cano, Troiae qui primus ab oris')
+text.scansion()
+['¯˘˘¯˘˘˘˘˘¯˘˘˘˘˘x']
+
+# get recognized entities as a list
+text = LatinText('Gallia est omnis divisa in partes tres')
+text.entities()
+['Gallia']
+
 # macronize vowels
 text = LatinText('Arma virumque cano, Troiae qui primus ab oris')
-print(text.macronize())
-arma virumque cano , trojae quī prīmus ab ōrīs
+text.macronize()
+'arma virumque cano , trojae quī prīmus ab ōrīs'
 
 # search for known entities
 text = LatinText('Gallia est omnis divisa in partes tres')
@@ -248,7 +269,7 @@ text.entities()
 # compare for longest common substring
 text = LatinText('Gallia est omnis divisa in partes tres')
 text.compare_longest_common_substring('Galliae sunt omnis divisae in partes tres')
-in partes tres
+'in partes tres'
 
 # compare minhash's
 LatinText('Gallia est omnis divisa in partes tres')
@@ -258,11 +279,94 @@ text.compare_minhash('Galliae sunt omnis divisae in partes tres')
 # count all words
 text = LatinText('Gallia est omnis divisa in partes tres tres tres')
 text.word_count(word='tres')
+3
+
+```
+
+#### Greek
+
+**Note: Greek Classes inherit all methods from EnglishText**
+
+**Setup: Download the Greek Corpora**
+
+Before you use this object for any of the methods below you need to download trainer corpora.
+
+```python
+
+from dhelp import AncientGreekText
+AncientGreekText('').setup()
+
+```
+
+```python
+
+# normalize character encoding differences
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.normalize()
+'ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα'
+
+# perform text cleanup, designed for tlg texts
+text = AncientGreekText('ῖν», εἰς δὲ τὸν ἕτερον κ[α]ττίτ[ερον «εἰ λῶιον καὶ ἄμει]νόν ἐστι')
+text.tlgu_cleanup()
+'ῖν εἰς δὲ τὸν ἕτερον καττίτερον εἰ λῶιον καὶ ἄμεινόν ἐστι'
+
+# tokenize words into list of strings
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.tokenize()
+['ἔνθα', 'ποτὲ', 'Ἀθηναίοις', 'ἦν', 'ἀργύρου', 'μέταλλα']
+
+# lemmatize the text
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.lemmatize()
+'ἔνθα ποτὲ ἀθηναῖος εἰμί ἀργυρόω μέταλλον'
+
+# perform part-of-speech tagging
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.tag()
+[('ἔνθα', 'D--------'), ('ποτὲ', 'G--------'), ('Ἀθηναίοις', None), ('ἦν', 'V3SIIA---'), ('ἀργύρου', 'N-S---MG-'), ('μέταλλα', None)]
+
+# search for known entities
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.entities()
+['Ἀθηναίοις']
+
+# compare for longest common substring
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.compare_longest_common_substring('ἔνθα Ἀθηναίοις ἀργύρου μέταλλα')
+'ἀργύρου μέταλλα'
+
+# compare minhash's
+AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.compare_minhash('Ἀθηναίοις ἦν μέταλλα')
+0.4594594594594595
+
+# count all words
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.word_count(word='Ἀθηναίοις')
+1
 
 ```
 
 ---
 
-# Examples in Practice
+# Using Objects Together
 
-Coming Soon
+Lemmatizing an entire folder of Latin text files
+
+```python
+
+from dhelp import TextFolder, LatinText
+
+# define a function which defines how each file's data will be modified (in this case removing extra spaces and lemmatizing)
+def modify_function(file_data):
+    file_data = LatinText(file_Data)
+    return file_data.rm_space().lemmatize()
+
+# create a TextFolder object tied to the location of the Latin txt files
+text_folder = TextFolder('path/to/latin/files')
+# call the modify method, sending the output path and the name of the function you defined
+text_folder.modify('path/to/latin/files-lemmatized', modify_function)
+
+# That's it, you will now have a folder full of lemmatized Latin files
+
+```
