@@ -433,7 +433,8 @@ class CLTKMixin(NLTKMixin):
             :obj:`list` of :obj:`str` Tokenized words (or sentences)
 
         Example:
-            >>> # TODO:
+            >>> LatinText('Gallia est omnis divisa in partes tres').tokenize()
+            ['Gallia', 'est', 'omnis', 'divisa', 'in', 'partes', 'tres']
 
         """
         from cltk.tokenize.word import nltk_tokenize_words
