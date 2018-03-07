@@ -25,20 +25,11 @@ config = {
         'beautifulsoup4==4.6.0',
         'certifi==2018.1.18',
         'chardet==3.0.4',
-        'cltk==0.1.83',
-        'gitdb2==2.0.3',
-        'GitPython==2.1.8',
         'idna==2.6',
         'nltk==3.2.5',
-        'python-crfsuite==0.9.5'
-        'pyuca==1.2',
-        'PyYAML==3.12',
-        'regex==2018.2.21',
         'requests==2.18.4',
         'six==1.11.0',
-        'smmap2==2.0.3'
         'urllib3==1.22',
-        'Whoosh==2.7.4'
     ],
     'keywords': [
         'digital-humanities',
