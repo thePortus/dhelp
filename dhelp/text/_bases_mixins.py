@@ -197,17 +197,15 @@ class NLTKMixin:
         Example:
             >>> EnglishText('').setup()
         """
-        nltk.download([
-            'punkt',
-            'wordnet',
-            'words',
-            'large_grammars',
-            'averaged_perceptron_tagger',
-            'hmm_treebank_pos_tagger',
-            'maxent_treebank_pos_tagger',
-            'universal_tagset',
-            'maxent_ne_chunker'
-        ])
+        nltk.download('punkt')
+        nltk.download('wordnet')
+        nltk.download('words')
+        nltk.download('large_grammars')
+        nltk.download('averaged_perceptron_tagger')
+        nltk.download('hmm_treebank_pos_tagger')
+        nltk.download('maxent_treebank_pos_tagger')
+        nltk.download('universal_tagset')
+        nltk.download('maxent_ne_chunker')
         return True
 
     def rm_stopwords(self, stoplist=[]):
