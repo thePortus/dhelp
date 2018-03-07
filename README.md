@@ -56,7 +56,14 @@ easy_install setup.py
 
 ## Greek & Latin Users
 
-If you want to work with CLTK tools, you must either `pip install -r requirements/dev.txt` from the root of this repo, or just type `pip install cltk`. Then, before you use a Text object for the first time, run LatinText('').setup() (or GreekText)
+If you want to work with Greek and Latin, you need to install cltk via pip...
+
+```sh
+
+# you may need admin privileges
+pip install cltk
+
+```
 
 ---
 
