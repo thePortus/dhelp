@@ -195,9 +195,19 @@ class NLTKMixin:
         sets.
 
         Example:
-            >>> EnglishText('').setup() # noqa
+            >>> EnglishText('').setup()
         """
-        nltk.download()
+        nltk.download([
+            'punkt',
+            'wordnet',
+            'words',
+            'large_grammars',
+            'averaged_perceptron_tagger',
+            'hmm_treebank_pos_tagger',
+            'maxent_treebank_pos_tagger',
+            'universal_tagset',
+            'maxent_ne_chunker'
+        ])
         return True
 
     def rm_stopwords(self, stoplist=[]):

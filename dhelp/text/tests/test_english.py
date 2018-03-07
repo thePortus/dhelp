@@ -2,8 +2,6 @@
 
 import unittest
 
-import nltk
-
 from ..english import EnglishText
 
 
@@ -11,7 +9,7 @@ class EnglishSetupLayer:
 
     @classmethod
     def setUp(cls):
-        nltk.download('punkt')
+        EnglishText('').setup()
 
 
 class TestEnglishText(unittest.TestCase):
