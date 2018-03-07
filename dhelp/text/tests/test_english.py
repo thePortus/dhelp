@@ -7,7 +7,7 @@ import nltk
 from ..english import EnglishText
 
 
-class AncientGreekSetupLayer:
+class EnglishSetupLayer:
 
     @classmethod
     def setUp(cls):
@@ -15,6 +15,7 @@ class AncientGreekSetupLayer:
 
 
 class TestEnglishText(unittest.TestCase):
+    layer = EnglishSetupLayer
 
     def test_stringify(self):
         # Should get type of string
