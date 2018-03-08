@@ -85,8 +85,9 @@ class BaseText(UserString):
     def rm_nonchars(self):
         """Removes non-language characters.
 
-        Gives a new version of the text with only latin characters remaining.
-        Is overriden by child objects for languages using non latinate chars.
+        Gives a new version of the text with only latin characters remaining,
+        or Greek characters for Greek, texts, and so on. Defaults to assuming
+        Latin based.
 
         Returns:
             :obj:`self.__class__` Returns new version of text, with non-letters removed
@@ -97,8 +98,12 @@ class BaseText(UserString):
             >>> print(modified_text)
             'Lorem ipsum dolor sit amet...'
         """ # noqa
+        if self.options['language'] == 'greek':
+            valid_chars_pattern = '([ʹ-Ϋά-ϡἀ-ᾯᾰ-῾ ])'
+        else:
+            valid_chars_pattern = '([A-Za-z ])'
         return self.__class__(
-            "".join(re.findall("([A-Za-z ])", self.data)),
+            "".join(re.findall(valid_chars_pattern, self.data)),
             self.options
         )
 
