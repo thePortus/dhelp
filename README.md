@@ -48,6 +48,7 @@ Requires [Python 3.x](https://python.org)
     * [EnglishText](#englishtext)
     * [LatinText](#latintext)
     * [AncientGreekText](#ancientgreektext)
+* [Combining Methods](#using-objects-together)
 
 ---
 
@@ -87,39 +88,177 @@ pip install cltk
 
 ---
 
-# Quickstart Guide
-
-## Files Module
+# Files Module
 
 Use the file module to load a file as a string in a single line of code. Or,
 alter every text file in a folder by passing a simple function. Convert a
 column of text data in a .csv file into a series of .txt files, again in a
 single line of code.
 
+## TextFile
+
+**Main Examples**
+
 ```python
 
-from dhelp import TextFolder, TextFile
+from dhelp import TextFile
 
 # load file data as a string and print to screen
-file_data = TextFile('some/file.txt').load()
-print(file_data)
+text_file = TextFile('some/file.txt')
+text_file.load()
 'Lorem ipsum dolor sit amet...'
 
-# get list of TextFiles, one for each .txt in folder
-folder_files = TextFolder('some/folder').text_files
-# loop through each file, load, and print to screen
-for folder_file in folder_files:
-    print(folder_file.load())
-'Lorem ipsum dolor sit amet'
-'consectetur adipiscing elit'
-'sed do eiusmod tempor'
+# save string data to a file, returns self if successful
+text_file = TextFile('some/file.txt')
+text_file.save('Lorem ipsum dolor sit amet...')
+'some/file.txt'
+
 ```
 
-## Web Module
+**Other Functions**
+
+```python
+
+# use a dict to specify options, including overwriting existing files
+options = {
+    'encoding': 'utf-8' # set character encoding for loading/saving
+    'silent': False # set True to supress messages during loading/saving
+    'overwrite': False # set True to save over any previous file
+}
+text_file = TextFile('some/file.txt').save('Lorem ipsum dolor sit amet...', options=options)
+
+# check if a file exists at a location
+TextFile('some/file.txt').exists
+True
+
+# move, copy, or delete files
+TextFile('some/file.txt').move(destination='some/other-file.txt')
+TextFile('some/other-file.txt').copy(destination='some/file.txt')
+TextFile('some/other-file.txt').remove()
+
+```
+
+## TextFolder
+
+**Main Examples**
+
+```python
+
+from dhelp import TextFolder
+
+# returns a list of TextFile objects, each connected to a file in the folder
+folder_files = TextFolder('some/folder').text_files
+# You can loop through and load, edit, save, et.c. the TextFiles as normal
+for folder_file in folder_files:
+    # load the file as a string
+    file_data = folder_file.load()
+    # replace all endline characters with nothing
+    file_data = file_data.replace('\n', '')
+    # save altered data back to the file, specifying overwrite option
+    folder_file.save(file_data, {'overwrite': True})
+
+# .modify - a quick method to load/edit/and save all at once
+
+# first, make a function showing how you want to alter the data of each file
+# it gets 1 arg, the file str data, and returns 1 arg, the altered str data
+def modify_file(file_data):
+    # replace all endline characters with nothing and then return
+    return file_data.replace('\n', '')
+
+# send an output location and modify_file function as args and you are done!
+TextFolder('some/folder').modify('some/other-folder', modify_file)
+
+```
+
+**Other Functions**
+
+```python
+
+# use a dict to specify options, including overwriting existing files
+options = {
+    'encoding': 'utf-8' # set character encoding for loading/saving
+    'silent': False # set True to supress messages during loading/saving
+    'overwrite': False # set True to save over any previous file
+}
+
+TextFolder('some/folder').modify('some/other-folder', modify_file, options=options)
+
+# check if a folder exists at a location
+TextFile('some/folder').exists
+True
+
+# move, copy, or delete folders
+TextFile('some/folder').move(destination='some/other-folder')
+TextFile('some/other-folder').copy(destination='some/folder')
+TextFile('some/other-folder').remove()
+
+```
+
+## CSVFile
+
+**Main Examples**
+
+```python
+
+# load CSV data as a list of dictionaries
+csv_file = CSVFile('some/file.csv')
+csv_file.load()
+[{'id': '1', 'text': 'Lorem ipsum', 'notes': ''}, {'id': '2', 'text': 'dolor sit', 'notes': ''}, {'id': '3', 'text': 'amet.', 'notes': ''}]
+
+# read column fieldnames of an existing csv
+csv_file = CSVFile('some/file.csv')
+csv_file.fieldnames
+['id', 'text', 'notes']
+
+# save a list of dictionary records to a csvfile
+fake_data = [
+    {'id', '1', 'text': 'Lorem ipsum'},
+    {'id', '2', 'text': 'dolor sit'},
+    {'id', '3', 'text': 'amet'}
+]
+fake_data_fieldnames = ['id', 'text']
+csv_file = CSVFile('some/file.csv')
+csv_file.save(fake_data, fake_data_fieldnames)
+'some/file.csv'
+
+# . modify - like TextFolder, load/edit/save every record
+
+# like TextFolder, define a function, this time editing each record's data
+def modify_csv_row(row_data):
+    # the data will come in the form of a dictionary
+    # here we just transform all text entries to lower case
+    row_data['text'] = row_data['text'].lower()
+    return row_data
+
+# now call .modify, sending an output location and the function as args
+CSVFile('some/file.csv').modify('some/other-file.csv', modify_csv_row)
+
+```
+
+**Other Functions**
+
+```python
+
+# check if a csv exists at a location
+CSVFile('some/file.csv').exists
+True
+
+# move, copy, or delete csvs
+CSVFile('some/file.csv').move(destination='some/other-file.csv')
+CSVFile('some/other-file.csv').copy(destination='some/file.csv')
+CSVFile('some/other-file.csv').remove()
+
+```
+
+# Web Module
+
+## WebPage
 
 With the web module, you can download a webpage and parse it into a
 [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) object with
 one command.
+
+*Examples*
 
 ```python
 
@@ -136,7 +275,7 @@ print(header_logo_text.get_text())
 'Stack Overflow'
 ```
 
-## Text Module
+# Text Module
 
 The text module attaches mutiple methods for text cleaning/analysis that can
 be easily accessed. Use one of the Text classes to get a string-like object
@@ -144,7 +283,7 @@ that comes with many convenient cleaning/nlp methods attached. You can chain
 any of the string transformation methods to perform many text operations at
 once.
 
-### EnglishText
+## EnglishText
 
 **Setup: Download the English Corpora**
 
@@ -155,7 +294,7 @@ from dhelp import EnglishText
 EnglishText('').setup()
 ```
 
-**Examples...**
+**Examples**
 
 ```python
 
@@ -228,7 +367,7 @@ text.skipgrams()
 
 ```
 
-#### LatinText
+## LatinText
 
 **Setup: Download the Latin Corpora**
 
@@ -241,7 +380,7 @@ LatinText('').setup()
 
 ```
 
-**Examples...**
+**Examples**
 
 ```python
 
@@ -293,12 +432,12 @@ text.lemmatize()
 'gallia edo1 omne divido in pars tres'
 
 # generate ngrams...
-text = LatinText('They hated to think of sample sentences.')
+text = LatinText('Gallia est omnis divisa in partes tres')
 text.ngrams()
-[('They', 'hated', 'to'), ('hated', 'to', 'think'), ('to', 'think', 'of'), ('think', 'of', 'sample'), ('of', 'sample', 'sentences'), ('sample', 'sentences', '.')]
+[('Gallia', 'est', 'omnis'), ('est', 'omnis', 'divisa'), ('omnis', 'divisa', 'in'), ('divisa', 'in', 'partes'), ('in', 'partes', 'tres')]
 
 # ... or skipgrams
-text = LatinText('They hated to think of sample sentences.')
+text = LatinText('Gallia est omnis divisa in partes tres')
 text.skipgrams()
 [('Gallia', 'est', 'omnis'), ('est', 'omnis', 'divisa'), ('omnis', 'divisa', 'in'), ('divisa', 'in', 'partes'), ('in', 'partes', 'tres')]
 
@@ -339,7 +478,7 @@ text.compare_minhash('Galliae sunt omnis divisae in partes tres')
 
 ```
 
-#### AncientGreekText
+## AncientGreekText
 
 **Setup: Download the Greek Corpora**
 
@@ -352,7 +491,7 @@ AncientGreekText('').setup()
 
 ```
 
-**Examples...**
+**Examples**
 
 ```python
 
