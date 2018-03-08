@@ -4,7 +4,9 @@
 
 ---
 
-[![PyPI version](https://badge.fury.io/py/dhelp.svg)](https://badge.fury.io/py/dhelp) [![Build Status](https://travis-ci.org/thePortus/dhelp.svg?branch=master)](https://travis-ci.org/thePortus/dhelp) [![Coverage Status](https://coveralls.io/repos/github/thePortus/dhelp/badge.svg?branch=master)](https://coveralls.io/github/thePortus/dhelp?branch=master) [![Documentation Status](https://readthedocs.org/projects/dhelp/badge/?version=latest)](http://dhelp.readthedocs.io/en/latest/?badge=latest) [![Code Health](https://landscape.io/github/thePortus/dhelp/master/landscape.svg?style=flat)](https://landscape.io/github/thePortus/dhelp/master) [![Waffle.io - Columns and their card count](https://badge.waffle.io/thePortus/dhelp.svg?columns=all)](https://waffle.io/thePortus/dhelp)
+[![PyPI version](https://badge.fury.io/py/dhelp.svg)](https://badge.fury.io/py/dhelp)
+![PyPI - License](https://img.shields.io/pypi/l/Django.svg)
+ [![Build Status](https://travis-ci.org/thePortus/dhelp.svg?branch=master)](https://travis-ci.org/thePortus/dhelp) [![Coverage Status](https://coveralls.io/repos/github/thePortus/dhelp/badge.svg?branch=master)](https://coveralls.io/github/thePortus/dhelp?branch=master) [![Documentation Status](https://readthedocs.org/projects/dhelp/badge/?version=latest)](http://dhelp.readthedocs.io/en/latest/?badge=latest) [![Code Health](https://landscape.io/github/thePortus/dhelp/master/landscape.svg?style=flat)](https://landscape.io/github/thePortus/dhelp/master) [![Total GitHub downloads](https://img.shields.io/github/downloads/thePortus/dhelp/total.svg)](https://img.shields.io/github/downloads/thePortus/dhelp/total.svg) [![Waffle.io - Columns and their card count](https://badge.waffle.io/thePortus/dhelp.svg?columns=all)](https://waffle.io/thePortus/dhelp)
 
 
 ---
@@ -29,6 +31,23 @@ analysis.
 ---
 
 Requires [Python 3.x](https://python.org)
+
+---
+
+# Table of Contents
+
+* [Installation](#installation)
+* [Quickstart Guide](#quickstart-guide)
+* [Web Module](#web-module)
+    * [WebPage](#webpage)
+* [File Module](#file-module)
+    * [TextFile](#textfile)
+    * [TextFolder](#textfolder)
+    * [CSVFile](#csvfile)
+* [Text Module](#text-module)
+    * [EnglishText](#englishtext)
+    * [LatinText](#latintext)
+    * [AncientGreekText](#ancientgreektext)
 
 ---
 
@@ -125,11 +144,18 @@ that comes with many convenient cleaning/nlp methods attached. You can chain
 any of the string transformation methods to perform many text operations at
 once.
 
-#### All Languages
+### EnglishText
 
-**All Languages Have These Methods**
+**Setup: Download the English Corpora**
 
-Examples...
+Before you use this object for any of the methods below you need to download trainer corpora.
+
+```python
+from dhelp import EnglishText
+EnglishText('').setup()
+```
+
+**Examples...**
 
 ```python
 
@@ -144,9 +170,9 @@ text.rm_nonchars()
 'The quick brown fox jumped over the lazy dog'
 
 # .rm_edits() - remove text between editorial marks
-text = EnglishText('Th3e qui\\nck b     rown fox jumped over the lazy dog')
+text = EnglishText('The [quick] brown fox jumped over the lazy dog')
 text.rm_edits()
-'The quick brown fox jumped over the lazy dog'
+'The brown fox jumped over the lazy dog'
 
 # .rm_spaces() - collapses redundant whitespaces
 text = EnglishText('Th3e qui\\nck b     rown fox jumped over the lazy dog')
@@ -169,23 +195,6 @@ text.rm_stopwords(['quick', 'brown','lazy'])
 text = EnglishText('Th3e qui\\nck b     rown fox jumped over the lazy dog')
 text.rm_lines().rm_nonchars().rm_spaces()
 'The quick brown fox jumped over the lazy dog'
-
-```
-
-#### English
-
-**Setup: Download the English Corpora**
-
-Before you use this object for any of the methods below you need to download trainer corpora.
-
-```python
-from dhelp import EnglishText
-EnglishText('').setup()
-```
-
-Examples...
-
-```python
 
 # lemmatize a text to make word counts/analysis
 text = EnglishText('The quick brown fox jumped over the lazy dog.')
@@ -219,9 +228,7 @@ text.skipgrams()
 
 ```
 
-#### Latin
-
-**Note: Latin Classes inherit all methods from EnglishText**
+#### LatinText
 
 **Setup: Download the Latin Corpora**
 
@@ -234,7 +241,46 @@ LatinText('').setup()
 
 ```
 
+**Examples...**
+
 ```python
+
+# .rm_lines() - remove endline characters
+text = LatinText('Gallia \\nest omnis divisa in partes tres')
+text.rm_lines()
+'Gallia est omnis divisa in partes tres'
+
+# .rm_nonchars() - remove non-letters
+text = LatinText('Ga3llia est omnis divisa in partes tres')
+text.rm_nonchars()
+'Gallia est omnis divisa in partes tres'
+
+# .rm_edits() - remove text between editorial marks
+text = LatinText('Gallia est [omnis] divisa in partes tres)
+text.rm_edits()
+'Gallia est omnis divisa in partes tres'
+
+# .rm_spaces() - collapses redundant whitespaces
+text = LatinText('Gallia    est omnis divisa       in partes        tres')
+text.rm_spaces()
+'Gallia est omnis divisa in partes tres'
+
+# .re_search() - checks for a given pattern
+text = LatinText('Gallia est omnis divisa in partes tres')
+text.re_search('Gallia')
+True
+text.re_search('Graecia')
+False
+
+# .rm_stopwords() - removes a list of words from text
+text = LatinText('Gallia est omnis divisa in partes tres')
+text.rm_stopwords(['est', 'in'])
+'Gallia omnis divisa partes tres'
+
+# chain methods to perform them in one command
+text = LatinText('Ga3llia    \\nest omnis divisa       in partes        tres')
+text.rm_lines().rm_nonchars().rm_spaces()
+'Gallia est omnis divisa in partes tres'
 
 # tokenize words into list of strings
 text = LatinText('Gallia est omnis divisa in partes tres')
@@ -245,6 +291,21 @@ text.tokenize()
 text = LatinText('Gallia est omnis divisa in partes tres')
 text.lemmatize()
 'gallia edo1 omne divido in pars tres'
+
+# generate ngrams...
+text = LatinText('They hated to think of sample sentences.')
+text.ngrams()
+[('They', 'hated', 'to'), ('hated', 'to', 'think'), ('to', 'think', 'of'), ('think', 'of', 'sample'), ('of', 'sample', 'sentences'), ('sample', 'sentences', '.')]
+
+# ... or skipgrams
+text = LatinText('They hated to think of sample sentences.')
+text.skipgrams()
+[('Gallia', 'est', 'omnis'), ('est', 'omnis', 'divisa'), ('omnis', 'divisa', 'in'), ('divisa', 'in', 'partes'), ('in', 'partes', 'tres')]
+
+# count all words
+text = LatinText('Gallia est omnis divisa in partes tres tres tres')
+text.word_count(word='tres')
+3
 
 # scan text for meter
 text = LatinText('Arma virumque cano, Troiae qui primus ab oris')
@@ -272,20 +333,13 @@ text.compare_longest_common_substring('Galliae sunt omnis divisae in partes tres
 'in partes tres'
 
 # compare minhash's
-LatinText('Gallia est omnis divisa in partes tres')
+text = LatinText('Gallia est omnis divisa in partes tres')
 text.compare_minhash('Galliae sunt omnis divisae in partes tres')
 0.6444444444444445
 
-# count all words
-text = LatinText('Gallia est omnis divisa in partes tres tres tres')
-text.word_count(word='tres')
-3
-
 ```
 
-#### Greek
-
-**Note: Greek Classes inherit all methods from EnglishText**
+#### AncientGreekText
 
 **Setup: Download the Greek Corpora**
 
@@ -298,7 +352,46 @@ AncientGreekText('').setup()
 
 ```
 
+**Examples...**
+
 ```python
+
+# .rm_lines() - remove endline characters
+text = AncientGreekText('ἔνθα \nποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα'')
+text.rm_lines()
+'ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα
+
+# .rm_nonchars() - remove non-letters
+text = AncientGreekText('ἔν3θα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα'')
+text.rm_nonchars()
+'ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα'
+
+# .rm_edits() - remove text between editorial marks
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.rm_edits()
+'ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα'
+
+# .rm_spaces() - collapses redundant whitespaces
+text = AncientGreekText('ἔνθα      ποτὲ     Ἀθηναίοις ἦν ἀργύρου μέταλλα)
+text.rm_spaces()
+'ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα'
+
+# .re_search() - checks for a given pattern
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.re_search('Ἀθηναίοις')
+True
+text.re_search('σπαρτίοις')
+False
+
+# .rm_stopwords() - removes a list of words from text
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.rm_stopwords(['ποτὲ', 'ἀργύρου'])
+'ἔνθα Ἀθηναίοις ἦν μέταλλα'
+
+# chain methods to perform them in one command
+text = AncientGreekText('ἔν3θα      \nποτὲ     Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.rm_lines().rm_nonchars().rm_spaces()
+'ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα'
 
 # normalize character encoding differences
 text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
@@ -319,6 +412,14 @@ text.tokenize()
 text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
 text.lemmatize()
 'ἔνθα ποτὲ ἀθηναῖος εἰμί ἀργυρόω μέταλλον'
+
+text.ngrams()
+[('ἔνθα', 'ποτὲ', 'Ἀθηναίοις'), ('ποτὲ', 'Ἀθηναίοις', 'ἦν'), ('Ἀθηναίοις', 'ἦν', 'ἀργύρου'), ('ἦν', 'ἀργύρου', 'μέταλλα')]
+
+# ... or skipgrams
+text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
+text.skipgrams()
+[('ἔνθα', 'ποτὲ', 'Ἀθηναίοις'), ('ἔνθα', 'ποτὲ', 'ἦν'), ('ἔνθα', 'Ἀθηναίοις', 'ἦν'), ('ποτὲ', 'Ἀθηναίοις', 'ἦν'), ('ποτὲ', 'Ἀθηναίοις', 'ἀργύρου'), ('ποτὲ', 'ἦν', 'ἀργύρου'), ('Ἀθηναίοις', 'ἦν', 'ἀργύρου'), ('Ἀθηναίοις', 'ἦν', 'μέταλλα'), ('Ἀθηναίοις', 'ἀργύρου', 'μέταλλα'), ('ἦν', 'ἀργύρου', 'μέταλλα')]
 
 # perform part-of-speech tagging
 text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύρου μέταλλα')
@@ -345,6 +446,7 @@ text = AncientGreekText('ἔνθα ποτὲ Ἀθηναίοις ἦν ἀργύ
 text.word_count(word='Ἀθηναίοις')
 1
 
+
 ```
 
 ---
@@ -370,3 +472,5 @@ text_folder.modify('path/to/latin/files-lemmatized', modify_function)
 # That's it, you will now have a folder full of lemmatized Latin files
 
 ```
+
+More Examples Coming Soon
