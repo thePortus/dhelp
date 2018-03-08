@@ -37,7 +37,7 @@ Requires [Python 3.x](https://python.org)
 # Table of Contents
 
 * [Installation](#installation)
-* [Quickstart Guide](#quickstart-guide)
+* [Language Setup](#language-setup)
 * [Web Module](#web-module)
     * [WebPage](#webpage)
 * [File Module](#file-module)
@@ -75,14 +75,14 @@ easy_install setup.py
 
 ```
 
-## Greek & Latin Users
+# Language Setup
 
-If you want to work with Greek and Latin, you need to install cltk via pip...
+The first time you use a language-specific text object, you need to run its .setup() method
 
 ```sh
+from dhelp import EnglishText
 
-# you may need admin privileges
-pip install cltk
+EnglishText('').setup()
 
 ```
 
