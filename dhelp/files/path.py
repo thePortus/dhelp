@@ -300,6 +300,7 @@ class Path(UserString):
             )
         # create all parent directories required for save
         self.makedirs()
+        return self
 
     def makedirs(self):
         """Create any missing parent directories of current path.
@@ -321,3 +322,4 @@ class Path(UserString):
             except OSError as exc:
                 if exc.errno != errno.EEXist:
                     raise
+        return self
