@@ -4,12 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.0.3]
 
-* Additions...
-    * files module
-    * text module
-    * web module
+* Changes
+    * Provisional setup to auto-pip install cltk added
+    * Badges added
+
+## [0.0.2]
+
+* Changes
+    * Unit testing expanded
+    * readme documentation greatly epxanded
+* Additions
+    * code of conduct and contributing
 
 ## [0.0.1]
 
@@ -25,3 +32,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
     * To document changes, both past and future, added CHANGELOG.md and TODO.md
     * CLTK functionality added for Greek/Latin texts
     * Project documentation with sphinx added
+
+## [Unreleased]
+
+* Additions...
+    * files module
+    * text module
+    * web module
