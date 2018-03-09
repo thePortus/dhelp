@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import pip
 import re
 from collections import UserString
 
@@ -421,6 +422,9 @@ class CLTKMixin(NLTKMixin):
         Example:
             >>> LatinText('').setup()
         """
+        # first, download the cltk module from pip
+        pip.main(['install', 'cltk'])
+        # import cltk inline as global import errors for non-cltk users
         from cltk.corpus.utils.importer import CorpusImporter
         corpus_importer = CorpusImporter(self.options['language'])
         # loop through and attempt to download, skip any errors
