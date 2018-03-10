@@ -17,3 +17,10 @@ class TestWebPage(unittest.TestCase):
     def test_soup(self):
         # ensure object is a BeautifulSoup type object
         return self.assertTrue(type(self.page.soup()) == BeautifulSoup)
+
+    def test_context_manager(self):
+        # ensure soup works when invoked using with.. as.. context manager
+        results = None
+        with self.page as page_soup:
+            results = page_soup
+        return self.assertTrue((type(results)) == BeautifulSoup)
