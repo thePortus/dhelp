@@ -79,7 +79,7 @@ class WebPage(UserString):
 
         Examples:
             >>> html_text = WebPage('https://stackoverflow.com/').fetch()
-            <!DOCTYPE html>\\r\\n<html>\\r\\n\r\\n    <head>\\r\\n\r\\n        <title>Stack Overflow...
+            <!DOCTYPE html>\\r\\n<html>\\r\\n\\r\\n    <head>\\r\\n\\r\\n        <title>Stack Overflow...
         """ # noqa
         # print message unless silent option
         if not self.options['silent']:

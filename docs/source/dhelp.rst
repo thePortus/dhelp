@@ -1,14 +1,41 @@
 dhelp package
 =============
 
-Subpackages
------------
+Submodules
+----------
 
-.. toctree::
+dhelp.files module
+------------------
 
-    dhelp.files
-    dhelp.text
-    dhelp.web
+.. automodule:: dhelp.files
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+dhelp.settings module
+---------------------
+
+.. automodule:: dhelp.settings
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+dhelp.text module
+-----------------
+
+.. automodule:: dhelp.text
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+dhelp.web module
+----------------
+
+.. automodule:: dhelp.web
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
