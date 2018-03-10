@@ -426,7 +426,11 @@ class CLTKMixin(NLTKMixin):
         pip.main(['install', 'cltk'])
         # import cltk inline as global import errors for non-cltk users
         from cltk.corpus.utils.importer import CorpusImporter
-        corpus_importer = CorpusImporter(self.options['language'])
+        setup_language = self.options['language']
+        # for ancient greek, change to 'greek' for purposes of cltk setup
+        if setup_language == 'greek':
+            setup_language = 'ancient greek'
+        corpus_importer = CorpusImporter(self.options[setup_language])
         # loop through and attempt to download, skip any errors
         for cltk_corpus in corpus_importer.list_corpora:
             print('Downloading', cltk_corpus)
