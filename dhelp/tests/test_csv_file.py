@@ -6,7 +6,7 @@ import shutil
 
 from .abc_case import AbstractBaseUnitTest
 
-from ..csv_file import CSVFile
+from ..files import CSVFile
 
 
 fixtures_path = os.path.join(

@@ -2,14 +2,22 @@
 
 import unittest
 
-from ..english import EnglishText
+import os
+
+from ..text import EnglishText
 
 
 class EnglishSetupLayer:
 
     @classmethod
     def setUp(cls):
-        EnglishText('').setup()
+        if not os.path.exists(
+            os.path.join(
+                os.path.expanduser('~'),
+                'nltk_data'
+            )
+        ):
+            EnglishText('').setup()
 
 
 class TestEnglishText(unittest.TestCase):

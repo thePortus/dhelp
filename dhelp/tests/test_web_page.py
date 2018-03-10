@@ -4,7 +4,7 @@ import unittest
 
 from bs4 import BeautifulSoup
 
-from ..web_page import WebPage
+from ..web import WebPage
 
 
 class TestWebPage(unittest.TestCase):
