@@ -2,7 +2,7 @@
 
 # General or Current TODO Items
 
-* Revise and add to README.md, provide function-level documentation
+* Add with/as context manager to TextFile, TextFolder, and CSVFile
 
 # TODO Items by Module
 

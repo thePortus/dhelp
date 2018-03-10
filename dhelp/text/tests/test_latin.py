@@ -4,7 +4,7 @@ import unittest
 
 import os
 
-from ..text import LatinText
+from ..cltk import LatinText
 
 
 class LatinSetupLayer:

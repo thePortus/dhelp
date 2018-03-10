@@ -11,10 +11,6 @@ to allow students to quickly get to performing quick file operations, data
 manipulations, and even text analysis.
 """
 
-from .files import CSVFile
-from .files import TextFile
-from .files import TextFolder
+from .files import TextFile, TextFolder, CSVFile
 from .web import WebPage
-from .text import EnglishText
-from .text import LatinText
-from .text import AncientGreekText
+from .text import EnglishText, LatinText, AncientGreekText

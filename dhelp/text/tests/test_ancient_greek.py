@@ -4,7 +4,7 @@ import unittest
 
 import os
 
-from ..text import AncientGreekText
+from ..cltk import AncientGreekText
 
 
 class AncientGreekSetupLayer:

@@ -5,7 +5,7 @@ import shutil
 
 from .abc_case import AbstractBaseUnitTest
 
-from ..files import TextFile
+from ..txt import TextFile
 
 
 fixtures_path = os.path.join(

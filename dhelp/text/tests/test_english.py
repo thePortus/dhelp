@@ -4,7 +4,7 @@ import unittest
 
 import os
 
-from ..text import EnglishText
+from ..nltk import EnglishText
 
 
 class EnglishSetupLayer:
