@@ -3,24 +3,57 @@ LANGUAGES = [
     'latin',
     'ancient greek',
 ]
+
 DELIMITERS = [
     ',',
     ';',
-    '\t'
+    '\t',
 ]
 
-NLTK_PACKAGES = [
-    ('verbnet', 'corpora/verbnet'),
-    ('wordnet', 'corpora/verbnet'),
-    ('words', 'corpora/verbnet'),
-    ('large_grammars', 'corpora/verbnet'),
-    ('averaged_perceptron_tagger', 'corpora/verbnet'),
-    ('hmm_treebank_pos_tagger', 'corpora/verbnet'),
-    ('maxent_treebank_pos_tagger', 'corpora/verbnet'),
-    ('universal_tagset', 'corpora/verbnet'),
-    ('punkt', 'corpora/verbnet'),
-    ('maxent_ne_chunker', 'corpora/verbnet'),
-]
+NLTK_PACKAGES = {
+    'english': [
+        ('verbnet', 'corpora/verbnet'),
+        ('wordnet', 'corpora/verbnet'),
+        ('words', 'corpora/verbnet'),
+        ('large_grammars', 'corpora/verbnet'),
+        ('averaged_perceptron_tagger', 'corpora/verbnet'),
+        ('maxent_treebank_pos_tagger', 'corpora/verbnet'),
+        ('universal_tagset', 'corpora/verbnet'),
+        ('punkt', 'corpora/verbnet'),
+        ('maxent_ne_chunker', 'corpora/verbnet'),
+    ]
+}
+
+CLTK_PACKAGES = {
+    'greek': [
+        ('greek_software_tlgu', 'software/greek_software_tlgu'),
+        ('greek_proper_names_cltk', 'lexicon_greek_proper_names_cltk'),
+        ('greek_models_cltk', 'models/greek_models_cltk'),
+        ('greek_treebank_perseus', 'treebank/greek_treebank_perseus'),
+        ('greek_lexica_perseus', 'lexicon/greek_lexica_perseus'),
+        (
+            'greek_training_set_sentence_cltk',
+            'training_set/greek_training_set_sentence_cltk'
+        ),
+        ('greek_word2vec_cltk', 'lexicon/greek_word2vec_cltk'),
+    ],
+    'latin': [
+        ('latin_treebank_perseus', 'treebank/latin_treebank_perseus'),
+        ('latin_proper_names_cltk', 'lexicon/latin_proper_names_cltk'),
+        ('latin_models_cltk', 'models/latin_models_cltk'),
+        ('latin_pos_lemmata_cltk', 'lemma/latin_pos_lemmata_cltk'),
+        (
+            'latin_treebank_index_thomisticus',
+            'treebank/latin_treebank_index_thomisticus'
+        ),
+        ('latin_lexica_perseus', 'lexicon/latin_lexica_perseus'),
+        (
+            'latin_training_set_sentence_cltk',
+            'training_set/latin_training_set_sentence_cltk'
+        ),
+        ('latin_word2vec_cltk', 'models/latin_word2vec_cltk'),
+    ]
+}
 
 ENCODINGS = [
     ('ascii'),
@@ -119,5 +152,5 @@ ENCODINGS = [
     ('utf_16_le'),
     ('utf_7'),
     ('utf_8'),
-    ('utf_8_sig')
+    ('utf_8_sig'),
 ]

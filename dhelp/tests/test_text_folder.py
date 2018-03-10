@@ -5,7 +5,7 @@ import shutil
 
 from .abc_case import AbstractBaseUnitTest
 
-from ..folder import Folder
+from ..files import TextFolder
 
 
 fixtures_path = os.path.join(
@@ -16,7 +16,7 @@ fixture_dir = 'txt'
 temp_dir = '.testing'
 
 
-class FolderLayer:
+class TextFolderLayer:
 
     @classmethod
     def testSetUp(cls):
@@ -39,27 +39,34 @@ class FolderLayer:
             shutil.rmtree(destination)
 
 
-class TestFolder(AbstractBaseUnitTest):
-    layer = FolderLayer
-    test_class = Folder
+class TestTextFolder(AbstractBaseUnitTest):
+    layer = TextFolderLayer
+    test_class = TextFolder
     fixtures_path = os.path.join(fixtures_path, temp_dir)
 
-    def test_contents(self):
+    def test_text_files(self):
         # should have 5 items in the folder
         exempla = self.make_test_obj()
-        return self.assertTrue(len(exempla.contents) == 5)
+        return self.assertTrue(len(exempla.text_files()) == 5)
 
-    def test_files(self):
-        # should be 5 items in the folder
-        exempla = self.make_test_obj()
-        return self.assertTrue(len(exempla.files) == 5)
+    def test_modify(self):
+        # should see changes after modifying files with a cb function
 
-    def test_folders(self):
-        # should be no length since there area no folders
-        exempla = self.make_test_obj()
-        return self.assertEqual(len(exempla.folders), 0)
+        def modify_file_function(record):
+            return comparanda
 
-    def test_length(self):
-        # should have 5 items in the folder
-        exempla = self.make_test_obj()
-        return self.assertTrue(exempla.length == 5)
+        exempla = ''
+        comparanda = 'Altered test file'
+        destination = os.path.join(fixtures_path, temp_dir, 'test')
+        # perform modification
+        self.make_test_obj().modify(
+            destination,
+            modify_file_function,
+            options={'silent': True}
+        )
+        # open file to check for success
+        with open(
+            os.path.join(fixtures_path, temp_dir, 'test', 'fake_data_1.txt')
+        ) as test_file:
+            exempla = test_file.read()
+        return self.assertEqual(exempla, comparanda)

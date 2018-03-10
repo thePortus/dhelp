@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import os
+import importlib
 import pip
 import re
 from collections import UserString
@@ -11,6 +13,8 @@ from nltk.tokenize import sent_tokenize, word_tokenize, wordpunct_tokenize
 from nltk.util import ngrams, bigrams, trigrams, skipgrams
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk import pos_tag
+
+from . import settings
 
 
 class BaseText(UserString):
@@ -203,15 +207,17 @@ class NLTKMixin:
         Example:
             >>> EnglishText('').setup()
         """
-        nltk.download('punkt')
-        nltk.download('wordnet')
-        nltk.download('words')
-        nltk.download('large_grammars')
-        nltk.download('averaged_perceptron_tagger')
-        nltk.download('hmm_treebank_pos_tagger')
-        nltk.download('maxent_treebank_pos_tagger')
-        nltk.download('universal_tagset')
-        nltk.download('maxent_ne_chunker')
+        # get root directory of nltk data
+        nltk_root_dir = os.path.join(
+            os.path.expanduser('~'),
+            'nltk_data',
+        )
+        for nltk_package, nltk_package_dir in settings.NLTK_PACKAGES[
+            self.options['language']
+        ]:
+            # check for package locally, if not extant, download
+            if os.path.exists(os.path.join(nltk_root_dir, nltk_package_dir)):
+                nltk.download(nltk_package)
         return True
 
     def rm_stopwords(self, stoplist=[]):
@@ -422,23 +428,23 @@ class CLTKMixin(NLTKMixin):
         Example:
             >>> LatinText('').setup()
         """
-        # first, download the cltk module from pip
-        pip.main(['install', 'cltk'])
-        # import cltk inline as global import errors for non-cltk users
+        # check if cltk is already installed, if not, install it
+        if not importlib.find_loader('cltk'):
+            pip.main(['install', 'cltk'])
+        # include cltk inline
         from cltk.corpus.utils.importer import CorpusImporter
         setup_language = self.options['language']
         # for ancient greek, change to 'greek' for purposes of cltk setup
-        if setup_language == 'greek':
-            setup_language = 'ancient greek'
-        corpus_importer = CorpusImporter(self.options[setup_language])
-        # loop through and attempt to download, skip any errors
+        if setup_language == 'ancient greek':
+            setup_language = 'greek'
+        corpus_importer = CorpusImporter(setup_language)
+        # loop through, check if extant, attempt to download, skip any errors
         for cltk_corpus in corpus_importer.list_corpora:
             print('Downloading', cltk_corpus)
             try:
                 corpus_importer.import_corpus(cltk_corpus)
             except:
                 print('Problem downloading', cltk_corpus, '(skipping)')
-        print('Finished downloading corpora')
         return True
 
     def tokenize(self, mode='word'):
@@ -637,3 +643,237 @@ class CLTKMixin(NLTKMixin):
         if word:
             return counts[word]
         return counts
+
+
+class EnglishText(NLTKMixin, BaseText):
+    """Main class to interact with English-language texts.
+
+    EnglishText provides methods for altering texts for pre-processing as well
+    as numerous nlp methods for analyzing the text. Text alteration methods
+    can be chained since they each return a new instance of the class created
+    with the altered text.
+
+    Args:
+        text (:obj:`str`) Main text data
+        options (:obj:`dict`, optional) keyword/value dict for optional settings
+
+    Attributes:
+        data (:obj:`str`) Main text data
+        options (:obj:`dict`, optional) keyword/value dict for optional settings
+
+    Methods:
+
+    Example:
+        >>> english_text = EnglishText('Th3e Qui\\nck b     rown fox jumped over the lazy dog')
+        >>> english_text.rm_lines().rm_nonchars().rm_spaces()
+        The quick brown fox jumped over the lazy dog
+    """ # noqa
+
+    def __init__(self, text, options={}):
+        options['language'] = 'english'
+        super().__init__(text=text, options=options)
+
+
+class LatinText(CLTKMixin, BaseText):
+    """Main class to interact with Latin-language texts.
+
+    Provides Latin-specific CLTK functions for text passed upon construction.
+    Most methods return a new version of the text, except those that give
+    non-text results (e.g. pos tagging)
+
+    Example:
+        >>> from dhelp import LatinText
+        >>> text = LatinText('Gallia est omnis divisa in partes tres')
+        >>> print(text.lemmatize())
+        gallia edo1 omne divido in pars tres
+    """
+
+    def __init__(self, text, options={}):
+        options['language'] = 'latin'
+        super().__init__(text=text, options=options)
+
+    def macronize(self, mode='tag_ngram_123_backoff'):
+        """Adds macrons (long vowel marks).
+
+        Macrons distinguish long vowels from short. Distinguishing them is
+        critical for the study of Latin poetry and occasionally is important
+        in prose. Note that once you add macrons, long vowels are, for all
+        intents and purposes, different letters than their short equivalents.
+
+        Args:
+            mode (:obj:`str`, optional) POS tagging method to use, 'tag_ngram_123_backoff', 'tag_tnt', or 'tag_crf'
+
+        Returns:
+            :obj:`self.__class__` New text with macrons added to long vowels
+
+        Example:
+            >>> text = LatinText('Arma virumque cano, Troiae qui primus ab oris')
+            >>> print(text.macronize())
+            arma virumque cano , trojae quī prīmus ab ōrīs
+        """ # noqa
+        from cltk.prosody.latin.macronizer import Macronizer
+        mode = mode.lower()
+        if (
+            mode != 'tag_ngram_123_backoff' and
+            mode != 'tag_tnt' and
+            mode != 'tag_crf'
+        ):
+            return False
+        return self.__class__(
+            Macronizer(tagger=mode).macronize_text(self.data),
+            self.options
+        )
+
+    def normalize(self):
+        """Replaces 'j's with 'i's and 'v's with 'u's.
+
+        Ancient texts did not use j's or 'v's (viz. Indiana Jones and the Last
+        Crusade), but their usage in modern texts can throw off word counts,
+        pattern mataching, and general text-analysis methods. This method
+        converts these letters to their ancient versions.
+
+        Returns:
+            :obj:`self.__class__` New text with macrons added to long vowels
+
+        Example:
+            >>> text = LatinText('Arma virumque cano, Troiae qui primus ab oris')
+            >>> print(text.normalize())
+            Arma uirumque cano, Troiae qui primus ab oris
+        """ # noqa
+        from cltk.stem.latin.j_v import JVReplacer
+        return self.__class__(
+            JVReplacer().replace(self.data),
+            self.options
+        )
+
+    def stemmify(self):
+        """Returns text with only stems.
+
+        An alternate method to lemmatization. Instead of converting to lemmata
+        (principi -> princeps) converts to stemma (principi -> princp)
+
+        Returns:
+            :obj:`self.__class__` New text with stemma
+
+        Example:
+            >>> text = LatinText('Arma virumque cano, Troiae qui primus ab oris')
+            >>> print(text.stemmify())
+            arm vir cano, troi qui prim ab or
+        """ # noqa
+        from cltk.stem.latin.stem import Stemmer
+        return self.__class__(
+            Stemmer().stem(self.data.lower()),
+            self.options
+        )
+
+    def clausulae(self):
+        """Counts different kinds of prose clausulae.
+
+        Examines prose for evidence for poetic rythms (clausulae). Returns a
+        keyword/value dict with total counts for each kind of clausula.
+
+        Returns:
+            :obj:`list` of `str` Individual clausulae results
+
+        Example:
+            >>> text = LatinText('Arma virumque cano, Troiae qui primus ab oris')
+            >>> print(text.clausulae())
+            {'cretic + trochee': 0, '4th paeon + trochee': 0, '1st paeon + trochee': 0, 'substituted cretic + trochee': 0, '1st paeon + anapest': 0, 'double cretic': 0, '4th paeon + cretic': 0, 'molossus + cretic': 0, 'double trochee': 0, 'molossus + double trochee': 0, 'cretic + double trochee': 0, 'dactyl + double trochee': 0, 'choriamb + double trochee': 0, 'cretic + iamb': 0, 'molossus + iamb': 0, 'double spondee': 0, 'cretic + double spondee': 0, 'heroic': 0}
+        """ # noqa
+        from cltk.prosody.latin.clausulae_analysis import Clausulae
+        return Clausulae().clausulae_analysis(self.data)
+
+
+class AncientGreekText(CLTKMixin, BaseText):
+    """Main class to interact with Classical Greek-language texts.
+
+    Provides Classical Greek-specific CLTK functions for text passed upon
+    construction. Most methods return a new version of the text, except those
+    that give non-text results (e.g. pos tagging)
+
+    Example:
+        >>> from dhelp import AncientGreekText
+        >>> text = AncientGreekText('ἔστι δὲ σύμπαντα ταῦτα τὰ συγγράμματα ἐκείνῃ μάλιστα οὐκ ὠφέλιμα, ὅτι ὡς πρὸς εἰδότας συγγέγραπται.')
+        >>> print(text.lemmatize())
+        εἰμί δὲ σύμπας οὗτος τὰ σύγγραμμα ἐκεῖνος μάλιστα οὐ ὠφέλιμος , ὅστις ὡς πρὸς οἶδα συγγράφω.
+    """ # noqa
+
+    def __init__(self, text, options={}):
+        options['language'] = 'greek'
+        super().__init__(text=text, options=options)
+
+    def normalize(self):
+        """Fixes problems with differences in greek accent encoding.
+
+        Certain Greek accents have more than one possible encoding. Uses cltk's
+        built-in normalizer to correct the character encoding differences and
+        ensure that accents are encoded the same way.
+
+        Returns:
+            :obj:`self.__class__` New instance with altered text
+
+        Example:
+            >>> text = AncientGreekText('ῖν», εἰς δὲ τὸν ἕτερον κ[α]ττίτ[ερον «εἰ λῶιον καὶ ἄμει]νόν ἐστι')
+            >>> print(text.normalize())
+            ῖν», εἰς δὲ τὸν ἕτερον κ[α]ττίτ[ερον «εἰ λῶιον καὶ ἄμει]νόν ἐστι
+        """ # noqa
+        from cltk.corpus.utils.formatter import cltk_normalize
+        return self.__class__(
+            text=cltk_normalize(str(self.data)),
+            options=self.options
+        )
+
+    def tlgu_cleanup(self, rm_punctuation=True, rm_periods=False):
+        """Fix TLG betacode texts using TLGU.
+
+        Necessary to cleanup TLG texts before processing, but can also used to
+        perform rudimentary cleaning operations on other Greek texts.
+
+        Args:
+            rm_punctuation (:obj:`bool`, optional) True to remove punctuation marks (exception periods)
+            rm_periods (:obj:`bool`, optional) True to remove periods
+
+        Returns:
+            :obj:`self.__class__` New instance with altered text
+
+        Example:
+            >>> text = AncientGreekText('ῖν», εἰς δὲ τὸν ἕτερον κ[α]ττίτ[ερον «εἰ λῶιον καὶ ἄμει]νόν ἐστι')
+            >>> print(text.tlgu_cleanup())
+            ῖν εἰς δὲ τὸν ἕτερον καττίτερον εἰ λῶιον καὶ ἄμεινόν ἐστι
+        """ # noqa
+        from cltk.corpus.utils.formatter import tlg_plaintext_cleanup
+        return self.__class__(
+            text=tlg_plaintext_cleanup(
+                self.data, rm_punctuation=rm_punctuation, rm_periods=rm_periods
+            ),
+            options=self.options
+        )
+
+    def tag(self, mode='123'):
+        """Gives words marked up with parts-of-speech.
+
+        Override's the cltk POS tagger and uses cltk's instead. Has different
+        methods for providing a POS tagger, if desired.
+
+        Args:
+            mode (:obj:`str`) Tagging mode, either '123', or 'tnt'
+
+        Returns:
+            :obj:`list` of :obj:`tuple` 2-tuples with word, part-of-speech
+
+        Example:
+            >>> text = AncientGreekText('ἔστι δὲ σύμπαντα ταῦτα τὰ συγγράμματα ἐκείνῃ μάλιστα οὐκ ὠφέλιμα, ὅτι ὡς πρὸς εἰδότας συγγέγραπται.')
+            >>> print(text.tag())
+            [('ἔστι', 'V3SPIA---'), ('δὲ', 'G--------'), ('σύμπαντα', None), ('ταῦτα', 'A-P---NA-'), ('τὰ', 'L-P---NA-'), ('συγγράμματα', None), ('ἐκείνῃ', 'A-S---FD-'), ('μάλιστα', 'D--------'), ('οὐκ', 'D--------'), ('ὠφέλιμα', None), (',', 'U--------'), ('ὅτι', 'C--------'), ('ὡς', 'C--------'), ('πρὸς', 'R--------'), ('εἰδότας', 'T-PRPAMA-'), ('συγγέγραπται', None), ('.', '---------')]
+        """ # noqa
+        from cltk.tag.pos import POSTag
+        tagger = POSTag(self.options['language'])
+        mode = mode.lower()
+        if mode != '123' and mode != 'tnt':
+            raise Exception(
+                'Invalid part of speech tagging mode specified.'
+            )
+        elif mode == '123':
+            return tagger.tag_ngram_123_backoff(self.data)
+        elif mode == 'tnt':
+            return tagger.tag_tnt(self.data)
