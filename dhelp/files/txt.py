@@ -3,10 +3,10 @@
 import os
 from collections import deque
 
-from ._bases import BasePath, BaseFolder
+from ._bases import BaseFile, BaseFolder
 
 
-class TextFile(BasePath):
+class TextFile(BaseFile):
     """Load and save data quickly to path specified.
 
     Represents the plain text file at the path specified. Loads data
@@ -30,7 +30,7 @@ class TextFile(BasePath):
         >>> text_file = TextFile('some/path.txt')
         >>> print(text_file)
         some/path.txt
-    """
+    """ # noqa
 
     def load(self,  options={}):
         """Opens the file data as a single string.
@@ -103,7 +103,7 @@ class TextFile(BasePath):
         return True
 
 
-class TextFolder(BaseFolder, BasePath):
+class TextFolder(BaseFolder):
     """ Load or save a folder of plaintext files as a list of strings.
 
     Object for interacting with a folder of plain text files. Allows quick
@@ -119,8 +119,9 @@ class TextFolder(BaseFolder, BasePath):
         >>> print(text_folder)
         some/path
     """
+    file_class = TextFile
 
-    def text_files(self, options={}):
+    def files(self, options={}):
         """ Load all .txt files as TextFile objects.
 
         All current .txt files inside the folder at the current path will
@@ -139,7 +140,7 @@ class TextFolder(BaseFolder, BasePath):
             TypeError: If non-list is sent as extensions option
 
         Examples:
-            >>> folder_files = TextFolder('some/path').text_files()
+            >>> folder_files = TextFolder('some/path').files()
             >>> for folder_file in folder_files:
             ...     print(folder_file.load())
             Lorem ipsum dolor sit amet...
@@ -160,7 +161,9 @@ class TextFolder(BaseFolder, BasePath):
             # only proceed if item extension is in approved list
             if item_ext in options['extensions']:
                 # add new TextFile linked to the folder_item's location
-                contents.append(TextFile(os.path.join(self.data, folder_item)))
+                contents.append(self.file_class(
+                    os.path.join(self.data, folder_item))
+                )
         # return as a deque instead of a list
         return deque(contents)
 
@@ -208,7 +211,7 @@ class TextFolder(BaseFolder, BasePath):
         if 'silent' not in options:
             options['silent'] = True
         modified_folder = self.copy(destination, options=options)
-        for item_file in modified_folder.text_files():
+        for item_file in modified_folder.files():
             item_data = modify_cb(item_file.load(options=options))
             item_file.save(item_data, options=options)
         # return self upon success

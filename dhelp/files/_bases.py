@@ -3,7 +3,7 @@
 import os
 import errno
 import shutil
-from collections import UserString
+from collections import UserString, deque
 
 
 class BasePath(UserString):
@@ -325,6 +325,35 @@ class BasePath(UserString):
         return self
 
 
+class BaseFile(BasePath):
+    """Parent class for TextFile and other file related classes.
+
+    Base parent class to all file utility objects, not meant to be used on
+    its own. Child classes inherit these functions to work with specific
+    file types.
+
+    Args:
+        path (:obj:`str`) System path pointing to desired file location
+
+    Examples:
+        >>> file = BaseFile('some/path')
+        >>> print(folder)
+        '/absolute/path/to/some/path'
+
+        >>> # use the with..as... syntax to load, edit, and save the file
+        >>> with BaseFile('some/path') as edit_file:
+        ...     # any changes you make here will be automataically saved
+        ...     edit_file = edit_file.replace('\n', '')
+    """ # noqa
+
+    def __enter__(self):
+        return self.load()
+
+    def __exit__(self, ctx_type, ctx_value, ctx_traceback):
+        # write over previous file data
+        return self.save(options={'overwrite': True})
+
+
 class BaseFolder(BasePath):
     """Parent class for TextFolder and other folder related classes.
 
@@ -335,11 +364,29 @@ class BaseFolder(BasePath):
     Args:
         path (:obj:`str`) System path pointing to desired folder location
 
+    Attributes:
+        file_class (:obj:`<type 'class'>`) Class to use when constructing files
+        contents (:obj:`list` of :obj:`str`) List of file and folder names
+        length (:obj:`int`) Total number of items at top level insider folder
+        filenames (:obj:`list` of :obj:`str`) List of only file names
+        folders (:obj:`list` of `:obj:`str`) List of only subfolder names
+
+    Methods:
+        files (:obj:`list` of :obj:`self.file_class`)
+
+
     Examples:
-        >>> folder = Folder('some/path')
+        >>> folder = BaseFolder('some/path')
         >>> print(folder)
         '/absolute/path/to/some/path'
-    """
+    """ # noqa
+    file_class = BaseFile
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, ctx_type, ctx_value, ctx_traceback):
+        pass
 
     @property
     def contents(self):
@@ -349,7 +396,7 @@ class BaseFolder(BasePath):
             :obj:`list` of :obj:`str` File/folder names.
 
         Example:
-            >>> print(Folder(some/path).files)
+            >>> print(Folder(some/path)filenames)
             ['file_1.txt', 'file_2.txt', 'file_3.txt', 'subfolder_1', 'subfolder_2', 'subfolder_3']
         """ # noqa
         if not self.exists or not self.is_dir:
@@ -370,7 +417,7 @@ class BaseFolder(BasePath):
         return len(self.contents)
 
     @property
-    def files(self):
+    def filenames(self):
         """Returns .contents with non-files filtered.
 
         Grabs names of directory contents before joining them with the current
@@ -380,7 +427,7 @@ class BaseFolder(BasePath):
             :obj:`list` of :obj:`str` File names
 
         Example:
-            >>> print(Folder(some/path).files)
+            >>> print(Folder(some/path)filenames)
             ['/absolute/path/to/some/path/file_1.txt', '/absolute/path/to/some/path/file_2.txt', /absolute/path/to/some/path/file_3.txt]
         """ # noqa
         dir_files = []
@@ -408,3 +455,45 @@ class BaseFolder(BasePath):
             if os.path.isdir(os.path.join(self.data, folder_item)):
                 dir_subdirs.append(os.path.join(self.data, folder_item))
         return dir_subdirs
+
+    def files(self, options={}):
+        """ Load all .txt files as BaseFile objects.
+
+        All current files inside the folder at the current path will
+        be returned as a deque(list) of TextFile objects. You can set which
+        file extensions will be loaded with the 'extensions' option by passing
+        a list of string extensions (without the '.').
+
+        Args:
+            options (:obj:`dict`, optional) Options settings found at respective keywords
+
+        Returns:
+            :obj:`collections.deque` of `:obj:`dhelp.TextFile` TextFiles of each .txt file (or other filetype)
+
+        Raises:
+            Exception: If path does not point to folder
+            TypeError: If non-list is sent as extensions option
+
+        Examples:
+            >>> folder_files = BaseFolder('some/path').files()
+            >>> for folder_file in folder_files:
+            ...     print(folder_file.load())
+            Lorem ipsum dolor sit amet...
+        """ # noqa
+        contents = deque([])
+        # set option defaults
+        if 'encoding' not in options:
+            options['encoding'] = 'utf-8'
+        if 'extensions' not in options:
+            options['extensions'] = ['txt']
+        if type(options['extensions']) is not list:
+            raise TypeError('Option "extensions" must be list')
+        if not self.is_dir:
+            raise Exception('Item is not a folder')
+        for folder_item in self.contents:
+            # add new BaseFile linked to the folder_item's location
+            contents.append(
+                self.file_class(os.path.join(self.data, folder_item))
+            )
+        # return as a deque instead of a list
+        return deque(contents)

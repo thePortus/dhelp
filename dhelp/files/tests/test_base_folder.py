@@ -49,10 +49,10 @@ class TestFolder(AbstractBaseUnitTest):
         exempla = self.make_test_obj()
         return self.assertTrue(len(exempla.contents) == 5)
 
-    def test_files(self):
+    def test_filenames(self):
         # should be 5 items in the folder
         exempla = self.make_test_obj()
-        return self.assertTrue(len(exempla.files) == 5)
+        return self.assertTrue(len(exempla.filenames) == 5)
 
     def test_folders(self):
         # should be no length since there area no folders

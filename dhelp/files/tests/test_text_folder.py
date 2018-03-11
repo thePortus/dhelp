@@ -47,7 +47,7 @@ class TestTextFolder(AbstractBaseUnitTest):
     def test_text_files(self):
         # should have 5 items in the folder
         exempla = self.make_test_obj()
-        return self.assertTrue(len(exempla.text_files()) == 5)
+        return self.assertTrue(len(exempla.files()) == 5)
 
     def test_modify(self):
         # should see changes after modifying files with a cb function

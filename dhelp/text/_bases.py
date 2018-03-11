@@ -31,6 +31,12 @@ class BaseText(UserString):
         self.data = text
         self.options = options
 
+    def __enter__(self):
+        pass
+
+    def __exit__(self, ctx_type, ctx_value, ctx_traceback):
+        pass
+
     def stringify(self):
         """Returns the text of this object as a pure string type.
 
