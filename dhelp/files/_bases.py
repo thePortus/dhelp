@@ -17,20 +17,46 @@ class BasePath(UserString):
     Raises:
         Exception: If a non-string arg is sent as path
     """
+    options = {}
 
-    def __init__(self, path=None):
+    def __init__(self, path=None, *args, **kwargs):
         # call parent class constructor and set to a string
         super().__init__(str)
-        # if no filepath specified, default to current working directory
-        if not path:
-            path = os.getcwd()
-        # raise error if path sent but is non-string
-        if type(path) is not str:
+        # raise error if path not string or set path to current dir if not set
+        if path and type(path) is not str:
             raise Exception('path is not a string')
-        # if relative path sent, convert to absolute path
-        if not os.path.isabs(path):
+        elif not path:
+            path = os.getcwd()
+        # or if relative path sent, convert to absolute path
+        elif not os.path.isabs(path):
             path = os.path.abspath(os.path.join(os.getcwd(), path))
+        # set default options
+        self.options = {
+            'silent': False,
+            'overwrite': False,
+            'encoding': 'utf-8',
+            'newline': '',
+            'readlines': False,
+            'delimiter': ',',
+            'dialect': 'excel',
+            'extensions': ['txt']
+        }
+        # update .options if options keyword arg passed
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                self.options.update(kwargs['options'])
+        # store path as string
         self.data = path
+
+    def __enter__(self):
+        return self.load()
+
+    def __exit__(self, ctx_type, ctx_value, ctx_traceback):
+        options = self.options
+        options['overwrite'] = True
+        # write over previous file data
+        if type(self.save_data == str):
+            return self.save(self.save_data, options=options)
 
     @property
     def exists(self):
@@ -40,9 +66,9 @@ class BasePath(UserString):
             :obj:`bool` True if anything exists at path, False if not
 
         Example:
-            >>> print(BasePath('some/extant/path').exists())
+            >>> BasePath('some/extant/path').exists()
             True
-            >>> print(BasePath('some/non-extant/path').exists())
+            >>> BasePath('some/non-extant/path').exists()
             False
 
         """
@@ -59,7 +85,7 @@ class BasePath(UserString):
             :obj:`int` Size of item at path, in bytes
 
         Example:
-            >>> print(BasePath(some/path.txt))
+            >>> BasePath('some/path.txt')
             121
         """
         # return zero if nothing present
@@ -78,8 +104,8 @@ class BasePath(UserString):
             :obj:`str` Name of current file or folder
 
         Example:
-            >>> print(BasePath(some/path.txt))
-            path.txt
+            >>> BasePath('some/path.txt')
+            'path.txt'
         """
         return os.path.basename(self.data)
 
@@ -92,8 +118,8 @@ class BasePath(UserString):
         Returns: :obj:`str` Name of parent directory of current path
 
         Example:
-            >>> print(BasePath(some/path.txt).dirname())
-            /absolute/path/to/some
+            >>> BasePath('some/path.txt').dirname()
+            '/absolute/path/to/some'
 
         """
         return os.path.dirname(self.data)
@@ -107,9 +133,9 @@ class BasePath(UserString):
         Returns: :obj:`bool` True if path points to directory, False if not
 
         Examples:
-            >>> print(BasePath(some/path).is_dir())
+            >>> BasePath('some/path').is_dir()
             True
-            >>> print(BasePath(some/path.txt).is_dir())
+            >>> BasePath('some/path.txt').is_dir()
             False
         """
         return os.path.isdir(self.data)
@@ -124,9 +150,9 @@ class BasePath(UserString):
             :obj:`bool` True if path points to file, False if not
 
         Examples:
-            >>> print(BasePath(some/path.txt).is_file())
+            >>> BasePath('some/path.txt').is_file()
             True
-            >>> print(BasePath(some/path).is_file())
+            >>> BasePath('some/path').is_file()
             False
         """
         return os.path.isfile(self.data)
@@ -141,16 +167,16 @@ class BasePath(UserString):
             :obj:`bool` True if path points to symbolic link, False if not
 
         Examples:
-            >>> print(BasePath(some/link.txt).is_link())
+            >>> BasePath('some/link.txt').is_link()
             True
-            >>> print(BasePath(nota/link).is_link())
+            >>> BasePath('nota/link').is_link()
             False
         """
         if not self.exists:
             return False
         return os.path.islink(self.data)
 
-    def copy(self, destination, options={}):
+    def copy(self, destination, *args, **kwargs):
         """Copy data at path to another location.
 
         Copies the contents at system path (if a folder, copies it's contents
@@ -169,14 +195,14 @@ class BasePath(UserString):
             Exception: If a problem is encountered when copying
 
         Example:
-            >>> print(BasePath('some/path').copy('some/other-path'))
-            some/other-path
+            >>> BasePath('some/path').copy('some/other-path')
+            'some/other-path'
         """ # noqa
-        # set default options
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'overwrite' not in options:
-            options['overwrite'] = False
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         # ensure is an absolute path
         if not os.path.isabs(destination):
             destination = os.path.abspath(destination)
@@ -200,7 +226,7 @@ class BasePath(UserString):
         # return new version of object that is linked to copied location
         return self.__class__(destination)
 
-    def remove(self):
+    def remove(self, *args, **kwargs):
         """Delete item(s) at current path.
 
         Deletes any item at the current path. If a folder deletes contents
@@ -213,9 +239,14 @@ class BasePath(UserString):
             Exception: If any issue was encountered deleting item(s) at path
 
         Example:
-            >>> print(BasePath(some/path).remove())
+            >>> BasePath('some/path').remove()
             True
         """
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         try:
             if self.is_file:
                 os.remove(self.data)
@@ -225,7 +256,7 @@ class BasePath(UserString):
             raise Exception('Error removing item at ' + self.data)
         return True
 
-    def move(self, destination, options={}):
+    def move(self, destination, *args, **kwargs):
         """Moves item(s) from current path to another location.
 
         Effectively moves anything at the given path to the specified location.
@@ -240,18 +271,19 @@ class BasePath(UserString):
             :obj:`self.__class__` New instance of object tied to destination path
 
         Example:
-            >>> print(BasePath('some/path').move('some/other-path'))
-            some/other-path
+            >>> BasePath('some/path').move('some/other-path')
+            'some/other-path'
         """ # noqa
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'overwrite' not in options:
-            options['overwrite'] = False
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         new_path_obj = self.copy(destination, options=options)
         self.remove()
         return new_path_obj
 
-    def load(self, options={}):
+    def load(self, *args, **kwargs):
         """Loading method called by child classes.
 
         Called by child class load methods, stops from loading non-extant file.
@@ -262,18 +294,18 @@ class BasePath(UserString):
         Raises:
             Exception: If nothing exists at path
         """ # noqa
-        # set options defaults
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'silent' not in options:
-            options['silent'] = False
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         # print loading message if silent option not flagged
         if not options['silent']:
             print('Loading', self.data)
         if not self.exists:
             raise Exception('Cannot open item, nothing exists at' + self.data)
 
-    def save(self, options={}):
+    def save(self, *args, **kwargs):
         """Saving method called by child classes.
 
         Called by child class save methods, prevents overwrite without option.
@@ -284,17 +316,15 @@ class BasePath(UserString):
         Raises:
             Exception: If something exists at path and overwrite option is not set
         """ # noqa
-        # set option defaults
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'overwrite' not in options:
-            options['overwrite'] = False
-        if 'silent' not in options:
-            options['silent'] = False
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         # print saving message if silent option not flagged
         if not options['silent']:
             print('Saving to', self.data)
-        if self.exists and not options['overwrite']:
+        if self.exists and options['overwrite'] is not True:
             raise Exception(
                 'Item exists at ' + self.data + ' and overwrite not specified'
             )
@@ -302,7 +332,7 @@ class BasePath(UserString):
         self.makedirs()
         return self
 
-    def makedirs(self):
+    def makedirs(self, *args, **kwargs):
         """Create any missing parent directories of current path.
 
         Automatically creates any parent directories of the current path
@@ -313,6 +343,11 @@ class BasePath(UserString):
             >>> BasePath(some/path).makedirs()
             some/path
         """
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         # if parent directory is non-extant
         if not os.path.exists(os.path.dirname(self.data)):
             # attempt to make parent directories
@@ -327,31 +362,8 @@ class BasePath(UserString):
 
 class BaseFile(BasePath):
     """Parent class for TextFile and other file related classes.
-
-    Base parent class to all file utility objects, not meant to be used on
-    its own. Child classes inherit these functions to work with specific
-    file types.
-
-    Args:
-        path (:obj:`str`) System path pointing to desired file location
-
-    Examples:
-        >>> file = BaseFile('some/path')
-        >>> print(folder)
-        '/absolute/path/to/some/path'
-
-        >>> # use the with..as... syntax to load, edit, and save the file
-        >>> with BaseFile('some/path') as edit_file:
-        ...     # any changes you make here will be automataically saved
-        ...     edit_file = edit_file.replace('\n', '')
     """ # noqa
-
-    def __enter__(self):
-        return self.load()
-
-    def __exit__(self, ctx_type, ctx_value, ctx_traceback):
-        # write over previous file data
-        return self.save(options={'overwrite': True})
+    pass
 
 
 class BaseFolder(BasePath):
@@ -372,18 +384,28 @@ class BaseFolder(BasePath):
         folders (:obj:`list` of `:obj:`str`) List of only subfolder names
 
     Methods:
-        files (:obj:`list` of :obj:`self.file_class`)
+        files (:obj:`list` of :obj:`self.file_class`) List of BaseFile objects
 
 
     Examples:
+        >>> # load folder object
         >>> folder = BaseFolder('some/path')
-        >>> print(folder)
         '/absolute/path/to/some/path'
+
+        >>> # load files in folder as list of BaseFile objects
+        >>> BaseFolder('some/path').load()
+        [<class 'BaseFile'>, <class 'BaseFile'>, <class 'BaseFile'>]
+
+        >>> # use the following context to fast-load/edit/save all files
+        >>> with BaseFolder('some/path') as txt_files:
+        ...     for txt_file in txt_files:
+        ...         with txt_file as txt_data:
+        ...             txt_file.save_data = txt_data.replace('\\n', '')
     """ # noqa
     file_class = BaseFile
 
     def __enter__(self):
-        pass
+        return self.files()
 
     def __exit__(self, ctx_type, ctx_value, ctx_traceback):
         pass
@@ -396,7 +418,7 @@ class BaseFolder(BasePath):
             :obj:`list` of :obj:`str` File/folder names.
 
         Example:
-            >>> print(Folder(some/path)filenames)
+            >>> Folder('some/path').contents
             ['file_1.txt', 'file_2.txt', 'file_3.txt', 'subfolder_1', 'subfolder_2', 'subfolder_3']
         """ # noqa
         if not self.exists or not self.is_dir:
@@ -411,7 +433,7 @@ class BaseFolder(BasePath):
             :obj:`int` Number of items in the folder
 
         Example:
-            >>> print(Folder('some/path').length)
+            Folder('some/path').length
             3
         """
         return len(self.contents)
@@ -427,7 +449,7 @@ class BaseFolder(BasePath):
             :obj:`list` of :obj:`str` File names
 
         Example:
-            >>> print(Folder(some/path)filenames)
+            >>> Folder(some/path).filenames
             ['/absolute/path/to/some/path/file_1.txt', '/absolute/path/to/some/path/file_2.txt', /absolute/path/to/some/path/file_3.txt]
         """ # noqa
         dir_files = []
@@ -447,7 +469,7 @@ class BaseFolder(BasePath):
             :obj:`list` of :obj:`str` Folder names
 
         Example:
-            >>> print(Folder(some/path).folders)
+            >>> Folder(some/path).folders
             ['subfolder_1', 'subfolder_2', 'subfolder_3']
         """
         dir_subdirs = []
@@ -456,7 +478,7 @@ class BaseFolder(BasePath):
                 dir_subdirs.append(os.path.join(self.data, folder_item))
         return dir_subdirs
 
-    def files(self, options={}):
+    def files(self, *args, **kwargs):
         """ Load all .txt files as BaseFile objects.
 
         All current files inside the folder at the current path will
@@ -481,19 +503,26 @@ class BaseFolder(BasePath):
             Lorem ipsum dolor sit amet...
         """ # noqa
         contents = deque([])
-        # set option defaults
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'extensions' not in options:
-            options['extensions'] = ['txt']
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         if type(options['extensions']) is not list:
             raise TypeError('Option "extensions" must be list')
         if not self.is_dir:
-            raise Exception('Item is not a folder')
+            raise Exception('Item is not a folder:', self.data)
         for folder_item in self.contents:
-            # add new BaseFile linked to the folder_item's location
-            contents.append(
-                self.file_class(os.path.join(self.data, folder_item))
-            )
+            # split the name by . and grab the last element for extension
+            item_ext = folder_item.split('.')[-1]
+            # only proceed if item extension is in approved list
+            if item_ext in options['extensions']:
+                # add new TextFile linked to the folder_item's location
+                contents.append(
+                    self.file_class(
+                        os.path.join(self.data, folder_item),
+                        options=options
+                    )
+                )
         # return as a deque instead of a list
         return deque(contents)

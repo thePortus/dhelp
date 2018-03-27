@@ -8,19 +8,32 @@ from ..web import WebPage
 
 
 class TestWebPage(unittest.TestCase):
-    page = WebPage('https://stackoverflow.com', options={'silent': True})
 
     def test_fetch(self):
         # ensure request returns text data
-        return self.assertTrue(len(self.page.fetch()) > 0)
+        page = WebPage('https://stackoverflow.com', options={'silent': True})
+        return self.assertTrue(len(page.fetch()) > 0)
 
     def test_soup(self):
         # ensure object is a BeautifulSoup type object
-        return self.assertTrue(type(self.page.soup()) == BeautifulSoup)
+        page = WebPage('https://stackoverflow.com', options={'silent': True})
+        return self.assertTrue(type(page.soup()) == BeautifulSoup)
+
+    def test_max_retries(self):
+        # should return none after hitting max_retries getting invalid page
+        page = WebPage(
+            'http://0.0.0.0',
+            options={
+                'silent': True,
+                'max_retries': 3
+            }
+        )
+        return self.assertEqual(page.fetch(), None)
 
     def test_context_manager(self):
         # ensure soup works when invoked using with.. as.. context manager
         results = None
-        with self.page as page_soup:
+        page = WebPage('https://stackoverflow.com', options={'silent': True})
+        with page as page_soup:
             results = page_soup
         return self.assertTrue((type(results)) == BeautifulSoup)

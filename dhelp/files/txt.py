@@ -1,8 +1,5 @@
 #!/usr/bin/python
 
-import os
-from collections import deque
-
 from ._bases import BaseFile, BaseFolder
 
 
@@ -27,12 +24,11 @@ class TextFile(BaseFile):
 
     Examples:
         >>> from dhelp import TextFile
-        >>> text_file = TextFile('some/path.txt')
-        >>> print(text_file)
-        some/path.txt
+        >>> TextFile('some/path.txt')
+        '/absolute/path/to/some/path.txt'
     """ # noqa
 
-    def load(self,  options={}):
+    def load(self, *args, **kwargs):
         """Opens the file data as a single string.
 
         Opens the file using 'utf-8' unless otherwise specified in options.
@@ -46,16 +42,17 @@ class TextFile(BaseFile):
             Exception: If path does not point to a file
 
         Examples:
-            >>> file_data = TextFile('some/path.txt').load()
-            >>> print(file_data)
-            Lorem ipsum dolor sit amet...
+            >>> TextFile('some/path.txt').load()
+            'Lorem ipsum dolor sit amet...'
         """ # noqa
-        # set option defaults
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'readlines' not in options:
-            options['readlines'] = False
-        super(self.__class__, self).load(options)
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
+        # print loading message if silent option not flagged
+        if not options['silent']:
+            print('Loading', self.data)
         if not self.is_file:
             raise Exception('Item is not a file')
         file_data = ''
@@ -68,7 +65,7 @@ class TextFile(BaseFile):
                 file_data = read_file.read()
         return file_data
 
-    def save(self, data, options={}):
+    def save(self, data, *args, **kwargs):
         """Saves string data to file.
 
         Receives string data and writes it to a file. If a list is received,
@@ -82,22 +79,28 @@ class TextFile(BaseFile):
 
         Examples:
             >>> # saving to a new location
-            >>> saved_text_file = TextFile('some/path.txt').save('Lorem ipsum dolor sit amet...') # noqa
-            >>> print(saved_text_file) # noqa
+            >>> TextFile('some/path.txt').save('Lorem ipsum dolor sit amet...')
             '/absolute/path/to/some/path.txt'
 
             >>> # setting overwrite option
             >>> options = {'overwrite': True}
-            >>> saved_text_file = saved_text_file.save('consectetur adipiscing elit', options=options)
-            >>> print(saved_text_file)
-            /absolute/path/to/some/path.txt
-        """
-        # set option defaults
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'overwrite' not in options:
-            options['overwrite'] = False
-        super(self.__class__, self).save(options)
+            >>> TextFile('some/path.txt').save('consectetur adipiscing elit', options=options)
+            '/absolute/path/to/some/path.txt'
+        """ # noqa
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
+        # print saving message if silent option not flagged
+        if not options['silent']:
+            print('Saving to', self.data)
+        if self.exists and options['overwrite'] is not True:
+            raise Exception(
+                'Item exists at ' + self.data + ' and overwrite not specified'
+            )
+        # create all parent directories required for save
+        self.makedirs()
         with open(self.data, 'w+', encoding=options['encoding']) as write_file:
             write_file.write(data)
         return True
@@ -115,59 +118,12 @@ class TextFolder(BaseFolder):
 
     Examples:
         >>> from dhelp import TextFolder
-        >>> text_folder = TextFolder('some/path')
-        >>> print(text_folder)
-        some/path
+        >>> TextFolder('some/path')
+        '/absolute/path/to/some/path'
     """
     file_class = TextFile
 
-    def files(self, options={}):
-        """ Load all .txt files as TextFile objects.
-
-        All current .txt files inside the folder at the current path will
-        be returned as a deque(list) of TextFile objects. You can set which
-        file extensions will be loaded with the 'extensions' option by passing
-        a list of string extensions (without the '.').
-
-        Args:
-            options (:obj:`dict`, optional) Options settings found at respective keywords
-
-        Returns:
-            :obj:`collections.deque` of `:obj:`dhelp.TextFile` TextFiles of each .txt file (or other filetype)
-
-        Raises:
-            Exception: If path does not point to folder
-            TypeError: If non-list is sent as extensions option
-
-        Examples:
-            >>> folder_files = TextFolder('some/path').files()
-            >>> for folder_file in folder_files:
-            ...     print(folder_file.load())
-            Lorem ipsum dolor sit amet...
-        """ # noqa
-        contents = deque([])
-        # set option defaults
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'extensions' not in options:
-            options['extensions'] = ['txt']
-        if type(options['extensions']) is not list:
-            raise TypeError('Option "extensions" must be list')
-        if not self.is_dir:
-            raise Exception('Item is not a folder')
-        for folder_item in self.contents:
-            # split the name by . and grab the last element for extension
-            item_ext = folder_item.split('.')[-1]
-            # only proceed if item extension is in approved list
-            if item_ext in options['extensions']:
-                # add new TextFile linked to the folder_item's location
-                contents.append(self.file_class(
-                    os.path.join(self.data, folder_item))
-                )
-        # return as a deque instead of a list
-        return deque(contents)
-
-    def modify(self, destination, modify_cb, options={}):
+    def modify(self, destination, modify_cb, *args, **kwargs):
         """ Edit and save every file in the folder by passing a function.
 
         Opens every file and performs a callback function sent to it. Provides
@@ -197,19 +153,13 @@ class TextFolder(BaseFolder):
             >>> options = {'destination': 'some/other-path'}
 
             >>> # use TextFolder().modify, pass your function as 1st arg
-            >>> text_folder = TextFolder('some/path').modify(modify_record, options=options)
-            >>> print(text_folder)
-            /absolute/path/to/some/path
+            >>> TextFolder('some/path').modify(modify_record, options=options)
+            '/absolute/path/to/some/path'
         """ # noqa
-        # set option defaults
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'extensions' not in options:
-            options['extensions'] = ['txt']
-        if 'overwrite' not in options:
-            options['overwrite'] = True
-        if 'silent' not in options:
-            options['silent'] = True
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         modified_folder = self.copy(destination, options=options)
         for item_file in modified_folder.files():
             item_data = modify_cb(item_file.load(options=options))

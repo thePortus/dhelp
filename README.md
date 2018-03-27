@@ -5,7 +5,6 @@
 ---
 
 [![PyPI version](https://badge.fury.io/py/dhelp.svg)](https://badge.fury.io/py/dhelp)
-![PyPI - License](https://img.shields.io/pypi/l/Django.svg)
  [![Build Status](https://travis-ci.org/thePortus/dhelp.svg?branch=master)](https://travis-ci.org/thePortus/dhelp) [![Coverage Status](https://coveralls.io/repos/github/thePortus/dhelp/badge.svg?branch=master)](https://coveralls.io/github/thePortus/dhelp?branch=master) [![Documentation Status](https://readthedocs.org/projects/dhelp/badge/?version=latest)](http://dhelp.readthedocs.io/en/latest/?badge=latest) [![Code Health](https://landscape.io/github/thePortus/dhelp/master/landscape.svg?style=flat)](https://landscape.io/github/thePortus/dhelp/master) [![Total GitHub downloads](https://img.shields.io/github/downloads/thePortus/dhelp/total.svg)](https://img.shields.io/github/downloads/thePortus/dhelp/total.svg) [![Waffle.io - Columns and their card count](https://badge.waffle.io/thePortus/dhelp.svg?columns=all)](https://waffle.io/thePortus/dhelp)
 
 
@@ -103,6 +102,15 @@ single line of code.
 
 from dhelp import TextFile
 
+# quickest method to modify a file, start by making a TextFile object...
+txt_file = TextFile('some/file.txt')
+# then use with/as syntax to give you the file contents in strings form
+with txt_file as txt_data:
+    # txt_data is contents, whatever you put in txt_file.save_data is saved
+    txt_file.save_data = txt_data.replace('\n', '')
+
+# Other methods...
+
 # load file data as a string and print to screen
 text_file = TextFile('some/file.txt')
 text_file.load()
@@ -145,6 +153,22 @@ TextFile('some/other-file.txt').remove()
 ```python
 
 from dhelp import TextFolder
+
+# quickest way to modify a folder, start by making a TextFolder object
+text_folder = TextFolder('some/path')
+# use with/as syntax to get a list of TextFile objects, then loop through
+with text_folder as txt_files:
+    for txt_file in txt_files:
+        # use with/as syntax on file to get contents
+        with txt_file as txt_data:
+            # whatever you store in .save_data will be saved to file
+            txt_file.save_data = txt_data.replace('\n', '')
+
+```
+
+**Other Methods**
+
+```python
 
 # returns a list of TextFile objects, each connected to a file in the folder
 folder_files = TextFolder('some/folder').text_files

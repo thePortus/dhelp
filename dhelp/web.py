@@ -91,7 +91,8 @@ class WebPage(UserString):
             request = requests.get(self.data)
         # if error in getting page, call self recursively to try again
         except Exception:
-            print('Problem fetching', self.data)
+            if not self.options['silent']:
+                print('Problem fetching', self.data)
             # if infinite retries is set, always try again
             if not self.options['max_retries']:
                 if not self.options['silent']:

@@ -5,7 +5,7 @@ import os
 import csv
 from collections import deque
 
-from ._bases import BasePath
+from ._bases import BaseFile
 from .txt import TextFile
 
 # prefatory code sets csv field size to the maximum of system limit
@@ -24,7 +24,7 @@ while decrement:
         decrement = True
 
 
-class CSVFile(BasePath):
+class CSVFile(BaseFile):
     """Load and save CSV data with lists of dictionaries.
 
     Makes loading and saving CSV data a simple matter. Simplifies the use
@@ -35,11 +35,37 @@ class CSVFile(BasePath):
         path (:obj:`str`) System path pointing to desired text file location
 
     Examples:
+        >>> # load a csv object, which behaves like a string
         >>> from dhelp import CSVFile
+        >>> CSVFile('some/path.csv')
+        '/absolute/path/to/some/path.csv'
+
+        >>> # manually loop through and edit data, and save...
         >>> csv_file = CSVFile('some/path.csv')
-        >>> print(csv_file)
-        some/path.csv
-    """
+        >>> csv_fieldnames = csv_file.fieldnames
+        >>> csv_data = csv_file.load()
+        >>> for data_row csv_data:
+        >>>     data_row['text'] = data_row['text'].replace('\\n', '')
+        >>> csv_file.save(csv_data, csv_fieldnames, options={'overwrite: True'})
+
+        >>> # or use for/in syntax to quickly load data rows, edit, and resave
+        >>> csv_file = CSVFile('some/path.csv')
+        >>> with csv_file as data_rows:
+        ...     for data_row in data_rows:
+        ...         data_row['text'] = data_row['text'].replace('\\n', '')
+        ...     csv_file.save_data = data_rows
+    """ # noqa
+    options = {}
+
+    def __exit__(self, ctx_type, ctx_value, ctx_traceback):
+        # gets defaults then overrides with any specified options
+        options = self.options
+        options.update({'overwrite': True})
+        fieldnames = self.fieldnames
+        if self.save_data:
+            return self.save(
+                self.save_data, fieldnames, options=options
+            )
 
     @property
     def fieldnames(self):
@@ -64,7 +90,7 @@ class CSVFile(BasePath):
                 column_headers.append(column_header)
         return column_headers
 
-    def load(self, options={}):
+    def load(self, *args, **kwargs):
         """Load csv as list (deque) of dictionaries.
 
         Fast way to load CSV data for editing. Returns a deque, a list-like
@@ -83,20 +109,14 @@ class CSVFile(BasePath):
 
         Examples:
             >>> csv_file = CSVFile('some/path.csv')
-            >>> csv_data = CSVFile.load()
-            >>> print(csv_data)
+            >>> CSVFile.load()
             [{'id': '1', 'text': 'Lorem ipsum', 'notes': ''}, {'id': '2', 'text': 'dolor sit', 'notes': ''}, {'id': '3', 'text': 'amet.', 'notes': ''}]
         """ # noqa
-        # set option defaults
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'newline' not in options:
-            options['newline'] = ''
-        if 'dialect' not in options:
-            options['dialect'] = 'excel'
-        if 'delimiter' not in options:
-            options['delimiter'] = ','
-        super(self.__class__, self).load(options)
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         if not self.is_file:
             raise Exception('Item is not a file')
         data_rows = deque([])
@@ -115,7 +135,7 @@ class CSVFile(BasePath):
                 data_rows.append(csv_row)
         return data_rows
 
-    def save(self, data, fieldnames, options={}):
+    def save(self, data, fieldnames, *args, **kwargs):
         """Save a list of dictionaries to a .csv file.
 
         Send a list of dictionaries and a list of their fieldnames to save to
@@ -149,18 +169,14 @@ class CSVFile(BasePath):
             ...         'notes': ''
             ...     }]
             >>> # save to csv file
-            >>> csv_file = CSVFile('some/path.csv').save(fake_data, fieldnames=fake_fieldnames)
-            >>> print(csv_file)
-            /absolute/path/to/some/path.csv
+            >>> CSVFile('some/path.csv').save(fake_data, fieldnames=fake_fieldnames)
+            '/absolute/path/to/some/path.csv'
         """ # noqa
-        if 'encoding' not in options:
-            options['encoding'] = 'utf-8'
-        if 'newline' not in options:
-            options['newline'] = ''
-        if 'dialect' not in options:
-            options['dialect'] = 'excel'
-        if 'delimiter' not in options:
-            options['delimiter'] = ','
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         # calling super to print messages
         super(self.__class__, self).save(options)
         with open(
@@ -180,7 +196,7 @@ class CSVFile(BasePath):
                 csv_writer.writerow(data_row)
         return self
 
-    def modify(self, destination, modify_cb, options={}):
+    def modify(self, destination, modify_cb, *args, **kwargs):
         """Edit every row in the CSV by passing a function.
 
         Copies CSV to destination then performs the modify_cb callback
@@ -211,6 +227,11 @@ class CSVFile(BasePath):
         >>> print(altered_csv_file)
         /absolute/path/to/some/other-path.csv
         """ # noqa
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         # create csv object tied to destination and empty deque for new data
         new_csv_file = self.__class__(destination)
         new_data = []
@@ -225,7 +246,8 @@ class CSVFile(BasePath):
         )
 
     def column_to_txts(
-        self, destination='.', text_col='text', filename_col=None, options={}
+        self, destination='.', text_col='text', filename_col=None,
+        *args, **kwargs
     ):
         """Coverts a column of text data to a folder of .txt.
 
@@ -248,6 +270,11 @@ class CSVFile(BasePath):
             >>> csv_file.column_to_txts('some/other-path', text_col='text', filename_col='id')
             some/path.csv
         """ # noqa
+        # get default options and update with any passed options
+        options = self.options
+        if 'options' in kwargs:
+            if type(kwargs['options']) == dict:
+                options.update(kwargs['options'])
         # ensure output folder is absolute path
         if not os.path.isabs(destination):
             destination = os.path.abspath(destination)
