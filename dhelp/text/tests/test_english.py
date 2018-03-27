@@ -2,14 +2,14 @@
 
 import unittest
 
-from ..english import EnglishText
+from ..nltk import EnglishText
 
 
 class EnglishSetupLayer:
 
     @classmethod
-    def setUp(cls):
-        EnglishText('').setup()
+    def testSetUp(cls):
+        EnglishText.setup()
 
 
 class TestEnglishText(unittest.TestCase):

@@ -2,14 +2,23 @@
 
 import unittest
 
-from ..latin import LatinText
+import os
+
+from ..cltk import LatinText
 
 
 class LatinSetupLayer:
 
     @classmethod
     def setUp(cls):
-        LatinText('').setup()
+        if not os.path.exists(
+            os.path.join(
+                os.path.expanduser('~'),
+                'cltk_data',
+                'latin'
+            )
+        ):
+            LatinText('').setup()
 
 
 class TestLatinText(unittest.TestCase):

@@ -12,7 +12,7 @@ os: linux
 dist: trusty
 # set environment variables
 env:
-  - PACKAGE_VERSION=0.0.2
+  - PACKAGE_VERSION=0.0.4
 # install dependencies
 install:
   - pip install -r requirements/dev.txt

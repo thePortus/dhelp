@@ -2,14 +2,23 @@
 
 import unittest
 
-from ..ancient_greek import AncientGreekText
+import os
+
+from ..cltk import AncientGreekText
 
 
 class AncientGreekSetupLayer:
 
     @classmethod
     def setUp(cls):
-        AncientGreekText('').setup()
+        if not os.path.exists(
+            os.path.join(
+                os.path.expanduser('~'),
+                'cltk_data',
+                'greek'
+            )
+        ):
+            AncientGreekText('').setup()
 
 
 class TestAncientGreekText(unittest.TestCase):
