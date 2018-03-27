@@ -81,7 +81,7 @@ The first time you use a language-specific text object, you need to run its .set
 ```sh
 from dhelp import EnglishText
 
-EnglishText('').setup()
+EnglishText.setup()
 
 ```
 
@@ -315,7 +315,7 @@ Before you use this object for any of the methods below you need to download tra
 
 ```python
 from dhelp import EnglishText
-EnglishText('').setup()
+EnglishText.setup()
 ```
 
 **Examples**

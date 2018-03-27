@@ -25,6 +25,7 @@ class NLTKMixin:
         >>> class EnglishText(NLTKTextMixin, EnglishText):
     """
 
+    @classmethod
     def setup(self):
         """Download NLTK packages and trainer corpora.
 
@@ -34,19 +35,19 @@ class NLTKMixin:
         sets.
 
         Example:
-            >>> EnglishText('').setup()
+            >>> EnglishText.setup()
         """
-        # get root directory of nltk data
-        nltk_root_dir = os.path.join(
-            os.path.expanduser('~'),
-            'nltk_data',
-        )
-        for nltk_package, nltk_package_dir in settings.NLTK_PACKAGES[
-            self.options['language']
+        for package, package_path_segments in settings.NLTK_PACKAGES[
+            'english'
         ]:
-            # check for package locally, if not extant, download
-            if os.path.exists(os.path.join(nltk_root_dir, nltk_package_dir)):
-                nltk.download(nltk_package)
+            package_path = os.sep.join(package_path_segments)
+            # will trigger error if no file, if file found, do nothing
+            try:
+                nltk.data.find(package_path)
+                pass
+            # if no file was found, download the respective package
+            except:
+                nltk.download(package)
         return True
 
     def rm_stopwords(self, stoplist=[]):

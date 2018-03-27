@@ -12,15 +12,21 @@ DELIMITERS = [
 
 NLTK_PACKAGES = {
     'english': [
-        ('verbnet', 'corpora/verbnet'),
-        ('wordnet', 'corpora/verbnet'),
-        ('words', 'corpora/verbnet'),
-        ('large_grammars', 'corpora/verbnet'),
-        ('averaged_perceptron_tagger', 'corpora/verbnet'),
-        ('maxent_treebank_pos_tagger', 'corpora/verbnet'),
-        ('universal_tagset', 'corpora/verbnet'),
-        ('punkt', 'corpora/verbnet'),
-        ('maxent_ne_chunker', 'corpora/verbnet'),
+        ('verbnet', ['corpora', 'verbnet.zip']),
+        ('wordnet', ['corpora', 'wordnet.zip']),
+        ('words', ['corpora', 'words.zip']),
+        ('large_grammars', ['grammars', 'large_grammars.zip']),
+        (
+            'averaged_perceptron_tagger',
+            ['taggers', 'averaged_perceptron_tagger.zip']
+        ),
+        (
+            'maxent_treebank_pos_tagger',
+            ['taggers', 'maxent_treebank_pos_tagger.zip']
+        ),
+        ('universal_tagset', ['taggers', 'universal_tagset.zip']),
+        ('punkt', ['tokenizers', 'punkt.zip']),
+        ('maxent_ne_chunker', ['chunkers', 'maxent_ne_chunker.zip']),
     ]
 }
 
