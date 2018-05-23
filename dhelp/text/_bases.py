@@ -21,14 +21,13 @@ class BaseText(UserString):
         >>> print(text)
         'Lorem ipsum dolor sit amet...'
     """ # noqa
-    options = {}
+    options = {
+        'encoding': 'utf-8',
+        'language': 'english'
+    }
 
     def __init__(self, text, *args, **kwargs):
         super().__init__(str)
-        self.options = {
-            'encoding': 'utf-8',
-            'language': 'english'
-        }
         # update .options if options keyword arg passed
         if 'options' in kwargs:
             if type(kwargs['options']) == dict:

@@ -26,7 +26,7 @@ class NLTKMixin:
     """
 
     @classmethod
-    def setup(self, lang_pkgs_info):
+    def setup(cls):
         """Download NLTK packages and trainer corpora.
 
         Launches the NLTK package download interface. Method is invoked by
@@ -42,7 +42,7 @@ class NLTKMixin:
         # (1) pkg name (2) list of path segs where pkg data is stored locally
         pkgs_and_path_segments = settings.NLTK_PACKAGES['all']
         # join common list with language specific packages
-        for package_info in lang_pkgs_info:
+        for package_info in settings.NLTK_PACKAGES[cls.options['language']]:
             pkgs_and_path_segments.append(package_info)
         # loop through list of tuples, each with pkg name and path info
         for package, package_path_segments in pkgs_and_path_segments:
@@ -269,12 +269,7 @@ class EnglishText(NLTKMixin, BaseText):
         >>> english_text.rm_lines().rm_nonchars().rm_spaces()
         The quick brown fox jumped over the lazy dog
     """ # noqa
-
-    def __init__(self, text, options={}):
-        options['language'] = 'english'
-        super().__init__(text=text, options=options)
-
-    @classmethod
-    def setup(self):
-        # invoke parent setup method, sending it the pkg info for specific lang
-        super(self.__class__).setup(settings.NLTK_PACKAGES['english'])
+    options = {
+        'encoding': 'utf-8',
+        'language': 'english'
+    }
