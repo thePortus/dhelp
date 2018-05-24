@@ -256,10 +256,10 @@ class LatinText(CLTKMixin, BaseText):
         >>> print(text.lemmatize())
         gallia edo1 omne divido in pars tres
     """
-
-    def __init__(self, text, options={}):
-        options['language'] = 'latin'
-        super().__init__(text=text, options=options)
+    options = {
+        'encoding': 'utf-8',
+        'language': 'latin'
+    }
 
     def macronize(self, mode='tag_ngram_123_backoff'):
         """Adds macrons (long vowel marks).
@@ -366,10 +366,10 @@ class AncientGreekText(CLTKMixin, BaseText):
         >>> print(text.lemmatize())
         εἰμί δὲ σύμπας οὗτος τὰ σύγγραμμα ἐκεῖνος μάλιστα οὐ ὠφέλιμος , ὅστις ὡς πρὸς οἶδα συγγράφω.
     """ # noqa
-
-    def __init__(self, text, options={}):
-        options['language'] = 'greek'
-        super().__init__(text=text, options=options)
+    options = {
+        'encoding': 'utf-8',
+        'language': 'greek'
+    }
 
     def normalize(self):
         """Fixes problems with differences in greek accent encoding.
