@@ -11,10 +11,11 @@ DELIMITERS = [
 ]
 
 NLTK_PACKAGES = {
-    'english': [
+    'all': [
+        ('punkt', ['tokenizers', 'punkt.zip']),
         ('verbnet', ['corpora', 'verbnet.zip']),
         ('wordnet', ['corpora', 'wordnet.zip']),
-        ('words', ['corpora', 'words.zip']),
+        ('large_grammars', ['grammars', 'large_grammars.zip']),
         ('large_grammars', ['grammars', 'large_grammars.zip']),
         (
             'averaged_perceptron_tagger',
@@ -24,12 +25,24 @@ NLTK_PACKAGES = {
             'maxent_treebank_pos_tagger',
             ['taggers', 'maxent_treebank_pos_tagger.zip']
         ),
-        ('universal_tagset', ['taggers', 'universal_tagset.zip']),
-        ('punkt', ['tokenizers', 'punkt.zip']),
         ('maxent_ne_chunker', ['chunkers', 'maxent_ne_chunker.zip']),
+        ('universal_tagset', ['taggers', 'universal_tagset.zip']),
+    ],
+    'english': [
+        ('words', ['corpora', 'words.zip']),
+        ('sample_grammars', ['grammars', 'sample_grammars.zip']),
+        ('book_grammars', ['grammars', 'book_grammars.zip']),
+        ('perluniprops', ['misc', 'perluniprops.zip'])
+    ],
+    'spanish': [
+        ('spanish_grammars', ['grammars', 'spanish_grammars.zip'])
+    ],
+    'basque': [
+        ('basque_grammars', ['grammars', 'basque_grammars.zip'])
     ]
 }
 
+# TODO: Change CLTK setup so it expects path segments like NLTK settings
 CLTK_PACKAGES = {
     'greek': [
         ('greek_software_tlgu', 'software/greek_software_tlgu'),
