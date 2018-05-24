@@ -26,10 +26,11 @@ class NLTKMixin:
     """
 
     @classmethod
-    def setup(self):
+    def setup(cls):
         """Download NLTK packages and trainer corpora.
 
-        Launches the NLTK package download interface. Overridden by the CLTK
+        Launches the NLTK package download interface. Method is invoked by
+        child .setup() methods in NLTK classes. Method is overidden in CLTK
         child classes to launch the automated CLTK downloader. Convenience
         method if user has not already downloaded NLTK packages and trainer
         sets.
@@ -37,9 +38,15 @@ class NLTKMixin:
         Example:
             >>> EnglishText.setup()
         """
-        for package, package_path_segments in settings.NLTK_PACKAGES[
-            'english'
-        ]:
+        # start with common pkgs, a list of tuples each with...
+        # (1) pkg name (2) list of path segs where pkg data is stored locally
+        pkgs_and_path_segments = settings.NLTK_PACKAGES['all']
+        # join common list with language specific packages
+        for package_info in settings.NLTK_PACKAGES[cls.options['language']]:
+            pkgs_and_path_segments.append(package_info)
+        # loop through list of tuples, each with pkg name and path info
+        for package, package_path_segments in pkgs_and_path_segments:
+            # build the relative filepath to the data, specific to the os
             package_path = os.sep.join(package_path_segments)
             # will trigger error if no file, if file found, do nothing
             try:
@@ -262,7 +269,7 @@ class EnglishText(NLTKMixin, BaseText):
         >>> english_text.rm_lines().rm_nonchars().rm_spaces()
         The quick brown fox jumped over the lazy dog
     """ # noqa
-
-    def __init__(self, text, options={}):
-        options['language'] = 'english'
-        super().__init__(text=text, options=options)
+    options = {
+        'encoding': 'utf-8',
+        'language': 'english'
+    }
