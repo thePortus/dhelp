@@ -5,7 +5,7 @@
 ---
 
 [![PyPI version](https://badge.fury.io/py/dhelp.svg)](https://badge.fury.io/py/dhelp)
- [![Build Status](https://travis-ci.org/thePortus/dhelp.svg?branch=master)](https://travis-ci.org/thePortus/dhelp) [![Coverage Status](https://coveralls.io/repos/github/thePortus/dhelp/badge.svg?branch=master)](https://coveralls.io/github/thePortus/dhelp?branch=master) [![Documentation Status](https://readthedocs.org/projects/dhelp/badge/?version=latest)](http://dhelp.readthedocs.io/en/latest/?badge=latest) [![Code Health](https://landscape.io/github/thePortus/dhelp/master/landscape.svg?style=flat)](https://landscape.io/github/thePortus/dhelp/master) [![Total GitHub downloads](https://img.shields.io/github/downloads/thePortus/dhelp/total.svg)](https://img.shields.io/github/downloads/thePortus/dhelp/total.svg) [![Waffle.io - Columns and their card count](https://badge.waffle.io/thePortus/dhelp.svg?columns=all)](https://waffle.io/thePortus/dhelp)
+ [![Build Status](https://travis-ci.org/thePortus/dhelp.svg?branch=master)](https://travis-ci.org/thePortus/dhelp) [![Coverage Status](https://coveralls.io/repos/github/thePortus/dhelp/badge.svg?branch=master)](https://coveralls.io/github/thePortus/dhelp?branch=master) [![Documentation Status](https://readthedocs.org/projects/dhelp/badge/?version=latest)](http://dhelp.readthedocs.io/en/latest/?badge=latest) [![Waffle.io - Columns and their card count](https://badge.waffle.io/thePortus/dhelp.svg?columns=all)](https://waffle.io/thePortus/dhelp)
 
 
 ---
@@ -17,9 +17,7 @@ Department of History,<br />
 
 ---
 
-Check out the full project documentation [dhelp.readthedocs.io](http://dhelp.readthedocs.io)
-
-Made for my students.
+For my students.
 
 Students often see great potential for Python in Historical Analysis. But,
 before they see real payoff they often face too many hurdles to overcome in
@@ -28,6 +26,8 @@ get to performing quick file operations, data manipulations, and even text
 analysis.
 
 ---
+
+Check out the full project documentation [dhelp.readthedocs.io](http://dhelp.readthedocs.io)
 
 Requires [Python 3.x](https://python.org)
 
