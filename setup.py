@@ -26,7 +26,7 @@ config = {
         'certifi==2018.1.18',
         'chardet==3.0.4',
         'idna==2.6',
-        'nltk==3.2.5',
+        'nltk==3.4.5',
         'requests==2.18.4',
         'six==1.11.0',
         'urllib3==1.22',
