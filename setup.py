@@ -29,7 +29,7 @@ config = {
         'nltk==3.2.5',
         'requests==2.18.4',
         'six==1.11.0',
-        'urllib3==1.22',
+        'urllib3==1.26.5',
     ],
     'keywords': [
         'digital-humanities',
