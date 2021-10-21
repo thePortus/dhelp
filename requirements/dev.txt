@@ -1,5 +1,5 @@
 -r cltk.txt
-Babel==2.5.3
+Babel==2.9.1
 cov-core==1.15.0
 coverage==4.5.1
 docutils==0.14
