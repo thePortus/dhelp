@@ -7,7 +7,7 @@ imagesize==1.0.0
 Jinja2==2.10
 MarkupSafe==1.0
 m2r==0.1.13
-mistune==0.8.3
+mistune==2.0.3
 nose2==0.7.4
 nose2-cov==1.0a4
 packaging==17.1
